@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT namespace, name, value FROM properties WHERE username = ? AND resource_path = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "namespace",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "value",
+        "ordinal": 2,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "6a24bf283995a5b5e8465732ae3fb33d48b4b30578c4318597cee9553de3a3a2"
+}

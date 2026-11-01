@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO sent_alarm_notifications (username, event_uid, alarm_index, occurrence_start)\n         VALUES (?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "ccf837da7b4590af0b8dfca2432cb41f7bb88b245eac642ff752e18d7840fb1a"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM calendar_shares\n             WHERE owner_username = ? AND calendar_name = ? AND grantee_username = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "9a0e59bff3dc3b6b1e99a56bfa85058e362ab8db25c8ea8eece7d520e54cc403"
+}

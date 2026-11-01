@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE locks SET resource_path = ?, username = ? WHERE resource_path = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "49947a67653bac8a41076b1b34b519974437a73d7d01e69b0dd6cbb7fe51f64b"
+}

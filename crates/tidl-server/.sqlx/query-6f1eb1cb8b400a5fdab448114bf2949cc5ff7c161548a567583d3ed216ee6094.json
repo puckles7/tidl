@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO contact_addresses\n                 (contact_id, type, is_primary, street, city, region, postal_code, country)\n                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "6f1eb1cb8b400a5fdab448114bf2949cc5ff7c161548a567583d3ed216ee6094"
+}

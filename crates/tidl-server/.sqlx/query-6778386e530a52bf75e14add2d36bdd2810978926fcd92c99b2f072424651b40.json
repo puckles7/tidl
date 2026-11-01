@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT OR REPLACE INTO properties (username, resource_path, namespace, name, value, updated_at)\n             SELECT ?, ?, namespace, name, value, datetime('now')\n             FROM properties WHERE username = ? AND resource_path = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "6778386e530a52bf75e14add2d36bdd2810978926fcd92c99b2f072424651b40"
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+  unRAID container template for tidl (backlog #152).
+
+  Install: copy to /boot/config/plugins/dockerMan/templates-user/tidl.xml on
+  your unRAID server, then Docker -> Add Container -> Template -> tidl.
+  The image is published under the `puckles7` GitHub org.
+-->
+<Container version="2">
+  <Name>tidl</Name>
+  <Repository>ghcr.io/puckles7/tidl:latest</Repository>
+  <Registry>https://github.com/puckles7/tidl/pkgs/container/tidl</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/puckles7/tidl/issues</Support>
+  <Project>https://github.com/puckles7/tidl</Project>
+  <Overview>tidl — lightweight, hackable CalDAV/CardDAV server with a Leptos web UI for personal calendar, task and note management.</Overview>
+  <Category>Productivity:</Category>
+  <WebUI>http://[IP]:[PORT:3060]</WebUI>
+  <TemplateURL/>
+  <Icon>https://raw.githubusercontent.com/puckles7/tidl/main/assets/icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="WebUI Port" Target="3060" Default="3060" Mode="tcp" Description="Web UI + CalDAV/CardDAV port." Type="Port" Display="always" Required="true" Mask="false">3060</Config>
+  <Config Name="Data" Target="/data" Default="/mnt/user/appdata/tidl" Mode="rw" Description="SQLite database and all persistent state." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/tidl</Config>
+  <Config Name="Secret File" Target="/run/secrets/tidl-secret" Default="" Mode="ro" Description="File containing TIDL_SECRET (tidl-server generate-secret)." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="TIDL_SECRET_FILE" Target="TIDL_SECRET_FILE" Default="/run/secrets/tidl-secret" Mode="" Description="Path to the secret inside the container." Type="Variable" Display="advanced" Required="false" Mask="false">/run/secrets/tidl-secret</Config>
+  <Config Name="TIDL_DOMAIN" Target="TIDL_DOMAIN" Default="localhost" Mode="" Description="Hostname your devices use to reach the server." Type="Variable" Display="always" Required="false" Mask="false">localhost</Config>
+  <Config Name="TIDL_SECURE_COOKIE" Target="TIDL_SECURE_COOKIE" Default="false" Mode="" Description="Set true only when serving over HTTPS." Type="Variable" Display="advanced" Required="false" Mask="false">false</Config>
+</Container>

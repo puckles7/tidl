@@ -1,0 +1,34 @@
+# tidl — TrueNAS SCALE Custom App (compose) template (backlog #152).
+#
+# TrueNAS SCALE 24.10+ runs compose "Custom Apps". Put this file (and a
+# `tidl-secret` file next to it) in a dataset, then
+# Apps -> Discover -> Custom App and paste this YAML.
+#
+# The image is published under the `puckles7` GitHub org; adjust the dataset
+# path to match your pool layout.
+
+services:
+  tidl:
+    image: ghcr.io/puckles7/tidl:latest
+    container_name: tidl
+    restart: unless-stopped
+    ports:
+      - "3060:3060"
+    environment:
+      TIDL_HOST: 0.0.0.0
+      TIDL_PORT: "3060"
+      TIDL_DATA_DIR: /data
+      TIDL_DOMAIN: localhost
+      TIDL_SECRET_FILE: /run/secrets/tidl-secret
+      TIDL_SECURE_COOKIE: "false"
+    volumes:
+      # TrueNAS apps live under a pool dataset; change this path.
+      - /mnt/pool/apps/tidl/data:/data
+    secrets:
+      - tidl-secret
+    logging:
+      driver: journald
+
+secrets:
+  tidl-secret:
+    file: /mnt/pool/apps/tidl/tidl-secret

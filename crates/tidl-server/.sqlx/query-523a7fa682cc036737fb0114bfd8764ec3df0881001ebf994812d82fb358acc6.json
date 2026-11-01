@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT sync_token FROM address_books WHERE collection_id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "sync_token",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "523a7fa682cc036737fb0114bfd8764ec3df0881001ebf994812d82fb358acc6"
+}

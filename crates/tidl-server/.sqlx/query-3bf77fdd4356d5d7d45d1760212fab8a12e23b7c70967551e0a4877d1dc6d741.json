@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE calendars SET color = ?, updated_at = datetime('now') WHERE username = ? AND name = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "3bf77fdd4356d5d7d45d1760212fab8a12e23b7c70967551e0a4877d1dc6d741"
+}

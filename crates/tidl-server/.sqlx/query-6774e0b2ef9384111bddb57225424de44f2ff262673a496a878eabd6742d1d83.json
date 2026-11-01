@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT value, type as kind, is_primary as \"is_primary: bool\"\n               FROM contact_emails WHERE contact_id = ? ORDER BY is_primary DESC, id ASC",
+  "describe": {
+    "columns": [
+      {
+        "name": "value",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "kind",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "is_primary: bool",
+        "ordinal": 2,
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "6774e0b2ef9384111bddb57225424de44f2ff262673a496a878eabd6742d1d83"
+}

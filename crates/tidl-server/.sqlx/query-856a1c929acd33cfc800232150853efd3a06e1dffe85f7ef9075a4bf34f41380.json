@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO share_invitations\n                         (owner_username, resource_type, contact_collection_id, invitee_email, permission, token, expires_at)\n                     VALUES (?, 'contact_collection', ?, ?, 'member', ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "856a1c929acd33cfc800232150853efd3a06e1dffe85f7ef9075a4bf34f41380"
+}

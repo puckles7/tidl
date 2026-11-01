@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT collection_id as \"id!\" FROM contacts WHERE uid = 'uid-1'",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "4ce3962b6d9968031b1bdb431b7a9bec1717edfff506a10c5568d4d6381a6555"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO contact_impps (contact_id, value, type, is_primary) VALUES (?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "662da894af5c559f6f22d5ea4cafced10e05b9c1c9f5dc6ed274adb13a011edc"
+}

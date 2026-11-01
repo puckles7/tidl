@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id, owner_username, calendar_name, grantee_username, permission\n             FROM calendar_shares WHERE id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "owner_username",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "calendar_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "grantee_username",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "permission",
+        "ordinal": 4,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "cfb33cb8c363f8a17e4dd9ace1c62e537db4acd571b671a1da51e50ea420e756"
+}

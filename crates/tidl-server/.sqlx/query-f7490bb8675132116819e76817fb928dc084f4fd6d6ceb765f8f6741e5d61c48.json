@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT OR IGNORE INTO calendars (username, name, display_name, color) VALUES (?, 'personal', 'Personal', '#3b82f6')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "f7490bb8675132116819e76817fb928dc084f4fd6d6ceb765f8f6741e5d61c48"
+}

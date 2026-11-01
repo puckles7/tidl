@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO contact_collection_members (collection_id, member_username) VALUES (?, 'alice')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "d2b17de49752f0cfb6e81e6e256512fccf617d087377089b833412e73c6426d5"
+}

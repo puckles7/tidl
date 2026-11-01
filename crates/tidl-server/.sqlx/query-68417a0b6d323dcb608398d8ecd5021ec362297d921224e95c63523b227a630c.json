@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT 1 as \"x!: i64\" FROM contact_collection_members WHERE collection_id = ? AND member_username = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "x!: i64",
+        "ordinal": 0,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "68417a0b6d323dcb608398d8ecd5021ec362297d921224e95c63523b227a630c"
+}

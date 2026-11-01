@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM locks WHERE username = ? AND resource_path LIKE ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "b6cdb6267ab05efd3c97ab70b9c62d727659ebffdfbe425480bef7b5d4ec85cd"
+}

@@ -1,0 +1,25 @@
+[package]
+name = "tidl-markdown"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Workspace dependencies
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+pulldown-cmark = { workspace = true }
+regex = { workspace = true }
+notify = { workspace = true }
+async-trait = { workspace = true }
+
+# Additional dependencies
+walkdir = "2.4"
+sha2 = "0.10"
+hex = "0.4"
+tracing = { workspace = true }

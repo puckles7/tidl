@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE calendars\n                     SET sync_url = NULL, sync_etag = NULL, sync_last_modified = NULL,\n                         last_synced_at = NULL, sync_error = NULL, read_only = 0\n                     WHERE username = ? AND name = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "d70135989ffc11fe992b429bb8e255262077d3e921038a0d619e02ed5afcfd55"
+}

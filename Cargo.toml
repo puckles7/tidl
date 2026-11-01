@@ -1,0 +1,140 @@
+[workspace]
+members = [
+    "crates/tidl-server",
+    "crates/tidl-caldav",
+    "crates/tidl-carddav",
+    "crates/tidl-markdown",
+    "crates/tidl-web",
+]
+# tidl-server and tidl-web require cargo-leptos for their dual-target
+# (native SSR + wasm32) build.  Plain `cargo build/test` only operates on
+# the library crates; use `cargo leptos build/watch` for the full stack.
+default-members = [
+    "crates/tidl-caldav",
+    "crates/tidl-carddav",
+    "crates/tidl-markdown",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["tidl contributors"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/puckles7/tidl"
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+
+# Web framework — axum 0.8 is required by leptos_axum 0.8
+axum = { version = "0.8", features = ["macros"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+
+# Leptos 0.8 — stable Rust only, no nightly required
+# No default features; each crate enables "ssr" or "hydrate" itself.
+leptos = { version = "0.8" }
+leptos_axum = { version = "0.8" }
+leptos_meta = { version = "0.8" }
+leptos_router = { version = "0.8" }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# iCalendar
+icalendar = "0.16"
+rrule = "0.11"
+
+# HTTP & Time
+http = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.8"
+uuid = { version = "1", features = ["v4", "serde"] }
+
+# Storage & Crypto
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "migrate", "chrono"] }
+libsqlite3-sys = { version = "0.30", features = ["bundled"] }
+hex = "0.4"
+sha2 = "0.10"
+argon2 = { version = "0.5", features = ["std"] }
+bcrypt = "0.15"
+base64 = "0.22"
+
+# HTTP client (CalDAV sync)
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots", "stream"] }
+
+# Email
+lettre = { version = "0.11", default-features = false, features = ["smtp-transport", "tokio1-rustls-tls", "builder"] }
+
+# Encryption (SMTP password at rest)
+aes-gcm = "0.10"
+rand = "0.8"
+
+# File watching
+notify = "6.1"
+
+# Logging & Error handling
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1.0"
+thiserror = "2.0"
+
+# Markdown parsing
+pulldown-cmark = "0.9"
+regex = "1.10"
+
+# Inbound SMTP
+mail-parser = "0.9"
+mailrs-spf = "2.1"
+hickory-resolver = "0.26"
+dashmap = "6"
+tokio-rustls = "0.26"
+rustls = "0.23"
+rustls-pemfile = "2"
+
+# OIDC authentication
+openidconnect = { version = "4", features = ["reqwest"] }
+
+# Git operations (server-side only, not in tidl-web or library crates)
+git2 = { version = "0.20", default-features = false, features = ["https", "vendored-libgit2"] }
+
+# Zip archive reading (Google Keep Takeout import, server-side only, backlog
+# #109). `default-features = false` + `deflate` keeps it to pure-Rust flate2 —
+# Takeout zips are ordinary deflate archives, so the crypto/lzma/zstd/bzip2
+# features (and their native deps) aren't pulled in. Used only inside
+# `#[cfg(feature = "ssr")]` code, never compiled to wasm.
+zip = { version = "4", default-features = false, features = ["deflate"] }
+
+# Async traits
+async-trait = "0.1"
+
+# cargo-leptos configuration (used by `cargo leptos build/watch/serve`)
+[[workspace.metadata.leptos]]
+name = "tidl"
+output-name = "tidl"
+site-root = "target/site"
+site-pkg-dir = "pkg"
+assets-dir = "assets"
+site-addr = "0.0.0.0:3060"
+reload-port = 3061
+browserquery = "defaults"
+env = "DEV"
+bin-features = ["ssr"]
+bin-default-features = false
+lib-features = ["client-debug"]
+lib-default-features = false
+lib-profile-release = "wasm-release"
+lib-package = "tidl-web"
+bin-package = "tidl-server"
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = true
+codegen-units = 1
+
+

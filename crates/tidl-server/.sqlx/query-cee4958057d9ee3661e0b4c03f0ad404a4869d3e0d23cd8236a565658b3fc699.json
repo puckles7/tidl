@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT c.photo, c.photo_content_type\n             FROM contacts c JOIN contact_collections cc ON cc.id = c.collection_id\n             WHERE c.id = ?\n                AND (cc.owner_username = ?\n                     OR cc.id IN (SELECT collection_id FROM contact_collection_members WHERE member_username = ?))",
+  "describe": {
+    "columns": [
+      {
+        "name": "photo",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "photo_content_type",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      true,
+      true
+    ]
+  },
+  "hash": "cee4958057d9ee3661e0b4c03f0ad404a4869d3e0d23cd8236a565658b3fc699"
+}

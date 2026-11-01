@@ -1,0 +1,54 @@
+# tidl — Docker Compose example (backlog #149).
+#
+# Quick start:
+#   tidl-server generate-secret   # or: openssl rand -base64 32 > tidl-secret
+#   docker compose up -d
+#   # then open http://localhost:3060 and create the first admin via
+#   #   docker compose exec tidl tidl create-admin --email you@example.com \
+#   #     --username you --display-name You --password 'change-me'
+#   # (or set TIDL_ALLOW_REGISTRATION and sign up through the UI)
+#
+# The image is published multi-arch (linux/amd64, linux/arm64) on GitHub
+# Container Registry. See README → "Deploy with Docker". To build it locally
+# instead of pulling, uncomment `build: .` below.
+
+services:
+  tidl:
+    # The image is published under the `puckles7` GitHub org.
+    image: ghcr.io/puckles7/tidl:latest
+    # build: .
+    container_name: tidl
+    restart: unless-stopped
+    ports:
+      - "3060:3060"
+    environment:
+      TIDL_HOST: 0.0.0.0
+      TIDL_PORT: "3060"
+      TIDL_DATA_DIR: /data
+      # Public base URL / cookie domain — set to the hostname clients use.
+      TIDL_DOMAIN: localhost
+      # Required. Protects the SMTP password and stored CalDAV PATs; generate
+      # once with `openssl rand -base64 32` and keep it. Mounted as a secret so
+      # it never appears in `docker inspect`.
+      TIDL_SECRET_FILE: /run/secrets/tidl-secret
+      # Set to "true" only when serving over HTTPS (secure session cookies).
+      TIDL_SECURE_COOKIE: "false"
+      # Optional: restrict sign-ups / pre-fill the admin email.
+      # TIDL_ALLOW_REGISTRATION: "false"
+      # TIDL_ADMIN_EMAIL: you@example.com
+    volumes:
+      # SQLite database + all persistent state. Back this up.
+      - tidl-data:/data
+    secrets:
+      - tidl-secret
+    # Route container logs into the host journal so `journalctl` keeps working
+    # (parity with the native systemd deployment).
+    logging:
+      driver: journald
+
+volumes:
+  tidl-data:
+
+secrets:
+  tidl-secret:
+    file: ./tidl-secret

@@ -1,0 +1,22 @@
+[package]
+name = "tidl-carddav"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Workspace dependencies
+serde = { workspace = true }
+chrono = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Sibling library crate — reuses the generic (non-calendar-specific) WebDAV
+# XML parsing and ETag machinery instead of re-implementing quick-xml
+# PROPFIND/PROPPATCH handling. See CLAUDE.md §6.
+tidl-caldav = { path = "../tidl-caldav" }
+
+# Additional dependencies
+quick-xml = { version = "0.42", features = ["serialize"] }
+base64 = { workspace = true }

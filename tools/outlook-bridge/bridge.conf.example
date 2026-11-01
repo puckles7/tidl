@@ -1,0 +1,28 @@
+# tidl Outlook COM Bridge — configuration
+# Copy this file to bridge.conf and fill in your values.
+# Lines starting with # are comments and are ignored.
+
+# URL of the local tidl instance (no trailing slash)
+TIDL_URL=http://localhost:5000
+
+# Your tidl username
+TIDL_USER=alice
+
+# App token from tidl Settings → App Tokens.
+# The token must have write access to the target calendar.
+TIDL_TOKEN=tidl_<your-app-token-here>
+
+# Slug of the calendar in tidl to sync work events into.
+# This calendar must already exist and have the sync_user / read_only
+# write-lock configured so only this token can write to it.
+TIDL_CALENDAR=work
+
+# Name of the Outlook calendar folder to read from.
+# Default: Calendar (the default Outlook calendar)
+OUTLOOK_CALENDAR=Calendar
+
+# How many days into the past to include (default: 30)
+WINDOW_PAST_DAYS=30
+
+# How many days into the future to include (default: 180)
+WINDOW_FUTURE_DAYS=180

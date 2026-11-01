@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE address_books SET sync_token = sync_token + 1 WHERE collection_id = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "71cb37ea4719f095d944bd16268c8fefe6f092da2cf8142ee47ce5557df17ade"
+}

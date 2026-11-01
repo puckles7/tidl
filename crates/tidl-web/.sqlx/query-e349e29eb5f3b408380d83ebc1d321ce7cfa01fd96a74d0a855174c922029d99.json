@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT uid                        AS \"uid!: String\",\n                      summary,\n                      priority,\n                      CAST(due_date AS TEXT)     AS due_date,\n                      status\n               FROM events\n               WHERE type = 'VTODO'\n               ORDER BY priority ASC NULLS LAST, due_date ASC NULLS LAST",
+  "describe": {
+    "columns": [
+      {
+        "name": "uid!: String",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "summary",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "priority",
+        "ordinal": 2,
+        "type_info": "Integer"
+      },
+      {
+        "name": "due_date",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "status",
+        "ordinal": 4,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "e349e29eb5f3b408380d83ebc1d321ce7cfa01fd96a74d0a855174c922029d99"
+}

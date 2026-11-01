@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO calendar_shares (owner_username, calendar_name, grantee_username, permission)\n                     VALUES (?, ?, ?, ?)\n                     ON CONFLICT(owner_username, calendar_name, grantee_username)\n                     DO UPDATE SET permission = excluded.permission",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "221004cd20a7fda8a508a0abd1492db0a132e0cce31e61c2304d7bfc390e2f9f"
+}
