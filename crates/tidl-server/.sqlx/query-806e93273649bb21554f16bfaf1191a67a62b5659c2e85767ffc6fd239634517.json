@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT 1 as \"x!: i64\" FROM sent_alarm_notifications\n         WHERE username = ? AND event_uid = ? AND alarm_index = ? AND occurrence_start = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "x!: i64",
+        "ordinal": 0,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "806e93273649bb21554f16bfaf1191a67a62b5659c2e85767ffc6fd239634517"
+}

@@ -1,0 +1,6158 @@
+/* tidl - Base Styles */
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #64748b;
+    --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --background: #ffffff;
+    --surface: #f8fafc;
+    --surface-alt: #f3f4f6;
+    --hover-bg: #f0f0f0;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #cbd5e1;
+
+    /* Muted 12-color calendar palette — light mode (L≈40%, S≈48%) */
+    --pal-1:  #3e6296;  /* Sky blue   */
+    --pal-2:  #2e7a8a;  /* Teal       */
+    --pal-3:  #2d806a;  /* Jade       */
+    --pal-4:  #3d7a47;  /* Forest     */
+    --pal-5:  #7a7e2e;  /* Olive      */
+    --pal-6:  #9a7030;  /* Amber      */
+    --pal-7:  #9a4a36;  /* Rust       */
+    --pal-8:  #8e3d55;  /* Crimson    */
+    --pal-9:  #87386e;  /* Mauve      */
+    --pal-10: #6d3d8c;  /* Violet     */
+    --pal-11: #4a458e;  /* Indigo     */
+    --pal-12: #435f9a;  /* Periwinkle */
+
+    /* Readable text color for each swatch above (YIQ contrast, same formula
+       as text_color_for_bg in date_helpers.rs) — every light-mode swatch is
+       dark enough that white text works. */
+    --pal-1-text:  white;
+    --pal-2-text:  white;
+    --pal-3-text:  white;
+    --pal-4-text:  white;
+    --pal-5-text:  white;
+    --pal-6-text:  white;
+    --pal-7-text:  white;
+    --pal-8-text:  white;
+    --pal-9-text:  white;
+    --pal-10-text: white;
+    --pal-11-text: white;
+    --pal-12-text: white;
+
+    /* Per-entity palettes (backlog #127) — one well-spread base palette
+       (6 hues, 60° apart) hue-rotated by 15° per entity type, so every panel
+       has real internal contrast while no two types share a hue:
+         calendar → +0°   markdown source → +15°
+         collection → +30° label           → +45°
+       Same S/L recipe as the legacy --pal-N set (L≈41%, S≈42%, light mode). */
+    --pal-cal-1: #944e3d;  --pal-cal-2: #83943d;  --pal-cal-3: #3d944e;
+    --pal-cal-4: #3d8394;  --pal-cal-5: #4e3d94;  --pal-cal-6: #943d83;
+    --pal-md-1:  #94643d;  --pal-md-2:  #6d943d;  --pal-md-3:  #3d9464;
+    --pal-md-4:  #3d6d94;  --pal-md-5:  #643d94;  --pal-md-6:  #943d6d;
+    --pal-coll-1:#947a3d;  --pal-coll-2:#57943d;  --pal-coll-3:#3d947a;
+    --pal-coll-4:#3d5794;  --pal-coll-5:#7a3d94;  --pal-coll-6:#943d57;
+    --pal-label-1:#94903d; --pal-label-2:#41943d; --pal-label-3:#3d9490;
+    --pal-label-4:#3d4194; --pal-label-5:#903d94; --pal-label-6:#943d41;
+}
+
+html.dark {
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-alt: #2d3f55;
+    --hover-bg: #334155;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #334155;
+
+    /* Muted 12-color calendar palette — dark mode (L≈65%, same hues) */
+    --pal-1:  #7ba6d1;  /* Sky blue   */
+    --pal-2:  #5bc9d6;  /* Teal       */
+    --pal-3:  #5abba8;  /* Jade       */
+    --pal-4:  #6abb7a;  /* Forest     */
+    --pal-5:  #c4c968;  /* Olive      */
+    --pal-6:  #c9a56e;  /* Amber      */
+    --pal-7:  #c97e6e;  /* Rust       */
+    --pal-8:  #c97890;  /* Crimson    */
+    --pal-9:  #c878aa;  /* Mauve      */
+    --pal-10: #a87ac9;  /* Violet     */
+    --pal-11: #8280c9;  /* Indigo     */
+    --pal-12: #7898c9;  /* Periwinkle */
+
+    /* Readable text color for each swatch above (YIQ contrast, same formula
+       as text_color_for_bg in date_helpers.rs) — dark-mode swatches are
+       lighter (L≈65%), so contrast flips per-swatch instead of uniformly. */
+    --pal-1-text:  #111;
+    --pal-2-text:  #111;
+    --pal-3-text:  #111;
+    --pal-4-text:  #111;
+    --pal-5-text:  #111;
+    --pal-6-text:  #111;
+    --pal-7-text:  white;
+    --pal-8-text:  white;
+    --pal-9-text:  white;
+    --pal-10-text: white;
+    --pal-11-text: white;
+    --pal-12-text: white;
+
+    /* Per-entity palettes — dark mode (L≈65%, S≈48%, same rotated hue sets). */
+    --pal-cal-1: #d18c7b;  --pal-cal-2: #bfd17b;  --pal-cal-3: #7bd18c;
+    --pal-cal-4: #7bbfd1;  --pal-cal-5: #8c7bd1;  --pal-cal-6: #d17bbf;
+    --pal-md-1:  #d1a17b;  --pal-md-2:  #aad17b;  --pal-md-3:  #7bd1a1;
+    --pal-md-4:  #7baad1;  --pal-md-5:  #a17bd1;  --pal-md-6:  #d17baa;
+    --pal-coll-1:#d1b77b;  --pal-coll-2:#95d17b;  --pal-coll-3:#7bd1b7;
+    --pal-coll-4:#7b95d1;  --pal-coll-5:#b77bd1;  --pal-coll-6:#d17b95;
+    --pal-label-1:#d1cc7b; --pal-label-2:#7fd17b; --pal-label-3:#7bd1cc;
+    --pal-label-4:#7b7fd1; --pal-label-5:#cc7bd1; --pal-label-6:#d17b7f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 15px;
+}
+
+/* `min()` keeps the container tracking the viewport continuously as it's
+   resized (a fixed max-width only tracks below that width, then clamps to a
+   fixed gap above it — feels like it "stops tracking" past that point) while
+   still capping line/grid width on very wide monitors. */
+.container {
+    max-width: min(95vw, 2400px);
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Version readout at the bottom of the app shell (backlog #147). */
+.app-footer {
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted, #6b7280);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--background);
+}
+
+/* tidl wordmark (see crates/tidl-web/src/components/logo.rs) — monoline
+   "tidl" with an amber dot on the i. Blue ink in light mode, white in dark;
+   the amber dot stays in both. */
+.tidl-mark {
+    display: block;
+    height: 1.5rem;
+    width: auto;
+}
+
+.tidl-mark .tidl-ink {
+    stroke: var(--primary-color);
+}
+
+.tidl-mark .tidl-dot {
+    fill: var(--warning-color);
+}
+
+html.dark .tidl-mark .tidl-ink {
+    stroke: #fff;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    letter-spacing: -0.01em;
+    transition: color 0.15s;
+}
+
+.nav-links a:hover {
+    color: var(--text);
+}
+
+.nav-links a[aria-current="page"] {
+    color: var(--primary-color);
+    font-weight: 400;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* ── Tasks view ───────────────────────────────────────────────────────────── */
+
+.tasks-view {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 32px 28px;
+}
+
+/* Chip look shared with .notes-pin-filter — sits in the `.screen-toolbar` row,
+   in the same slot Calendar/Focus use for their mode/horizon pills. */
+.tasks-add-btn {
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+/* ── card-tile ────────────────────────────────────────────────────────────── */
+/* Shared shell for every list-item card (Notes, Focus, Todo, Tickler) — the
+   border, radius, background, hover elevation, and left accent stripe are
+   meant to look identical everywhere; only the content inside differs. Each
+   card still carries its own component-specific class alongside this one
+   (e.g. `card-tile note-card`) for its unique layout and state modifiers. */
+.card-tile {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+.card-tile:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.card-tile-stripe {
+    width: 4px;
+    flex-shrink: 0;
+    align-self: stretch;
+    background: #cfd2d6;
+}
+
+/* ── focus-card ───────────────────────────────────────────────────────────── */
+
+/* .card-tile defaults to align-items: stretch, which would leave the
+   right-hand .fsc-urgency cluster's own centering fighting a full-height
+   box instead of vertically centering the row like Focus's own card does. */
+.focus-card {
+    align-items: center;
+    gap: 10px;
+}
+
+.focus-card-body {
+    flex: 1;
+    padding: 10px 12px;
+    min-width: 0;
+}
+
+.focus-card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.focus-card-check {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* 16×16 priority badge */
+.focus-card-priority {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+}
+
+.focus-card-title {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.focus-card-title--done {
+    text-decoration: line-through;
+    opacity: 0.45;
+}
+
+.focus-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+/* ── pills ────────────────────────────────────────────────────────────────── */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Colored dot inside a source pill — mirrors .sidebar-pill-dot in the sidebar so
+   a card's source pill always carries the same per-source color, whether
+   the source is a calendar, a markdown file, or a note collection. */
+.pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Source pill (calendar / markdown source / note collection) — always
+   tinted via an inline style with that source's actual configured color
+   (see `source_pill_style`), so no static per-kind color lives here. */
+.pill-source {
+    background: #f1f3f4;
+    color: #5f6368;
+}
+html.dark .pill-source { background: rgba(95, 99, 104, 0.18); color: #9aa0a6; }
+
+/* Due date pill */
+.pill-due {
+    background: #f1f3f4;
+    color: #5f6368;
+}
+html.dark .pill-due { background: rgba(95, 99, 104, 0.18); color: #9aa0a6; }
+
+/* Tickler date pills */
+.pill-date-future {
+    background: #f0eafe;
+    color: #6b3fc5;
+}
+html.dark .pill-date-future { background: rgba(107, 63, 197, 0.2); color: #c4b5fd; }
+
+.pill-date-overdue {
+    background: #fce8e6;
+    color: #c5221f;
+}
+html.dark .pill-date-overdue { background: rgba(197, 34, 31, 0.18); color: #f28b82; }
+
+/* ── focus-card hover actions ─────────────────────────────────────────────── */
+
+.focus-card-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.focus-card:hover .focus-card-actions {
+    opacity: 1;
+}
+
+.focus-card-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-muted);
+    padding: 4px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.focus-card-action-btn:hover {
+    background: var(--surface);
+    color: var(--text);
+}
+
+.focus-card-action-btn--delete:hover {
+    color: var(--danger-color);
+}
+
+.focus-card-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+/* ── Add-task dialog ──────────────────────────────────────────────────────── */
+
+.add-todo-dialog {
+    width: 100%;
+    max-width: 440px;
+}
+
+.add-todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+/* ── Calendar layout ──────────────────────────────────────────────────────── */
+.calendar-view {
+    padding: 1rem;
+    height: calc(100vh - 8rem);
+    height: calc(100dvh - 8rem);
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-layout {
+    display: flex;
+    gap: 1.5rem;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ── Sidebar layout (Calendar, Focus, Todos, Tickler) ────────────────────────
+   Plain flex row: sidebar and content column are true siblings starting at
+   the same y, so .filter-sidebar's top edge lines up with whatever sits at
+   the top of the content column (add-task button, date/mode pills, etc.) —
+   the same way .notes-sidebar lines up with the Starred toggle on Notes. A
+   grid row spanning above the sidebar would push it down by that row's own
+   height instead of sitting level with it. */
+.sidebar-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+/* .filter-sidebar's 18rem width normally comes from `.filter-layout`'s grid
+   track; restate it here since `.sidebar-layout` is a plain flex row. */
+.sidebar-layout > .filter-sidebar {
+    flex: none;
+    width: 18rem;
+}
+
+/* Calendar-specific: unlike Focus/Todos (plain page scroll), `.calendar-view`
+   clamps its height to the viewport so the grid can scroll internally while
+   the sidebar stays in place. `align-items: flex-start` above sizes
+   `.calendar-main` to fit-content instead of the row's available height, so
+   `.week-grid-wrap`/`.month-grid-wrap`'s `flex: 1` has no height to grow
+   into — the grid then overflows the clamped container and the whole page
+   scrolls, taking the sidebar with it. Stretch just the main column back to
+   the full row height so its internal `overflow: auto` grid actually kicks
+   in instead. */
+.calendar-layout > .calendar-main {
+    align-self: stretch;
+}
+
+/* Calendar sidebar rail: give it the same height envelope as the main column
+   (`.calendar-main`'s stretch above) so both columns end on the same baseline
+   with the same bottom margin. The rail is the single scroll container, and
+   every panel scrolls together in it — the gap between the Month panel and
+   the Calendars panel stays constant as they move, rather than the month
+   pinning while the list slides underneath. This replaces the old fit-content
+   sidebar, which was `align-self: start` with no height cap: whenever the
+   calendar list grew taller than the clamped `.calendar-view`, the sidebar
+   overflowed it and was clipped at the viewport bottom — last card chopped
+   mid-row, no bottom margin — while the grid beside it stopped cleanly.
+   `overflow-y` only kicks in once the content is taller than the rail, so a
+   short list needs no scrollbar; a very short viewport degrades to plain
+   scrolling rather than clipping. */
+.calendar-layout > .calendar-sidebar {
+    align-self: stretch;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.filter-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-self: start;
+}
+
+/* Each independently-collapsible section within a filter sidebar. */
+.fs-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.filter-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Filter sidebar sections ─────────────────────────────────────────────── */
+
+.fs-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.625rem;
+    padding: 0.875rem;
+    user-select: none;
+}
+
+.fs-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.fs-section-title {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted, #6b7280);
+}
+
+/* Groups a section header's icon buttons (e.g. the Markdown section's
+   find + add-source chips, backlog #75) so they sit together on the
+   header's right side without disturbing `.fs-section-header`'s own
+   space-between layout. */
+.fs-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Shared "add new" chip — bordered square button used by both the filter
+   sidebar sections and the Notes collection sidebar (backlog #46). Also
+   the Markdown section's file-finder chip (`.fs-search-btn`, backlog #75) —
+   same size/shape, just a different icon and action. */
+.fs-add-btn,
+.fs-search-btn,
+.notes-sidebar-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+}
+.fs-add-btn:hover,
+.fs-search-btn:hover,
+.notes-sidebar-add:hover {
+    border-color: var(--accent, #2563eb);
+    color: var(--accent, #2563eb);
+}
+
+.fs-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Shared with .notes-sidebar-hint (different component, same look) — same
+   hint text style everywhere a sidebar list explains its click-to-toggle
+   behaviour. */
+.fs-hint,
+.notes-sidebar-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 8px 0 14px;
+}
+
+.fs-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.fs-list-item:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+}
+html.dark .fs-list-item:not(:last-child) {
+    border-bottom-color: var(--border);
+}
+
+/* (fs-dot and fs-md-pill rules replaced by unified sidebar-pill component above) */
+
+/* ── Mobile collapse button (hidden on desktop) ──────────────────────────── */
+
+.fs-collapse-btn {
+    display: none;
+}
+
+/* ── Mobile toolbar (hidden on desktop) ─────────────────────────────────── */
+.mobile-bar {
+    display: none;
+}
+
+.mobile-toggle {
+    padding: 0.45rem 1.1rem;
+    font-size: 0.875rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 0.35rem;
+    background: var(--background);
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.mobile-toggle-on {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ── Calendar list (sidebar) ────────────────────────────────────────────── */
+.calendar-sidebar {
+    flex: 0 0 18rem;
+}
+
+/* Colour swatch */
+.cal-color-label {
+    position: relative;
+    cursor: pointer;
+    line-height: 0;
+}
+.cal-color-dot {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+.cal-color-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+
+.cal-rename-input {
+    font-size: 0.85rem;
+    flex: 1;
+    min-width: 0;
+    padding: 0.1rem 0.3rem;
+    border: 1px solid var(--accent, #2563eb);
+    border-radius: 0.25rem;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.cal-menu {
+    display: flex;
+    gap: 0.15rem;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.cal-list-item:hover .cal-menu { opacity: 1; }
+
+.cal-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0 0.15rem;
+    color: var(--text-muted, #6b7280);
+    border-radius: 0.2rem;
+}
+.cal-menu-btn:hover { color: var(--accent, #2563eb); }
+.cal-menu-delete:hover { color: #ef4444; }
+/* New-calendar form */
+.cal-new-form {
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.cal-new-input {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    background: var(--surface);
+    color: var(--text);
+    width: 100%;
+    box-sizing: border-box;
+}
+.cal-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+.cal-palette-swatch {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+}
+.cal-palette-swatch:hover { border-color: rgba(255,255,255,0.5); }
+.cal-new-actions {
+    display: flex;
+    gap: 0.4rem;
+}
+.cal-new-create {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    background: var(--accent, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+.cal-new-create:disabled { opacity: 0.6; cursor: not-allowed; }
+.cal-new-cancel {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    background: var(--surface-alt, #f3f4f6);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+/* ── Mini month calendar (sidebar) ──────────────────────────────────────── */
+
+.mini-cal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    user-select: none;
+    margin-bottom: 1.5rem;
+}
+
+.mini-cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.mini-cal-title {
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+}
+
+.mini-cal-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.25rem;
+    line-height: 1;
+}
+
+.mini-cal-nav:hover {
+    background: var(--border);
+    color: var(--text);
+}
+
+.mini-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.mini-cal-dow {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 0.2rem 0;
+    font-weight: 600;
+}
+
+.mini-cal-cell {
+    position: relative;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 0.4rem 0 0.2rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.mini-cal-cell:hover {
+    background: var(--border);
+}
+
+.mini-cal-empty {
+    cursor: default;
+}
+
+.mini-cal-empty:hover {
+    background: none;
+}
+
+.mini-cal-today > .mini-cal-daynum {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    font-weight: 700;
+}
+
+.mini-cal-in-week {
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+}
+
+.mini-cal-in-week:hover {
+    background: color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+/* Base bar for a day's event indicator. Single-day events render a short
+   centered pill (see mini_cal.rs); multi-day events render a full-width bar
+   that's either joined to a neighbor cell, chamfered at its true start/end,
+   or left flat/square where it's clipped by the month or grid-row boundary. */
+.mini-cal-line {
+    display: block;
+    position: absolute;
+    top: 0;
+    height: 4px;
+}
+
+.mini-cal-loading {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    padding: 0.5rem;
+}
+
+.calendar-loading {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    padding: 1rem;
+}
+
+/* ── Week grid (main area) ───────────────────────────────────────────────── */
+.calendar-main {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.week-grid-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.week-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+}
+
+.week-nav-btn {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.65rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+.week-nav-btn:hover {
+    background: var(--surface);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.cal-date-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-left: 0.25rem;
+}
+
+/* Vertical-zoom controls (backlog #96): pushed to the right end of the week
+   nav. Buttons reuse .week-nav-btn; only the ± glyphs are tightened up. */
+.week-zoom-ctrl {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+}
+
+.week-zoom-btn {
+    min-width: 1.75rem;
+    padding: 0.25rem 0.4rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.week-zoom-btn:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.week-zoom-btn:disabled:hover {
+    background: var(--background);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.notif-warning-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: var(--warning-color);
+    background: color-mix(in srgb, var(--warning-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--warning-color) 35%, transparent);
+    border-radius: 0.3rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 8px;
+}
+
+.notif-warning-dismiss {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    flex-shrink: 0;
+}
+
+.cal-pill-row {
+    /* Date on the left, then the mode pills grouped with the search box on
+       the right — same arrangement as Focus's `.screen-toolbar`. Wrapping is
+       what keeps the controls inside `.calendar-main` as the window narrows:
+       without it the nowrap date and the pills/search group push out past the
+       right edge (the grid below then scrolls horizontally with them) long
+       before the 767px mobile layout kicks in. Wrapping moves the group onto
+       its own line, growing the toolbar and pushing the calendar down instead
+       of off-screen. */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 8px;
+}
+
+.cal-pill-row > .focus-date {
+    white-space: nowrap;
+}
+
+/* Size the group by its min-content width rather than its max-content width,
+   then let it grow into the rest of the row. Parent flex-wrap decisions use
+   this base size, so the row only wraps when the pills and the search's 60px
+   floor genuinely can't share a line — not merely because the search's
+   preferred 260px doesn't fit, in which case it can still shrink first.
+   `flex-end` keeps the controls pinned right once the group has more width
+   than it needs (e.g. after wrapping onto its own line). */
+.cal-pill-row > .focus-right-controls {
+    flex: 1 1 min-content;
+    justify-content: flex-end;
+}
+
+.week-loading {
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}
+
+/* Scrollable grid area */
+.week-grid-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* The grid itself: time-gutter + 7 day columns */
+.week-grid {
+    display: grid;
+    /* gutter 3rem + 7 equal columns */
+    grid-template-columns: 3rem repeat(7, 1fr);
+    min-width: 540px;
+}
+
+/* Time gutter */
+.week-time-gutter {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    position: sticky;
+    left: 0;
+    background: var(--background);
+    z-index: 2;
+}
+
+.week-day-header-spacer {
+    height: 2.75rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.week-hour-label {
+    height: var(--hour-h, 60px);
+    flex-shrink: 0;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-align: right;
+    padding-right: 0.35rem;
+    padding-top: 0.2rem;
+    border-bottom: 1px solid var(--border);
+    box-sizing: border-box;
+}
+
+/* Day column */
+.week-day-col {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    min-width: 0;
+    background: var(--background);
+}
+
+.week-day-col:last-child {
+    border-right: none;
+}
+
+.week-day-today {
+    background: color-mix(in srgb, var(--primary-color) 4%, var(--background));
+}
+
+/* Sticky day header inside the scrollable area */
+.week-day-header {
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background: inherit;
+    /* Above .week-event (z-index 1, hover 2) so scrolled events don't paint
+       over the sticky header on a z-index tie; below the active-drag preview
+       (z-index 10) so a dragged event still stays visible while moving. */
+    z-index: 5;
+}
+
+.week-day-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    text-align: center;
+}
+
+.week-day-abbr {
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.week-day-num {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+}
+
+.week-day-name.today-badge .week-day-abbr,
+.week-day-name.today-badge .week-day-num {
+    color: var(--primary-color);
+}
+
+/* Day body: relative container for hour-slots + event blocks */
+.week-day-body {
+    position: relative;
+    /* 24 hours × --hour-h (default 60px) = 1440px total height */
+    height: calc(24 * var(--hour-h, 60px));
+    flex-shrink: 0;
+}
+
+/* Hour slot lines (background grid) */
+.week-hour-slot {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--hour-h, 60px);
+    border-bottom: 1px solid var(--border);
+    box-sizing: border-box;
+}
+
+/* Each slot's `top` is set inline (Rust) as `calc(n * var(--hour-h, 60px))`
+   so the background grid scales with the vertical-zoom level (backlog #96). */
+
+/* Current-time indicator line — only rendered in today's column. */
+.week-current-time-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-top: 2px solid var(--danger-color);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.week-current-time-dot {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--danger-color);
+    pointer-events: none;
+}
+
+/* Event block — left/width/height set inline by overlap layout. container-type:
+   size lets the title/time children query the block's own rendered dimensions
+   below (rather than guessing layout from event duration, which is wrong for
+   zoomed-out grids or narrow overlapping-event columns). */
+.week-event {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    /* Rail is a hard-stop gradient layer, not a border — see the inline-style
+       comment in week_grid.rs for why a real border-left doesn't work here. */
+    background:
+        linear-gradient(to right, var(--primary-color) 3px, transparent 3px),
+        color-mix(in srgb, var(--primary-color) 22%, var(--surface));
+    color: var(--text);
+    border-radius: 0 0.25rem 0.25rem 0;
+    padding: 0.1rem 0.35rem 0.125rem calc(0.35rem + 3px);
+    overflow: hidden;
+    font-size: 0.75rem;
+    cursor: pointer;
+    /* The outer shadow gives floating depth; the inset one bakes a 2px dark
+       strip into the block's own bottom edge — a seam that reads the same
+       whether the next event starts immediately below or an hour gridline
+       (var(--border), close in lightness to the tint fill) happens to fall
+       right there. A height trim would only *reveal* whatever sits behind
+       the block, which made the seam vanish over such gridlines. */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15), inset 0 -2px 0 var(--background);
+    z-index: 1;
+    box-sizing: border-box;
+    container-type: size;
+    container-name: week-event;
+}
+
+.week-event:hover {
+    filter: brightness(1.06);
+    z-index: 2;
+}
+
+/* Wraps summary + time; the resize handle overlays this rather than sharing flex space */
+.week-event-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Always a single line — never wraps, so it can never lose letters mid-word
+   the way `word-break: break-word` did. Ellipsis is the only degradation. */
+.week-event-summary {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+/* line-height must be set explicitly (not inherited from body's 1.5) — at
+   1.5 the two-line title+time content needs ~2px more height than the
+   max-height:33px fold threshold below assumes, leaving near-zero margin
+   before the bottom pixels of the time text get clipped by overflow:hidden. */
+.week-event-time {
+    font-size: 0.7rem;
+    line-height: 1.3;
+    opacity: 0.85;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Time folded onto the title line for short events — sits inside the (bold)
+   summary, so weight/size must be reset explicitly rather than inherited. */
+.week-event-time-inline {
+    display: none;
+    font-weight: 400;
+    font-size: 0.7rem;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+/* Hidden by default; a container query below switches it on for blocks too
+   short to fit title + time as separate lines. Width is not a factor here:
+   .week-event-summary already applies nowrap+ellipsis to the combined
+   "title, time" text, and since the time comes after the title in the DOM,
+   the browser's end-of-line ellipsis drops the time before ever touching
+   the title — the same degradation a dedicated width check would give,
+   without a magic-number threshold that can hide the time in boxes that
+   actually have room for it (e.g. "02:00–02:30" only needs ~62px, but the
+   previous max-width:90px content-box cutoff hid it below ~101px border-box). */
+@container week-event (max-height: 33px) {
+    .week-event-time { display: none; }
+    .week-event-time-inline { display: inline; }
+}
+
+/* ── All-day banner ─────────────────────────────────────────────────────── */
+
+/* Wrapper: matches .week-grid column widths, sits above the scroll container */
+.week-allday-section {
+    display: grid;
+    min-width: 540px;
+    border-bottom: 1px solid var(--border);
+    background: var(--background);
+}
+
+/* Gutter cell — "all-day" label aligned with the time gutter */
+.week-allday-gutter {
+    grid-column: 1;
+    font-size: 0.58rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    text-align: right;
+    padding: 0.3rem 0.35rem 0 0;
+    border-right: 1px solid var(--border);
+    box-sizing: border-box;
+}
+
+/* Banner: spans all day columns, contains absolutely-positioned event pills */
+.week-allday-banner {
+    grid-column: 2 / -1;
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* All-day event pill */
+.week-allday-event {
+    position: absolute;
+    height: 16px;
+    /* Same tint fill + rail as .week-event, for the same reason. */
+    background:
+        linear-gradient(to right, var(--primary-color) 3px, transparent 3px),
+        color-mix(in srgb, var(--primary-color) 22%, var(--surface));
+    color: var(--text);
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0 0.4rem 0 calc(0.4rem + 3px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    z-index: 1;
+}
+
+.week-allday-event:hover {
+    filter: brightness(1.1);
+    z-index: 2;
+}
+
+/* Mobile: allday section defaults to single-day layout before WASM sets the
+   inline grid-template-columns.  The WASM Effect will set the same value via
+   inline style once it fires, so there is no flash of incorrect layout. */
+@media (max-width: 767px) {
+    .week-allday-section {
+        min-width: 0;
+        grid-template-columns: 3rem 1fr;
+    }
+}
+
+/* ── New Event Dialog ────────────────────────────────────────────────────── */
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.dialog {
+    background: var(--background);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* A short confirm dialog (e.g. card delete-confirm) doesn't need a full
+   form-width dialog — narrower reads as "quick decision", not "form to
+   fill in". */
+.dialog-small {
+    max-width: 320px;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.dialog-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.dialog-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.dialog-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-muted);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    line-height: 1;
+}
+.dialog-close:hover { background: var(--surface); color: var(--text); }
+
+.dialog-form {
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* Checkbox + text label row (e.g. clear-all modals' "also delete the
+   collection(s)" option, a contact method's "Primary" flag) — uniform
+   spacing between the box and its text everywhere this class is used. */
+.form-check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-datetime-split {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.form-time-combo-wrap {
+    position: relative;
+}
+.form-time-combo-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+}
+.form-time-combo-list {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 151;
+    max-height: 12rem;
+    overflow-y: auto;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    padding: 0.25rem 0;
+}
+.form-time-combo-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.35rem 0.65rem;
+    font: inherit;
+    color: var(--text, #1e293b);
+    cursor: pointer;
+}
+.form-time-combo-option:hover {
+    background: var(--hover-bg, #f1f5f9);
+}
+.form-time-combo-option--current {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.form-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+}
+
+.form-input,
+.form-select {
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: var(--text);
+    background: var(--background);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+.form-select {
+    cursor: pointer;
+}
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 20%, transparent);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 4rem;
+}
+
+/* Alarms */
+.alarm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.alarm-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.alarm-amount {
+    width: 4.5rem;
+    flex-shrink: 0;
+}
+
+.alarm-unit {
+    flex: 1;
+}
+
+.alarm-before {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Alarm block wraps the row + repeat sub-row */
+.alarm-block {
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.6rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    background: var(--surface);
+}
+
+.alarm-raw-badge {
+    font-size: 0.75rem;
+    color: #b45309;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 0.2rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.alarm-action {
+    flex: 0 0 6rem;
+    min-width: 0;
+}
+
+.alarm-repeat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.alarm-repeat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text);
+}
+
+.alarm-repeat-fields {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.alarm-repeat-n,
+.alarm-repeat-delay {
+    /* Matches `.alarm-amount`'s width — 3.5rem left a two-digit value
+       (e.g. "10") cramped against the number spinner's own arrows. */
+    width: 4.5rem;
+    flex-shrink: 0;
+}
+
+.btn-add-alarm {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 0.25rem;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-add-alarm:hover { background: color-mix(in srgb, var(--primary-color) 8%, transparent); }
+
+.btn-remove-alarm {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    flex-shrink: 0;
+}
+.btn-remove-alarm:hover { background: var(--surface); color: var(--danger-color); }
+
+/* ── Recurrence editor ────────────────────────────────────────────────────── */
+.recurrence-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.recurrence-details {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.recurrence-freq { max-width: 12rem; }
+.recurrence-interval { width: 4rem; text-align: center; }
+.recurrence-count  { width: 4rem; text-align: center; display: inline-block; }
+.recurrence-until  { width: auto; display: inline-block; }
+
+.recurrence-freq-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.recurrence-byday {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    padding: 0.25rem 0;
+}
+
+.byday-btn {
+    background: none;
+    border: 1px solid var(--border-color, #d0d0d0);
+    color: var(--text-muted);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.byday-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 8%, transparent);
+}
+.byday-active {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+.recurrence-ends {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.recurrence-end-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.recurrence-end-option {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.form-label-inline {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 3.5rem;
+}
+/* ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Edit-scope sub-dialog ───────────────────────────────────────────────── */
+.scope-dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.scope-dialog {
+    background: var(--background);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.scope-dialog-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+
+.scope-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.scope-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.scope-option input[type="radio"] {
+    accent-color: var(--primary-color);
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+.scope-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--border);
+}
+/* ────────────────────────────────────────────────────────────────────────── */
+
+.form-error {
+    background: color-mix(in srgb, var(--danger-color) 10%, white);
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* Footer with a destructive action on the left and Cancel/Save on the right. */
+.form-actions--split {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-actions-right {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Explanatory line under a dialog heading (e.g. the ad-hoc task/await hint). */
+.form-hint {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Dialog action footer.
+   `.dialog-actions` shows up in two different DOM shapes across the
+   codebase:
+     - a *sibling* of `.dialog-form` (its own `<div>`, after `.dialog-form`
+       closes) — the majority: note/collection-editor modals, calendar-edit
+       modal and its sub-dialogs (incl. the "Add markdown source" dialog),
+       the Focus suppress-choice dialog. `.dialog-form`'s own padding never
+       reaches these, so `.dialog-actions` needs its own horizontal padding
+       here — that's this base rule.
+     - *nested inside* `.dialog-form` (event dialog, every Settings tab
+       panel, the Profile modal's `ProfileForm`) — see the `.dialog-form >
+       .dialog-actions` override below, which zeroes the horizontal padding
+       there instead, since `.dialog-form`'s own padding already applies and
+       stacking `.dialog-actions`' padding on top of it double-inset the
+       buttons versus every other row (e.g. `.form-label-row`'s "+ Add"). */
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+.dialog-form > .dialog-actions {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Dialog utility text */
+.dialog-error {
+    font-size: 0.85rem;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.6rem;
+}
+.dialog-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+.dialog-ok {
+    font-size: 0.85rem;
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.08);
+    border: 1px solid rgba(22, 163, 74, 0.25);
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.6rem;
+}
+.note-sharing-warning {
+    font-size: 0.82rem;
+    color: var(--warning-color);
+    background: color-mix(in srgb, var(--warning-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--warning-color) 35%, transparent);
+    border-radius: 0.3rem;
+    padding: 0.4rem 0.6rem;
+    margin-top: 0.4rem;
+}
+
+/* Webcal sync feedback */
+.webcal-sync-error {
+    font-size: 0.82rem;
+    color: #ef4444;
+    margin: 0;
+}
+.webcal-sync-ts {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Sidebar empty-state hint */
+.fs-empty {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0.25rem 0;
+}
+
+/* Share revoke button (used in CalendarShareDialog) */
+.share-revoke-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    color: var(--text-muted);
+    line-height: 1;
+}
+.share-revoke-btn:hover { color: #ef4444; }
+
+.btn-cancel {
+    background: var(--background);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.45rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.btn-cancel:hover { background: var(--surface); }
+
+/* Give the week-day-body a pointer cursor to hint it's clickable */
+.week-day-body { cursor: pointer; }
+
+/* Event drag and resize */
+.week-event {
+    cursor: grab;
+    user-select: none;
+}
+.week-event:active,
+.week-event-dragging {
+    cursor: grabbing;
+    opacity: 0.85;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    z-index: 10;
+}
+
+/* Resize handle — an invisible strip pinned to the bottom edge, overlaid rather
+   than laid out in flow, so it never steals space from event content on short
+   events and the ns-resize cursor lines up with the event's actual bottom edge. */
+.week-event-resize-handle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 8px;
+    cursor: ns-resize;
+}
+
+/* ── Event context menu ─────────────────────────────────────────────────── */
+
+.ctx-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+}
+
+.ctx-menu {
+    position: fixed;
+    z-index: 1000;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    min-width: 9rem;
+    padding: 0.25rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ctx-menu-item {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--text, #1e293b);
+    cursor: pointer;
+    width: 100%;
+}
+
+.ctx-menu-item:hover {
+    background: var(--hover-bg, #f1f5f9);
+}
+
+.ctx-menu-item-danger { color: #ef4444; }
+.ctx-menu-item-danger:hover { background: #fef2f2; }
+
+/* Tickler */
+.tickler-view {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 32px 28px;
+    max-width: 720px;
+}
+
+.tickler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.tickler-header h2 {
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--text);
+}
+
+.description {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.tickler-list {
+    list-style: none;
+}
+
+.tickler-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.tickler-date {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 120px;
+}
+
+.tickler-content {
+    flex: 1;
+}
+
+.tickler-summary {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.tickler-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+/* ── Login page ─────────────────────────────────────── */
+
+.login-container {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+}
+
+.login-box {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.login-logo .tidl-mark {
+    height: 2.25rem;
+}
+
+.login-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: var(--danger-color);
+    border-radius: 0.25rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.875rem;
+}
+
+html.dark .login-error {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-size: 0.95rem;
+    background: var(--background);
+    color: var(--text);
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.login-btn {
+    display: block;
+    padding: 0.65rem 1rem;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 0.25rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+.login-btn:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.login-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-switch {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-muted, #6b7280);
+    margin-top: 0.25rem;
+}
+
+.login-switch-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--primary-color);
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.login-switch-link:hover {
+    color: #1d4ed8;
+}
+
+.verify-hint {
+    font-size: 0.875rem;
+    color: var(--text-muted, #6b7280);
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.verify-code-input {
+    font-size: 1.5rem;
+    letter-spacing: 0.3em;
+    text-align: center;
+    font-family: monospace;
+}
+
+/* ── Nav user / logout ──────────────────────────────── */
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+.nav-username {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.nav-username-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+.nav-username-btn:hover { color: var(--text); text-decoration: underline; }
+
+.logout-btn {
+    padding: 0.3rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.logout-btn:hover:not(:disabled) {
+    background: var(--surface);
+}
+
+.logout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Settings button ────────────────────────────────── */
+
+/* ── All-day toggle ─────────────────────────────────── */
+
+.allday-toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+}
+
+.allday-toggle-label input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* ── Settings button ────────────────────────────────── */
+
+.settings-btn {
+    padding: 0.3rem 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.settings-btn:hover {
+    background: var(--surface);
+    color: var(--text);
+}
+
+/* ── Settings dialog ────────────────────────────────── */
+
+.settings-dialog {
+    max-width: 420px;
+}
+
+.settings-tabs-wrapper {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.settings-tabs-arrow {
+    background: none;
+    border: none;
+    border-bottom: 1px solid transparent; /* aligns with the strip border */
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0 0.4rem;
+    flex-shrink: 0;
+    transition: color 0.1s;
+    margin-bottom: -1px;
+}
+.settings-tabs-arrow:hover { color: var(--text); }
+
+.settings-tabs {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    /* Hide scrollbar — navigation is via arrow buttons */
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    padding: 0 0.25rem;
+    gap: 0;
+}
+.settings-tabs::-webkit-scrollbar { display: none; }
+
+.settings-tab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-bottom: -1px;
+    transition: color 0.1s, border-color 0.1s;
+}
+
+.settings-tab:hover {
+    color: var(--text);
+}
+
+.settings-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.settings-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.settings-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.settings-radio-label input[type="radio"] {
+    accent-color: var(--primary-color);
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+.settings-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text);
+    user-select: none;
+}
+
+.settings-toggle-label input[type="checkbox"] {
+    accent-color: var(--primary-color);
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+.section-separator {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.25rem 0;
+}
+
+.section-heading {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin: 0;
+}
+
+.import-preview {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.import-done {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+/* ── Form helpers ────────────────────────────────────────────────────────── */
+
+.form-success {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0.75rem;
+    align-items: end;
+}
+
+.form-group-narrow { /* intentionally empty — grid column handles sizing */ }
+.form-group-grow   { /* intentionally empty — grid column handles sizing */ }
+
+/* A `.form-row` whose second cell is a button that should only take the
+   width its own label needs (e.g. a picker + "Share" button) — the plain
+   `.form-row` 1fr/2fr split is tuned for two form fields and over-widens a
+   button in that slot. */
+.form-row.form-row--picker {
+    grid-template-columns: 1fr auto;
+}
+
+/* A `.form-row` of two peer fields that should split the width evenly (e.g.
+   the event dialog's Start/End) — the plain `.form-row` 1fr/2fr split is
+   tuned for a narrow+wide pair, not two equals. `min-width: 0` on the cells
+   guards against a grid track refusing to shrink below its content's
+   intrinsic min-width if a future cell's content ever grows unequally. */
+.form-row.form-row--even {
+    grid-template-columns: 1fr 1fr;
+}
+.form-row.form-row--even > * {
+    min-width: 0;
+}
+
+/* ── Secondary button ────────────────────────────────────────────────────── */
+
+.btn-secondary {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+.btn-secondary:hover { background: var(--hover-bg, #f0f0f0); }
+.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary-small {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+    transition: background 0.12s;
+    white-space: nowrap;
+}
+.btn-secondary-small:hover { background: var(--hover-bg, #f0f0f0); }
+.btn-secondary-small:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── SMTP test row ───────────────────────────────────────────────────────── */
+
+.smtp-test-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.smtp-test-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.smtp-test-input { flex: 1; min-width: 0; }
+
+.smtp-test-ok   { font-size: 0.85rem; color: var(--primary-color); font-weight: 500; }
+.smtp-test-fail { font-size: 0.85rem; color: var(--danger, #ef4444); font-weight: 500; }
+
+/* ── Share dialog ────────────────────────────────────────────────────────── */
+
+.share-dialog {
+    width: 420px;
+    max-width: calc(100vw - 2rem);
+}
+
+.share-loading,
+.share-empty {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0.25rem 0;
+}
+
+.share-list {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.share-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.share-user {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.share-perm {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.share-perm-read       { background: color-mix(in srgb, #3b82f6 15%, transparent); color: #2563eb; }
+.share-perm-read-write { background: color-mix(in srgb, #22c55e 15%, transparent); color: #15803d; }
+
+.share-revoke {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    transition: background 0.12s, color 0.12s;
+}
+.share-revoke:hover { background: color-mix(in srgb, #ef4444 15%, transparent); color: #ef4444; }
+
+/* ── Sharing settings tab ────────────────────────────────────────────────── */
+
+.settings-section-heading {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 1.25rem 0 0.5rem;
+}
+.settings-section-heading:first-child { margin-top: 0; }
+
+.settings-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0.5rem;
+}
+.settings-section-header .settings-section-heading { margin: 0; }
+
+.sharing-empty {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0.25rem 0 0.5rem;
+}
+
+/* ── This Device → local clone rows ─────────────────────────────────────── */
+
+.local-clone-row {
+    align-items: center;
+}
+
+.local-clone-input {
+    flex: 1;
+    min-width: 220px;
+    max-width: 420px;
+}
+
+.sharing-md-error {
+    font-size: 0.8rem;
+    color: #d93025;
+    word-break: break-word;
+}
+
+.sharing-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 0.35rem;
+}
+
+.sharing-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.sharing-grantee {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sharing-perm {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, #3b82f6 15%, transparent);
+    color: #2563eb;
+    white-space: nowrap;
+}
+
+.sharing-md-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.sharing-md-path {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sharing-md-scan {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.sharing-md-badge {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--text-muted) 15%, transparent);
+    border-radius: 4px;
+    padding: 0.05rem 0.4rem;
+    align-self: flex-start;
+}
+
+/* ── Remote CalDAV source row ─────────────────────────────── */
+
+.caldav-source-row {
+    /* override single-line flex; keep Remove pinned to the right */
+    align-items: flex-start;
+}
+
+.caldav-source-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.caldav-source-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+}
+
+.caldav-source-url {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    word-break: break-all;
+}
+
+.caldav-source-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Calendar mapping pill: keep the arrow readable but allow wrapping inside */
+.caldav-cal-map {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    white-space: normal;  /* allow the pill itself to reflow if needed */
+}
+
+.caldav-cal-remote,
+.caldav-cal-local {
+    font-weight: 700;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+
+/* ── Users settings tab: username/email plus up to 4 action buttons need to
+   wrap onto their own lines instead of squeezing the label to nothing and
+   overflowing the dialog (each button keeps its content width since it has
+   no `overflow: hidden`, so without wrapping all the negative space gets
+   absorbed by `.sharing-grantee` shrinking toward its auto-min of 0). ── */
+.user-row {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.user-row .sharing-grantee {
+    flex: 1 1 100%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Slightly tighter than the default small-button sizing so all four action
+   buttons ("Revoke admin" being the widest label) consistently fit on one
+   line instead of "Delete" wrapping onto its own row. */
+.user-row .btn-secondary-small,
+.user-row .btn-danger-small {
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+}
+
+.btn-danger-small {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.btn-danger-small:hover {
+    background: color-mix(in srgb, #ef4444 12%, transparent);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.btn-danger {
+    background: #ef4444;
+    border: 1px solid #dc2626;
+    border-radius: 0.375rem;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    transition: background 0.12s;
+}
+.btn-danger:hover { background: #dc2626; }
+.btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Sync badge & spinner ────────────────────────────────────────────────── */
+
+.sync-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, #f59e0b 15%, transparent);
+    color: #b45309;
+    white-space: nowrap;
+}
+
+@keyframes tidl-spin {
+    to { transform: rotate(360deg); }
+}
+
+.sync-spinner {
+    display: inline-block;
+    width: 0.65em;
+    height: 0.65em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: tidl-spin 0.8s linear infinite;
+}
+
+/* ── App tokens & form feedback ──────────────────────────────────────────── */
+
+.form-warning {
+    background: color-mix(in srgb, #f59e0b 12%, transparent);
+    border: 1px solid #f59e0b;
+    border-radius: 4px;
+    color: #92400e;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.form-ok {
+    background: color-mix(in srgb, #22c55e 12%, transparent);
+    border: 1px solid #22c55e;
+    border-radius: 4px;
+    color: #16a34a;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.token-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.4rem 0.75rem;
+}
+
+.token-value {
+    flex: 1;
+    font-family: monospace;
+    font-size: 0.85rem;
+    word-break: break-all;
+    color: var(--text);
+}
+
+/* ── Focus view ──────────────────────────────────────────────────────────── */
+
+.focus-view {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 32px 28px;
+}
+
+/* Done reuses Focus's sidebar/toolbar structure; give it the same page
+   padding so the two align on desktop as well as mobile. */
+.done-view {
+    padding: 16px 32px 28px;
+}
+
+.focus-date {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Horizon segmented control */
+.focus-horizon-ctrl {
+    display: flex;
+    background: #f1f3f4;
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+    align-self: flex-start;
+}
+
+/* Shared top toolbar row for the Calendar and Focus screens: left group,
+   centre controls, search box on the right. `space-between` spreads the
+   groups across the row so the pills aren't bunched against the right edge;
+   `.notes-search`'s own `margin-left: auto` keeps the search pinned right. */
+.screen-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+/* `.notes-search`'s own `margin-left: auto` is meant for `.notes-toolbar`
+   (which isn't `space-between`); neutralise it inside Focus's control group. */
+.focus-right-controls {
+    display: flex;
+    align-items: center;
+    /* Slightly wider than `.focus-add-btns`' 8px so the pills and search read
+       as separate groups rather than one run of controls. */
+    gap: 16px;
+}
+
+.focus-right-controls > .notes-search {
+    margin-left: 0;
+    /* Shrink-first, wrap-later: the 60px basis is what flex line-breaking
+       measures against, so the pills only push the search onto another line
+       once even a 60px search can't share theirs. It still grows back to its
+       260px preferred width when there is room. */
+    flex: 1 1 60px;
+    max-width: 260px;
+}
+
+/* `.screen-toolbar` already wraps its left add-button group and this control
+   group as wholes, but without wrapping *inside* the group, a narrow main
+   column (desktop just above the 767px sidebar collapse, or any phone) makes
+   the pill groups + search push out past the right edge. Let the group's own
+   children wrap too, so the toolbar grows downwards instead of overflowing. */
+.screen-toolbar > .focus-right-controls {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    min-width: 0;
+}
+
+/* Keeps "+ Task" and "+ Await" together as one left-aligned group. */
+.focus-add-btns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* The filter pill reuses the horizon segmented-control styling; this hook
+   exists so it can diverge later without touching the horizon control. */
+.focus-filter-ctrl {
+    margin-right: 2px;
+}
+
+html.dark .focus-horizon-ctrl { background: color-mix(in srgb, var(--surface) 50%, var(--background)); }
+
+.horizon-btn {
+    background: none;
+    border: none;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+}
+
+.horizon-btn:hover {
+    color: var(--text);
+}
+
+.horizon-btn--active {
+    background: white;
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+html.dark .horizon-btn--active {
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+
+/* ── Shared SidebarPill component (backlog #94) ───────────────────────────── */
+/* Row: colour dot, bold coloured name, icon buttons (sync/edit/share, shown
+   only when applicable), toggle switch. Per-entry colour is passed in via
+   the row's own `--accent` custom property (see sidebar_pill.rs) rather than
+   living in this stylesheet. */
+
+.sidebar-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 6px 6px;
+    border-radius: 8px;
+}
+.sidebar-pill:hover {
+    background: #f9fafb;
+}
+html.dark .sidebar-pill:hover {
+    background: var(--hover-bg);
+}
+
+.sidebar-pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.sidebar-pill-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Icon buttons + toggle, packed tightly together at the row's right end —
+   kept separate from `.sidebar-pill`'s own (wider) gap so the name gets as
+   much space as possible. */
+.sidebar-pill-controls {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+/* Always-visible icon buttons (sync/edit/share) — shown only when the
+   caller supplies the matching callback, never hover-revealed. */
+.sidebar-pill-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    color: #9ca3af;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+.sidebar-pill-icon-btn:hover {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+.sidebar-pill-icon-btn:disabled {
+    cursor: default;
+}
+html.dark .sidebar-pill-icon-btn {
+    color: var(--text-muted);
+}
+html.dark .sidebar-pill-icon-btn:hover {
+    background: var(--surface-alt);
+    color: var(--text);
+}
+
+/* Toggle switch — clickable/hoverable area sized larger than the visible
+   track so it's an easy target, matching the icon buttons' hit area. */
+.sidebar-pill-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.sidebar-pill-toggle:hover {
+    background: #f3f4f6;
+}
+html.dark .sidebar-pill-toggle:hover {
+    background: var(--surface-alt);
+}
+
+.sidebar-pill-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.sidebar-pill-track {
+    position: relative;
+    width: 34px;
+    height: 20px;
+    border-radius: 10px;
+    background: #d1d5db;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+}
+html.dark .sidebar-pill-track {
+    background: var(--border);
+}
+
+.sidebar-pill-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    transition: transform 0.15s ease;
+}
+
+.sidebar-pill-toggle-input:checked ~ .sidebar-pill-track {
+    background: var(--accent, #2563eb);
+}
+/* Source colors are tuned to read well as small dots/text (see #32), but
+   the same color filling this larger track reads too bright/saturated
+   against a dark background — mix it down rather than dim every use. */
+html.dark .sidebar-pill-toggle-input:checked ~ .sidebar-pill-track {
+    background: color-mix(in srgb, var(--accent, #2563eb) 65%, black);
+}
+.sidebar-pill-toggle-input:checked ~ .sidebar-pill-track .sidebar-pill-thumb {
+    transform: translateX(14px);
+}
+.sidebar-pill-toggle-input:focus-visible ~ .sidebar-pill-track {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+/* One-line list summary under Focus's toolbar: "All items · Ranked by
+   urgency · 5 remaining". Font size matches the Calendar date heading and the
+   Notes/Contacts result count (13px). */
+.focus-result-line {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    padding-bottom: 8px;
+}
+
+/* Cards list */
+.focus-cards {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.focus-loading,
+.focus-empty {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 0.5rem 0;
+}
+
+/* ── FocusScoredCard ──────────────────────────────────────────────────────── */
+
+.focus-scored-card {
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 0;
+}
+
+.focus-scored-card:hover {
+    border-color: #c8d4e8;
+}
+
+.focus-scored-card--done {
+    opacity: 0.45;
+}
+
+.focus-scored-card--suppressed {
+    opacity: 0.55;
+}
+
+.focus-scored-card--suppressed:hover {
+    opacity: 0.85;
+}
+
+/* Rank number */
+.fsc-rank {
+    font-size: 11px;
+    color: #9ca3af;
+    font-variant-numeric: tabular-nums;
+    width: 16px;
+    text-align: right;
+    flex-shrink: 0;
+}
+html.dark .fsc-rank { color: #555; }
+
+/* Checkbox */
+.fsc-check {
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid #9ca3af;
+    border-radius: 50%;
+    cursor: pointer;
+    accent-color: #1a73e8;
+    appearance: auto;
+}
+
+/* Body */
+.fsc-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fsc-title {
+    font-size: 13px;
+    color: #1f1f1f;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+html.dark .fsc-title { color: var(--text); }
+
+.fsc-title--done {
+    text-decoration: line-through;
+}
+
+.fsc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.fsc-source-pill {
+    background: #f1f3f4;
+    color: #5f6368;
+    font-size: 10px;
+    padding: 1px 6px;
+}
+html.dark .fsc-source-pill { background: rgba(95, 99, 104, 0.18); color: #9aa0a6; }
+
+.fsc-when-pill {
+    background: #f1f3f4;
+    color: #5f6368;
+    font-size: 10px;
+    padding: 1px 6px;
+}
+html.dark .fsc-when-pill { background: rgba(95, 99, 104, 0.18); color: #9aa0a6; }
+
+/* Due-date urgency tints on the when-pill (pending items only) */
+.fsc-when-pill--overdue { background: #fce8e6; color: #d93025; }
+.fsc-when-pill--today   { background: #fef3e2; color: #e8710a; }
+.fsc-when-pill--soon    { background: #fef9e0; color: #b06000; }
+html.dark .fsc-when-pill--overdue { background: rgba(217, 48, 37, 0.18);  color: #f28b82; }
+html.dark .fsc-when-pill--today   { background: rgba(232, 113, 10, 0.18); color: #fca65a; }
+html.dark .fsc-when-pill--soon    { background: rgba(176, 96, 0, 0.18);   color: #fdd663; }
+
+/* Note-label chips on a Focus card (backlog #114/#127) — same identity
+   language as the Notes tab's `.note-label-chip` (colored dot + name on a
+   neutral chip), sized to the dense `.fsc-meta` row so several fit on one
+   line. Deliberately *not* color-tinted like the source pill: the source pill
+   is the collection/calendar, the chips are the note's tags. */
+.fsc-label-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 200px;
+    padding: 1px 7px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(127, 127, 127, 0.08);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fsc-label-chip .note-label-dot {
+    width: 6px;
+    height: 6px;
+    flex: none;
+}
+
+/* Urgency cluster */
+.fsc-urgency-wrap {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.fsc-urgency {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    flex-shrink: 0;
+    /* Reset: this is a <button> so keyboard/touch users can open the
+       explanation, but it must render exactly like the old plain cluster. */
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    appearance: none;
+    cursor: help;
+}
+
+.fsc-urgency:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.fsc-urgency-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.fsc-urgency-track {
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+html.dark .fsc-urgency-track { background: #333; }
+
+.fsc-urgency-fill {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Urgency explanation popover (backlog #158) — same fixed-position,
+   transparent-backdrop pattern as .info-hint-popover. */
+.fsc-why-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: transparent;
+}
+
+.fsc-why-popover {
+    position: fixed;
+    z-index: 71;
+    width: 252px;
+    max-width: calc(100vw - 1rem);
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.fsc-why-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.fsc-why-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.fsc-why-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.fsc-why-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 54px 22px;
+    align-items: center;
+    gap: 8px;
+    margin: 0 -4px;
+    padding: 3px 4px;
+    border-radius: 4px;
+    color: var(--text-muted);
+}
+
+.fsc-why-row--used {
+    background: var(--hover-bg);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.fsc-why-factor {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.fsc-why-track {
+    display: block;
+    width: 54px;
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+html.dark .fsc-why-track { background: #333; }
+
+.fsc-why-fill {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+}
+
+.fsc-why-score {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.fsc-why-note {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+/* Hover actions */
+.fsc-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding-right: 6px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.focus-scored-card:hover .fsc-actions {
+    opacity: 1;
+}
+
+.fsc-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 3px 4px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: background 0.12s, color 0.12s;
+}
+
+.fsc-action-btn:hover {
+    background: var(--surface);
+    color: var(--text);
+}
+
+.fsc-action-btn--danger:hover {
+    background: rgba(217, 48, 37, 0.12);
+    color: #d93025;
+}
+
+html.dark .fsc-action-btn--danger:hover {
+    background: rgba(242, 139, 130, 0.16);
+    color: #f28b82;
+}
+
+/* ── Suppressed section ────────────────────────────────────────────────────── */
+
+.focus-suppressed-section {
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+html.dark .focus-suppressed-section { border-top-color: var(--border); }
+
+.focus-suppressed-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.focus-suppressed-toggle:hover { color: var(--text); }
+
+.focus-chevron {
+    font-size: 14px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.focus-chevron--open {
+    transform: rotate(90deg);
+}
+
+.focus-suppressed-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: 4px;
+}
+
+/* ── Preview dialog ────────────────────────────────────────────────────────── */
+
+.focus-preview-dialog {
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* markdown preview: 80% of the viewport in both dimensions */
+.focus-preview-dialog--wide {
+    width: 80vw;
+    max-width: 80vw;
+    height: 80vh;
+}
+
+/* ── Markdown file finder (backlog #75) ───────────────────────────────────── */
+
+.md-finder-dialog {
+    width: 560px;
+    max-width: 90vw;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.md-finder-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.md-finder-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+}
+
+.md-finder-row--selected {
+    background: var(--surface);
+}
+
+.md-finder-path {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.md-finder-source-tag {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+}
+
+.md-finder-searchbox {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.md-finder-searchbox .form-input {
+    width: 100%;
+}
+
+/* ── Markdown source path + server-side folder browser ─────────────────── */
+
+/* Path input and its "Browse…" button share one row in the source modal. */
+.md-source-path-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.md-source-path-row .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.md-source-path-row .btn-secondary {
+    flex-shrink: 0;
+}
+
+.dir-picker-dialog {
+    width: 520px;
+    max-width: 90vw;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dir-picker-bar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.dir-picker-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.dir-picker-bar .btn-secondary {
+    flex-shrink: 0;
+}
+
+.dir-picker-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dir-picker-row:hover {
+    background: var(--surface);
+}
+
+/* wrapper that holds the preview shell (header/path/tabs/content/footer);
+   fills the dialog when the in-app editor is not active */
+.fp-preview-shell {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* grows to fill remaining space in the preview shell */
+.fp-body--rendered {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+/* Source / Rendered tab bar */
+.fp-tab-bar {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.fp-tab {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px 6px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    border-radius: 2px 2px 0 0;
+}
+
+.fp-tab:hover { color: var(--text); }
+
+.fp-tab--active {
+    color: var(--text);
+    border-bottom-color: var(--accent, #2563eb);
+}
+
+/* ── Frontmatter meta block ──────────────────────────────────────────────── */
+
+.md-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.md-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.md-meta-key {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    min-width: 48px;
+    flex-shrink: 0;
+}
+
+.md-meta-val {
+    color: var(--text);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.md-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 1px 7px;
+    border-radius: 99px;
+    background: var(--accent-subtle, rgba(59,130,246,0.12));
+    color: var(--accent, #2563eb);
+    white-space: nowrap;
+}
+
+html.dark .md-tag {
+    background: rgba(96,165,250,0.15);
+    color: #93c5fd;
+}
+
+/* ── Wiki-links ──────────────────────────────────────────────────────────── */
+
+.md-wikilink {
+    /* Reset <button> defaults */
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    display: inline;
+    /* Wikilink appearance */
+    color: var(--accent, #2563eb);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: pointer;
+}
+
+html.dark .md-wikilink {
+    color: #93c5fd;
+}
+
+/* ── @mentions (backlog #80) ─────────────────────────────────────────────── */
+/* Rendered in a note's plain-text body (see `note-card-text` below) via
+   `render_note_mentions`'s `<button data-mention>` — a filled pill instead
+   of `.md-wikilink`'s underlined-link look, so it reads as "a person",
+   distinct from a file-navigation link. */
+.md-mention {
+    border: none;
+    font: inherit;
+    display: inline;
+    background: color-mix(in srgb, var(--primary-color) 14%, transparent);
+    color: var(--primary-color);
+    border-radius: 4px;
+    padding: 0 4px;
+    cursor: pointer;
+}
+
+.md-mention:hover {
+    background: color-mix(in srgb, var(--primary-color) 24%, transparent);
+}
+
+/* Rendered markdown prose styles. Scrolling is handled by the parent
+   `.fp-body--rendered` (flex:1; overflow-y:auto) — a fixed max-height here
+   would cap this at 480px regardless of the dialog's actual (80vh) height,
+   creating a second, shorter scroll region nested inside the real one. */
+.fp-rendered {
+    padding: 1rem 1.25rem;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.md-tag-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0.4em 0;
+}
+
+/* One-shot flash for the pill matching the task/await that opened the
+   markdown preview modal (backlog #74) — same pulse mechanism as
+   note-card--highlight (backlog #63), scoped to the pill span itself rather
+   than the whole rendered line. Color defaults to the note-highlight purple
+   since await pills carry no per-instance color; priority pills get their
+   own color read from the badge's inline style before this class is added. */
+.md-pill--highlight {
+    animation: md-pill-highlight-pulse 0.8s ease-out 3;
+}
+
+@keyframes md-pill-highlight-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-pill-highlight-color, #6b3fc5) 60%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--md-pill-highlight-color, #6b3fc5) 0%, transparent);
+    }
+}
+
+.fp-rendered h1, .fp-rendered h2, .fp-rendered h3,
+.fp-rendered h4, .fp-rendered h5, .fp-rendered h6 {
+    font-weight: 700;
+    margin: 1em 0 0.4em;
+    line-height: 1.3;
+    color: var(--text);
+}
+
+.fp-rendered h1 { font-size: 1.3em; }
+.fp-rendered h2 { font-size: 1.15em; }
+.fp-rendered h3 { font-size: 1em; }
+
+.fp-rendered p { margin: 0.6em 0; }
+
+.fp-rendered ul, .fp-rendered ol {
+    padding-left: 1.5em;
+    margin: 0.5em 0;
+}
+
+.fp-rendered li { margin: 0.2em 0; }
+
+.fp-rendered code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.875em;
+    background: var(--surface);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.fp-rendered pre {
+    background: var(--surface);
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 0.75em 0;
+}
+
+.fp-rendered pre code { background: none; padding: 0; }
+
+.fp-rendered a { color: var(--accent, #2563eb); text-decoration: underline; }
+
+.fp-rendered blockquote {
+    border-left: 3px solid var(--border);
+    margin: 0.5em 0;
+    padding: 0.25em 0.75em;
+    color: var(--text-muted);
+}
+
+.fp-rendered table { border-collapse: collapse; width: 100%; margin: 0.75em 0; font-size: 13px; }
+.fp-rendered th, .fp-rendered td { border: 1px solid var(--border); padding: 4px 8px; text-align: left; }
+.fp-rendered th { background: var(--surface); font-weight: 600; }
+.fp-rendered hr { border: none; border-top: 1px solid var(--border); margin: 1em 0; }
+
+.fp-rendered img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 0.5em 0;
+}
+
+.fp-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.fp-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+}
+
+.fp-icon--md {
+    background: #f1f3f4;
+    font-size: 20px;
+}
+
+.fp-header-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.fp-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.fp-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.fp-body {
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fp-body--path {
+    padding: 0.5rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    flex: none;
+}
+
+.fp-path {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    word-break: break-all;
+    color: var(--text-muted, #666);
+}
+
+.fp-body--code {
+    padding: 0;
+}
+
+.fp-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.fp-row--target {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.fp-row--target .fp-val {
+    flex: 1;
+    min-width: 0;
+}
+
+.fp-key {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    width: 64px;
+    flex-shrink: 0;
+    padding-top: 1px;
+}
+
+.fp-val {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.fp-desc {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.fp-loading {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 1rem 1.25rem;
+}
+
+.fp-code-block {
+    margin: 0;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+}
+
+.fp-code-line {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 1px 1rem;
+    white-space: pre;
+}
+
+.fp-code-line--hl {
+    background: #fff8d6;
+}
+
+html.dark .fp-code-line--hl { background: rgba(255, 220, 80, 0.12); }
+
+.fp-ln {
+    font-size: 11px;
+    color: #aaa;
+    min-width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.fp-code-text {
+    color: var(--text);
+    white-space: pre;
+}
+
+.fp-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.fp-open-btn {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ── Priority curve editor (backlog #68) ──────────────────────────────────── */
+
+.curve-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.curve-editor-svg {
+    width: 100%;
+    height: 180px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.curve-band--urgent {
+    fill: #d9302512;
+}
+
+.curve-band--soon {
+    fill: #f0930012;
+}
+
+.curve-band--upcoming {
+    fill: #1a73e812;
+}
+
+.curve-band--later {
+    fill: transparent;
+}
+
+/* Dark mode gets brighter, more saturated band hues at much higher alpha
+   than the light-mode values above. Translucent color blended over a dark
+   navy substrate desaturates far more aggressively than the same alpha
+   over a near-white one (the dark background's own blue-gray hue "fights"
+   the overlay instead of just dimming it) — a first pass at fully-saturated
+   hues + 15% alpha (2026-07-30) was barely distinguishable from the plain
+   surface. Vivid, fully-saturated base hues at ~35% alpha are what it takes
+   to actually read as red/amber/blue zones rather than a gray-on-gray
+   wash. */
+html.dark .curve-band--urgent {
+    fill: #ff3b3059;
+}
+
+html.dark .curve-band--soon {
+    fill: #ff9f0a59;
+}
+
+html.dark .curve-band--upcoming {
+    fill: #0a84ff59;
+}
+
+.curve-editor-gridline {
+    stroke: var(--border);
+    stroke-width: 1;
+    pointer-events: none;
+}
+
+.curve-editor-line {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 2;
+}
+
+.curve-editor-point {
+    fill: var(--primary-color);
+    stroke: var(--surface);
+    stroke-width: 2;
+    cursor: grab;
+}
+
+.curve-editor-point:active {
+    cursor: grabbing;
+}
+
+.curve-editor-axis {
+    position: relative;
+    height: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.curve-editor-tick {
+    position: absolute;
+    white-space: nowrap;
+}
+
+.curve-editor-reset {
+    align-self: flex-start;
+}
+
+/* ── Responsive overrides (must come after all base rules) ───────────────── */
+
+@media (min-width: 1400px) {
+    .calendar-sidebar {
+        flex: 0 0 19rem;
+    }
+}
+
+@media (min-width: 1800px) {
+    .calendar-sidebar {
+        flex: 0 0 20rem;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Move username/settings/signout to a fixed bottom bar.
+       env(safe-area-inset-bottom) adds space above the iPhone home indicator
+       so the bar is never hidden behind iOS browser chrome. */
+    .nav-user {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--background);
+        border-top: 1px solid var(--border);
+        padding: 0.4rem 1rem;
+        padding-bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px));
+        margin-left: 0;
+        z-index: 70;
+        justify-content: flex-end;
+    }
+
+    /* Tighten outer padding so the toolbar/grid get maximum space.
+       padding-top offsets both the fixed navbar (≈2.75rem) and the fixed
+       mobile-bar (≈4.1rem) so content always starts below both bars. */
+    .container {
+        padding: 0.5rem;
+        padding-top: 6.85rem;
+        padding-bottom: 3.5rem;
+    }
+
+    /* Fix navbar at top of screen on mobile */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 0.4rem 0.75rem;
+        margin-bottom: 0;
+        z-index: 60;
+        /* iOS Safari can visually detach `position: fixed` elements
+           during active/momentum scrolling, repainting them mid-content
+           until the gesture settles — promoting the navbar to its own
+           GPU compositing layer avoids the deferred repaint.
+           `backface-visibility: hidden` forces the same GPU layer as
+           `transform: translateZ(0)` without the side effect `transform`
+           (and `will-change: transform`) have: establishing a new
+           containing block for `position: fixed` descendants. `.nav-user`
+           (a fixed-position child of `.navbar`, pinned to the *viewport*
+           bottom) would otherwise be pinned to `.navbar`'s own ~45px box
+           instead — rendering directly on top of the logo/nav-links
+           instead of at the bottom of the screen. */
+        backface-visibility: hidden;
+    }
+    /* 6.5rem, not 10.35rem: .calendar-view is one of the views with no
+       mobile-bar (see its `margin-top: -3.85rem` further down) that shifts
+       it up by 3.85rem to close the gap that bar would otherwise leave.
+       Height must shrink by 3.85rem less than .container's own top+bottom
+       padding (10.35rem) to grow into the space that shift freed up at the
+       bottom — otherwise it's stranded as dead space above the fixed
+       nav-user bar instead, wasting vertical room the week/day grid could
+       use (most visible on tall phones: only ~5 hours fit instead of ~9). */
+    .calendar-view {
+        padding: 0.5rem;
+        height: calc(100vh - 6.5rem);   /* fallback */
+        height: calc(100dvh - 6.5rem); /* dvh adjusts when iOS chrome appears/hides */
+    }
+
+    /* Before WASM hydrates, the server renders 7 day columns.
+       Hide all except today's so the correct events are visible immediately.
+       After hydration, WASM renders exactly one column (the 2nd and last child
+       of .week-grid), so `:nth-child(2):last-child` matches it and keeps it
+       visible regardless of whether it is today. */
+    .week-day-col:not(.week-day-today):not(:nth-child(2):last-child) {
+        display: none;
+    }
+
+    /* Pin the mobile toggle bar at a fixed distance below the navbar.
+       position: fixed (not sticky) keeps the gap constant regardless of scroll.
+       padding-top creates the visual gap between navbar border and the buttons. */
+    .mobile-bar {
+        display: flex;
+        gap: 0.5rem;
+        padding: 1.1rem 0.75rem 0.5rem;
+        flex-shrink: 0;
+        position: fixed;
+        top: 2.75rem;    /* navbar height: 0.4rem pad×2 + ~1.95rem logo = 2.75rem */
+        left: 0;
+        right: 0;
+        background: var(--background);
+        border-bottom: 1px solid var(--border);
+        z-index: 55;     /* above calendar content, below navbar (60) and footer (70) */
+    }
+
+    /* Stack sidebar above the main grid */
+    .calendar-layout {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Sidebar spans full width; height is driven by open panels. */
+    .calendar-sidebar {
+        flex: none;
+        width: 100%;
+    }
+
+    /* Undo the desktop rail scroll (see base rule): on mobile the panels
+       stack above the grid and the page itself scrolls. */
+    .calendar-layout > .calendar-sidebar {
+        overflow: visible;
+        overscroll-behavior: auto;
+    }
+
+    /* `.sidebar-layout`/`.calendar-layout`'s `align-items: flex-start` (see
+       base rule) keeps the sidebar at its own height in desktop row mode,
+       but governs *width* once the layout flips to column here — without
+       this override `.calendar-main` sizes to fit-content instead of
+       stretching to the actually-available width (same issue backlog #50
+       hit and fixed for `.notes-main`). */
+    .calendar-main {
+        align-self: stretch;
+    }
+
+    /* Each panel hidden by default on mobile; signal removes this class */
+    .sidebar-section.mobile-hidden {
+        display: none;
+    }
+
+    /* Calendar list: always show the rename/delete buttons on touch screens */
+    .cal-menu {
+        opacity: 1;
+    }
+
+    /* Bigger tap targets for the rename/delete buttons */
+    .cal-menu-btn {
+        font-size: 1rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    /* Visible panels get a small bottom gap before the grid */
+    .sidebar-section:not(.mobile-hidden) {
+        padding-bottom: 0.75rem;
+    }
+
+    /* Suppress the desktop mini-cal bottom margin inside mobile panels */
+    .sidebar-section .mini-cal {
+        margin-bottom: 0;
+    }
+
+    /* Single-day view: switch to one content column on narrow screens */
+    .week-grid {
+        grid-template-columns: 3rem 1fr;
+        min-width: 0;
+    }
+
+    /* List views: reduce desktop padding on narrow screens */
+    .tasks-view,
+    .focus-view,
+    .tickler-view,
+    .notes-view {
+        padding: 1rem 0.75rem;
+    }
+
+    /* Calendar/Focus/Todos/Tickler's plain flex row (see .sidebar-layout
+       above) stacks into a single column on mobile. */
+    .sidebar-layout {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-sidebar,
+    .sidebar-layout > .filter-sidebar {
+        width: 100%;
+        gap: 0;
+    }
+
+    /* Same fix as `.calendar-main` above, for Focus/Todos' `.filter-main`. */
+    .filter-main {
+        align-self: stretch;
+    }
+
+    /* Show the collapse button; hide panel content by default. Chrome
+       (background/border) lives on `.fs-panel` below, so this is just a
+       header row — otherwise button and content render as two
+       independently-bordered blocks with a gap between them. */
+    .fs-collapse-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0.45rem 0.75rem;
+        background: transparent;
+        border: none;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+    }
+
+    .fs-chevron {
+        display: inline-block;
+        transition: transform 0.15s;
+        font-size: 1.1rem;
+        line-height: 1;
+    }
+    .fs-chevron--open {
+        transform: rotate(90deg);
+    }
+
+    /* `.fs-panel` is the single card on mobile: the button is its header
+       row and `.fs-content` its body, so opening a panel grows this one
+       bordered box rather than stacking two separately-chromed blocks. */
+    .fs-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        gap: 0;
+    }
+
+    .fs-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
+    }
+    .fs-content--collapsed {
+        display: none;
+    }
+
+    /* `.mini-cal`/`.fs-section` carry their own card chrome for desktop
+       (and standalone use elsewhere); inside a mobile `.fs-panel` that
+       would draw a second nested card, so strip it here — `.fs-panel`
+       already provides the border/background. Their own padding stays,
+       insetting content from the shared outer border. */
+    .fs-panel .mini-cal,
+    .fs-panel .fs-section {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+    }
+
+    /* The button already names the section on mobile — hide the redundant
+       desktop title that sits inside the collapsed content area. */
+    .fs-section-title {
+        display: none;
+    }
+
+    /* ...except the "Labels" sub-header inside the shared collections/labels
+       box: it names a second list within the same collapsed section, so with
+       no collapse button of its own it must stay visible. */
+    .fs-section-title--sub {
+        display: block;
+    }
+
+    /* Add breathing room between independent section panels. */
+    .fs-panel + .fs-panel {
+        margin-top: 0.35rem;
+    }
+
+    /* Focus card hover actions: invisible on mobile but still catch taps;
+       remove them from the tap-target surface entirely on touch screens. */
+    .focus-card-actions {
+        display: none;
+    }
+
+    /* These views don't have a mobile-bar above the content, so the
+       container's 6.85rem padding-top leaves a large blank gap.
+       Shift them up to sit just below the navbar. */
+    .tasks-view,
+    .focus-view,
+    .tickler-view,
+    .notes-view,
+    .calendar-view {
+        margin-top: -3.85rem;
+    }
+}
+
+/* ── Month grid ──────────────────────────────────────────────────────────── */
+
+.month-grid-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.month-col-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.month-col-header {
+    text-align: center;
+    padding: 4px 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.month-grid-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.month-grid-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    flex: 1;
+    min-height: 80px;
+}
+
+/* Absolutely-positioned overlay that holds multiday / all-day bars.
+   Starts below the day-number row (26 px). Day cells carry matching
+   padding-top (26 + bars_h) to push timed events below bars. */
+.month-row-bars {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.month-bar-event {
+    position: absolute;
+    height: 16px;
+    line-height: 16px;
+    font-size: 0.72rem;
+    color: var(--text);
+    padding: 0 4px 0 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.month-bar-event:hover {
+    filter: brightness(1.1);
+}
+
+.month-day-cell {
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    cursor: default;
+    position: relative;
+}
+
+.month-day-cell:last-child {
+    border-right: none;
+}
+
+.month-day-cell--outside {
+    opacity: 0.45;
+}
+
+.month-day-num {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    z-index: 2;
+}
+
+.month-day-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 0 3px;
+}
+
+.month-day-badge--today {
+    background: var(--primary-color);
+    color: white;
+}
+
+.month-event-line {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0 4px 2px;
+    font-size: 0.72rem;
+    overflow: hidden;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.month-event-line:hover {
+    background: var(--surface);
+}
+
+.month-event-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.month-event-time {
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
+.month-event-summary {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* On the narrowest phones the four mode pills plus the search box still
+   exceed `.calendar-main`'s width even after the search shrinks to its 60px
+   floor. Let the group wrap too, so the search drops below the pills instead
+   of pushing off the right edge. `min-width: 0` is required for the group to
+   shrink below its contents' min-content width and actually hand the
+   wrapping decision to this rule. */
+@media (max-width: 420px) {
+    .cal-pill-row > .focus-right-controls {
+        flex-wrap: wrap;
+        min-width: 0;
+    }
+}
+
+/* ── In-app markdown file editor overlay ───────────────────────────────────── */
+
+.md-editor-overlay {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.md-editor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.md-editor-path {
+    font-size: 0.875rem;
+    font-family: monospace;
+    color: var(--text-muted);
+}
+
+.md-editor-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.md-editor-status {
+    padding: 0.2rem 1rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.md-editor-status--ok {
+    color: #16a34a;
+    background: color-mix(in srgb, #16a34a 8%, transparent);
+}
+
+.md-editor-status--err {
+    color: var(--danger-color);
+    background: color-mix(in srgb, var(--danger-color) 8%, transparent);
+}
+
+.md-editor-content {
+    flex: 1;
+    overflow: auto;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+/* ── Notes tab (backlog #37) ─────────────────────────────────────────────── */
+
+/* Top/side padding matches .focus-view/.tasks-view/.tickler-view so the gap
+   below the navbar is consistent across tabs (was previously unset, which
+   made this view sit flush against the navbar and the left edge). */
+.notes-view {
+    padding: 16px 32px 28px;
+}
+
+.notes-layout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+/* Sizing matches .fs-section (backlog #46) — same rem scale used everywhere
+   else, resolving this component's former px-only sizing. */
+.notes-sidebar {
+    flex: none;
+    width: 18rem;
+    border: 1px solid var(--border);
+    border-radius: 0.625rem;
+    padding: 1.125rem;
+    background: var(--surface);
+}
+
+.notes-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* The shared `NoteCollectionsPanel` renders its own `.fs-section` box for the
+   Focus sidebar; on Notes the `.notes-sidebar` card already provides the
+   border/background/padding, so strip the inner one here to avoid a
+   box-in-box (mirrors the `.fs-panel .fs-section` mobile strip). */
+.notes-sidebar .fs-section {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* Matches .fs-section-title's size/weight (backlog "Notes/other views
+   consistency" pass) — same title treatment across every sidebar panel. */
+.notes-sidebar-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* .notes-sidebar-add's chip style now lives in the shared .fs-add-btn rule
+   above (backlog #46). */
+
+/* `align-self: stretch` overrides `.notes-layout`'s `align-items:
+   flex-start` (backlog #50) — that default is fine for the desktop row
+   layout (keeps the sidebar at its own natural height rather than
+   stretching to match notes-main's), but under the mobile breakpoint the
+   same flex axis flips to column, at which point align-items governs
+   *width*, not height: without this override `.notes-main` sizes to
+   fit-content (i.e. to whatever the grid's own current column count
+   happens to render at) instead of stretching to the actually-available
+   width. That's a measurement feedback loop — `cols`'s own width
+   measurement would read back its last render's width forever, stuck
+   below the true available space and overflowing the page. */
+.notes-main {
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+}
+
+/* Action buttons cluster tightly on the left (backlog #95, matching the
+   mockup); `.notes-search`'s own `margin-left: auto` is what pushes the
+   search box to the right instead of `justify-content: space-between`
+   spreading every child evenly across the row. `gap` still guarantees a
+   floor between the buttons themselves (backlog #51) at narrow widths.
+   `flex-wrap` (backlog #159) lets the buttons and search stack onto extra
+   lines when the main column is too narrow, growing the toolbar downwards
+   instead of pushing past its right edge. */
+.notes-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+/* font-size matches .week-nav-btn / .mobile-toggle — the shared toolbar
+   button scale used elsewhere, instead of inheriting body's larger 15px.
+   `flex-shrink: 0` + `white-space: nowrap` (backlog #51) keep these at a
+   constant single-line height — without them, the default flex-shrink:1
+   lets a narrow container squeeze the button down to its text's
+   min-content width, wrapping "Auto-layout" onto two lines and growing the
+   button taller instead of `.notes-search` (the intended one to give up
+   space) shrinking. `display: flex` + `gap` (backlog #95) lay out each
+   button's SVG icon and label consistently now that the icons are no
+   longer inline with the text. */
+.notes-pin-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.notes-pin-filter--active {
+    color: var(--warning-color);
+    background: color-mix(in srgb, var(--warning-color) 12%, transparent);
+    border-color: color-mix(in srgb, var(--warning-color) 45%, transparent);
+}
+
+/* Auto-layout locked on while searching (backlog #93) — still reads as
+   active (forced on), just visibly non-interactive. */
+.notes-pin-filter:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* `flex: 1 1 60px` with a `260px` max (backlog #51, #159): the basis is the
+   minimum, so flex line-breaking only wraps the buttons/search onto another
+   line once even a 60px search can't share the first line — otherwise the
+   search absorbs all the shrinking, then grows back up to its preferred
+   260px when space allows. `min-width` stops it disappearing entirely at the
+   narrowest widths. `margin-left: auto` (backlog #95) is what pushes it to
+   the far right of `.notes-toolbar` now that the row is no longer
+   `space-between`. */
+.notes-search {
+    flex: 1 1 60px;
+    max-width: 260px;
+    min-width: 60px;
+    font-size: 0.875rem;
+    margin-left: auto;
+}
+
+.notes-result-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 8px 0;
+}
+
+/* Both grid zones (backlog #48) use grid-auto-rows at a fine unit (8px,
+   matching NOTES_ROW_UNIT_PX in crate::types) with each note spanning
+   `grid-row: {row+1} / span {row_span}`, instead of one grid row per
+   note (#47) — lets two short notes stack and together match a tall
+   neighbor's height in an adjacent column (true masonry), while keeping
+   #47's stable, addressable (row, col) positions. `align-items: start` is
+   required, not cosmetic, here: default `stretch` forces a note-card's
+   *rendered* height to exactly match its current `grid-row-span`
+   regardless of content, which makes the height self-correction pass in
+   `notes/mod.rs` circular — it would always measure back whatever
+   (possibly stale) span the card already has, since the box is
+   physically clamped to that size, and could never observe a mismatch to
+   correct. `start` keeps each card at its natural content height
+   instead, so a stale span is visible as a real size difference the
+   correction pass can detect and fix, converging spans to reality;
+   thereafter the two are equal anyway so this costs nothing once
+   correct. `grid-template-columns` is set inline by `NotesView` (backlog
+   #50, `components/notes/mod.rs`) from a live `cols` signal (1..=
+   NOTES_GRID_COLS) measured off this container's own width — the
+   `repeat(4, 260px)` here is only the pre-hydration fallback. Column
+   *count* is what varies; column *width* (260px) never does — stored
+   `(grid_row, grid_col)` stay in true NOTES_GRID_COLS-column space always
+   (see `column_offsets`/`compact_cell` in `notes/mod.rs`), so this never
+   needs to scroll to reach an off-grid column. */
+.notes-pinned-row,
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 260px);
+    grid-auto-rows: 8px;
+    align-items: start;
+    gap: 0 16px;
+    /* Belt-and-suspenders only — the live `cols` signal always renders as
+       many 260px tracks as actually fit, so this should never trigger. */
+    overflow-x: hidden;
+}
+
+.notes-pinned-row {
+    margin-bottom: 16px;
+}
+
+/* Marks the live-hovered drop target while dragging (backlog #47, shared
+   with Contacts in #82 via `drag_grid::drop_shadow_view`) — a dashed
+   placeholder, explicitly placed at the target cell via the same
+   `grid-row`/`grid-column` mechanism as every other card. The real
+   dragged card renders separately as a `position: fixed` overlay
+   (`.card-tile--dragging`), so this is the only
+   visible occupant of that cell until the drop actually commits. */
+.grid-drop-shadow {
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+}
+
+.notes-empty {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 13px;
+    padding: 32px 0;
+}
+
+.note-card {
+    cursor: pointer;
+    /* Lets a dragged card animate back to identity transform on release —
+       overridden to `none` below while actively dragging so it can track
+       the pointer instantly instead of lagging behind it. Restates
+       box-shadow alongside transform: this rule comes after .card-tile's
+       in the stylesheet, so its `transition` shorthand wins outright
+       (same specificity) — omitting box-shadow here would silently drop
+       .card-tile:hover's shadow transition. */
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.note-card-body {
+    flex: 1;
+    min-width: 0;
+    padding: 16px 18px;
+}
+
+.note-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+/* The star/delete actions float to the top-right (see `.note-card-actions`)
+   so the title and body text flow *around* them, then reclaim the full card
+   width below. A flex row here (the old layout) reserved the actions' width
+   for the card's entire height, so every line stopped short of the right
+   edge. */
+.note-card-top {
+    display: block;
+}
+
+/* Holds the title (if any) and the text stacked on top of each other. The
+   floated actions shorten only the line boxes they overlap (the first
+   title/body line), giving the rest the body's full width. */
+.note-card-top-main {
+    min-width: 0;
+}
+
+/* font-size matches .focus-card-title — the same scale used for Todos/
+   Tickler/Focus card text, instead of inheriting body's larger 15px. The
+   text fills the full width left of the floated `.note-card-actions` (the
+   star/trash stay clear of it); left-aligned, since the cards are too narrow
+   for justified text to look good. */
+.note-card-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Markdown bullet lists in a rendered note body (backlog #130). The
+   `<ul>`/`<li>` markup is emitted by `render_note_content`; Tailwind's
+   preflight strips list markers, so restore them, and add a small vertical
+   gap so a list doesn't butt against surrounding prose. Nested lists indent
+   relative to their parent. */
+.note-card-text ul {
+    margin: 2px 0;
+    padding-left: 1.15em;
+    list-style: disc;
+}
+
+.note-card-text ul ul {
+    margin: 0;
+    list-style: circle;
+}
+
+.note-card-text li {
+    list-style: inherit;
+}
+
+.note-pin {
+    flex: none;
+    font-size: 17px;
+    line-height: 1;
+    color: var(--border);
+    cursor: pointer;
+}
+
+.note-pin--active {
+    color: #f5b742;
+}
+
+.note-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* Checkbox on a rendered markdown task/await chip (backlog #112) — clicking
+   it rewrites the source line's tag to `#done/<slug>`. The done chip's own
+   checkbox is `disabled`, so it reads as checked but can't be re-toggled. */
+.md-task-checkbox {
+    flex: none;
+    width: 13px;
+    height: 13px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.md-task-checkbox:disabled {
+    cursor: default;
+}
+
+.note-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    /* The actions float, so the footer must clear it to sit below both. */
+    clear: both;
+}
+
+.note-card-collection {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.note-card-collection-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.note-card-time {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* Label chips (backlog #114) — a wrapping row under the note body, above the
+   collection/time footer. Muted, so they read as metadata, not content. */
+.note-card-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    clear: both;
+}
+
+.note-label-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 100%;
+    padding: 2px 8px;
+    border: 1px solid var(--border, #d0d0d0);
+    border-radius: 999px;
+    background: rgba(127, 127, 127, 0.1);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.note-label-dot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+/* Two classes (not just `.card-tile--dragging`) so this outranks
+   `.card-tile:hover`'s box-shadow — the pointer is physically over the
+   card while dragging it, so :hover stays matched throughout. Shared by
+   `NoteCard` and `ContactCard` (backlog #82) — the dragged-card styling
+   itself has no feature-specific concept in it. */
+.card-tile.card-tile--dragging {
+    /* `position: fixed` and its left/top/width/height come from the
+       inline style (`drag_grid::card_style`) since they're per-pixel
+       reactive values — this class only carries the static styling. */
+    z-index: 30;
+    cursor: grabbing;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    /* Instant tracking of the pointer while held — the settle-back
+       animation only applies once this class comes off on release. */
+    transition: none;
+}
+
+/* `user-select: none` stops the browser's native text-selection drag from
+   kicking in as the pointer sweeps across other cards' text while
+   reordering — shared by Notes and Contacts (backlog #82). Contacts has
+   no cross-zone concept, so it only ever needs this half of the pair
+   (`.notes-main--no-drop` below stays Notes-only). */
+.notes-main--dragging,
+.contacts-main--dragging {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* One-shot deep-link highlight (backlog #63): pulses in the note's own
+   collection color, set per-instance via --note-highlight-color since
+   collections are user-defined (see `note_pill_style`'s doc comment for
+   the same reasoning). `animation-iteration-count: 3` means it just stops
+   and reverts on its own — no JS needed to remove the class afterward. */
+.note-card--highlight {
+    animation: note-highlight-pulse 0.8s ease-out 3;
+}
+
+@keyframes note-highlight-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--note-highlight-color, #6b3fc5) 60%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--note-highlight-color, #6b3fc5) 0%, transparent);
+    }
+}
+
+.notes-main--no-drop,
+.notes-main--no-drop * {
+    cursor: not-allowed !important;
+}
+
+.notes-group--blocked {
+    outline: 2px dashed var(--danger-color);
+    outline-offset: 4px;
+    border-radius: 10px;
+}
+
+.note-palette,
+.note-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.note-palette-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.note-chip {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 13px;
+    background: transparent;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.note-chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.note-chip--new {
+    border-style: dashed;
+    color: var(--text-muted);
+}
+
+/* Inline task/await/done tokens (backlog #113). */
+.note-chip--task {
+    border-color: var(--primary-color);
+}
+
+.note-chip--await {
+    border-style: dashed;
+}
+
+.note-chip--done {
+    opacity: 0.65;
+    text-decoration: line-through;
+}
+
+.note-chip-action,
+.note-chip-remove {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0 2px;
+    font-size: 0.85em;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.note-chip-remove:hover {
+    color: var(--danger-color, #d33);
+}
+
+/* The one shared task/await chip, used by both a note card's body (backlog
+   #113) and the rendered markdown preview (backlog #112/#116). It is a
+   `[checkbox] ● Title` row: the urgency is carried by the round dot and the
+   1px outline only — the text always stays in the normal readable colour so a
+   low-urgency (LATER) item never reads as disabled. Per-instance urgency
+   colour is set by the renderer through `--chip-color`.
+
+   The chip is single-line: a long title truncates with `…` (the renderer puts
+   the full text in the `title` tooltip) instead of growing the chip
+   vertically and wrecking the card's rhythm. */
+.note-token {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 1px;
+    padding: 1px 8px 1px 5px;
+    border: 1px solid color-mix(in srgb, var(--chip-color, var(--border)) 45%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--chip-color, var(--border)) 8%, transparent);
+    color: var(--text);
+    font-size: 0.85em;
+    max-width: 100%;
+    min-width: 0;
+    vertical-align: bottom;
+}
+
+.note-token-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.note-token-check {
+    flex: none;
+    cursor: pointer;
+    line-height: 1.2;
+    color: var(--text-muted);
+}
+
+.note-token-check:hover {
+    color: var(--primary-color);
+}
+
+.note-token-check--done {
+    cursor: pointer;
+    color: inherit;
+}
+
+.note-token--await {
+    border-style: dashed;
+}
+
+/* An await whose date has already passed: the dot/outline turn red, the text
+   stays readable. */
+.note-token--expired {
+    --chip-color: var(--danger-color, #d33);
+}
+
+.note-token--done {
+    opacity: 0.65;
+    text-decoration: line-through;
+}
+
+/* One-shot flash for the inline token that a note item's "go to source"
+   addressed (backlog #134) — same pulse mechanism as `.note-card--highlight`
+   (backlog #63) but scoped to the chip span. A task chip's own urgency colour
+   (`--chip-color`) drives it; awaits/done have none and fall back to the
+   note-highlight purple. `animation-iteration-count: 3` means it just stops and
+   reverts on its own. */
+.note-token--highlight {
+    animation: note-token-highlight-pulse 0.8s ease-out 3;
+}
+
+@keyframes note-token-highlight-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--chip-color, #6b3fc5) 60%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--chip-color, #6b3fc5) 0%, transparent);
+    }
+}
+
+.note-token-dot {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--chip-color, var(--border));
+}
+
+.note-editor-textarea {
+    resize: none;
+}
+
+/* Note editor layout (backlog #126): the body textarea flexes to fill the
+   modal so writing gets the room, the lower fields are compressed, and the
+   long explanatory hints move behind a tap-friendly ⓘ. `.dialog--note-editor`
+   gets a definite height (bounded by the backdrop and the inherited 90vh
+   max-height) so the flex form has slack to hand to the textarea. */
+.dialog--note-editor {
+    height: 100%;
+}
+
+.note-editor-form {
+    gap: 0.5rem;
+    /* The form itself no longer scrolls: the textarea (a flex-grow child) and
+       the details region below are the two scroll areas, so a wheel over the
+       body always targets the body rather than an ambiguous outer container. */
+    overflow: hidden;
+}
+
+/* Everything below the note body (images, collection, labels, tasks &
+   awaits, calendar). It takes its natural height while there's room but
+   shrinks and scrolls first when space is tight, so a note with many task
+   chips never squeezes the body. */
+.note-editor-details {
+    flex: 0 1 auto;
+    min-height: 0;
+    /* Never more than a minority of the modal, so a long task/label list
+       scrolls here instead of squeezing the note body. */
+    max-height: 45%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Note editor footer: destructive + secondary actions in a left cluster, and
+   Cancel next to Save in a right cluster, all on one line with a little slack
+   before Cancel. `space-between` keeps the two clusters pinned to the edges. */
+.note-editor-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.note-editor-actions-start,
+.note-editor-actions-end {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.note-editor-actions-end {
+    justify-content: flex-end;
+}
+
+.note-editor-form .form-group {
+    gap: 0.15rem;
+}
+
+.note-editor-form .form-group--grow {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.note-editor-form .form-group--grow .note-editor-textarea {
+    flex: 1 1 auto;
+    min-height: 10rem;
+    overflow-y: auto;
+}
+
+.note-editor-form .note-chip-row {
+    gap: 6px;
+}
+
+.note-editor-form .note-chip {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+}
+
+.note-editor-body-group {
+    position: relative;
+}
+
+.note-editor-body-group .note-editor-body-hint {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+}
+
+.note-editor-body-group .note-editor-textarea {
+    padding-right: 2rem;
+}
+
+/* ⓘ info hint (backlog #126). */
+.info-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.info-hint-short {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.info-hint-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1;
+    padding: 0 0.15rem;
+    border-radius: 50%;
+}
+
+.info-hint-btn:hover {
+    color: var(--primary-color);
+}
+
+.info-hint-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: transparent;
+}
+
+.info-hint-popover {
+    position: fixed;
+    z-index: 71;
+    width: max-content;
+    max-width: min(280px, calc(100vw - 2rem));
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.note-todo-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.note-priority-slider {
+    width: 100%;
+}
+
+/* Notes sidebar: stack above the note grid and collapse behind the same
+   .fs-collapse-btn toggle the other filter-sidebar screens use, instead of
+   permanently occupying 18rem next to the grid (backlog #46). Kept as its
+   own media query after the base .notes-sidebar rule above (rather than in
+   the shared @media block earlier in this file) so it wins the cascade —
+   source order decides between equal-specificity rules. */
+@media (max-width: 767px) {
+    .notes-layout {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* On mobile the Notes/Contacts sidebar reuses the same `.fs-panel` shell
+       (and `.fs-collapse-btn`/`.fs-content` chrome) as Focus/Calendar, so the
+       collapsed bar is exactly the same height everywhere. Strip the desktop
+       card padding that `.fs-panel` doesn't have, and put the open content's
+       inset back on `.fs-content` (Notes' shared collections panel strips its
+       own padding via `.notes-sidebar .fs-section`). */
+    .notes-sidebar {
+        width: 100%;
+        padding: 0;
+        border-radius: 0.5rem;
+    }
+
+    .notes-sidebar .fs-content {
+        padding: 0.5rem 0.875rem 0.875rem;
+    }
+
+    .notes-sidebar-title {
+        display: none;
+    }
+}
+
+/* ── Card delete-confirm (Notes backlog #78, Contacts backlog #79) ───────── */
+/* Trigger icon lives alongside `.note-pin` in the card's top row; clicking
+   it opens `DeleteConfirmModal` — a normal `.dialog-backdrop`/`.dialog`
+   popup styled like every other dialog in the app, not an in-card
+   affordance. See `components/delete_confirm_button.rs`'s doc comment for
+   the two in-card designs that were tried and rejected first. */
+.card-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.card-delete-btn:hover {
+    color: var(--danger-color);
+}
+
+.note-card-actions {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Space between the icons and the flowing text; the small bottom margin
+       keeps a one-line title from butting against a following body line. */
+    margin: 0 0 2px 12px;
+}
+
+.note-card-text {
+    cursor: text;
+}
+
+/* Bare URLs in a note's body, autolinked by `render_note_content` (backlog
+   #111) — a coloured, underlined-in-hover link so it reads as a real link
+   while still flowing inline with the note's plain text. Pointer events on
+   the `<a>` are swallowed before the card's own drag/click handling (see
+   `note_card.rs`), so the browser's native click-to-navigate works. */
+.note-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    word-break: break-all;
+}
+
+.note-link:hover {
+    text-decoration: underline;
+}
+
+/* ── @mention typeahead popup (Notes editor, backlog #80) ───────────────── */
+/* `position: fixed` — anchored to caret-relative viewport coordinates
+   computed by the mirror-div technique in `note_editor_modal.rs`, so it
+   floats free of the dialog's own layout/scroll (no ancestor here uses a
+   transform, which would otherwise move a fixed element's containing
+   block — see that file's doc comment for the coordinate math). */
+.mention-popup {
+    position: fixed;
+    z-index: 60;
+    min-width: 200px;
+    max-width: 280px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    padding: 4px;
+}
+
+.mention-popup-empty {
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.mention-popup-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.mention-popup-item--active {
+    background: var(--surface-alt);
+}
+
+.mention-popup-item-name {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.mention-popup-item-org {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* ── @mention detail popover (Notes card click-through, backlog #80) ─────── */
+/* Same `position: fixed` caret/click-anchoring rationale as
+   `.mention-popup` above. The backdrop is a full-viewport, fully
+   transparent click-catcher (unlike `.dialog-backdrop`'s dark overlay) —
+   this is a lightweight glance, not a modal, so nothing should visually
+   darken behind it. */
+.mention-popover-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: transparent;
+}
+
+.mention-popover {
+    position: fixed;
+    z-index: 71;
+    width: 260px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    padding: 14px;
+}
+
+.mention-popover-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mention-popover-top .contact-card-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.mention-popover-top .dialog-close {
+    flex: none;
+}
+
+.mention-popover-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.mention-popover-category {
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--surface-alt);
+    color: var(--text-muted);
+}
+
+.mention-popover-footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ── Contacts tab (backlog #79) ──────────────────────────────────────────── */
+/* Grid/masonry/responsive-column layout shares its CSS shape with
+   `.notes-grid` (both use the JS-driven `grid-template-columns` +
+   `grid-auto-rows: 8px` pattern from `crate::grid`) — `.contacts-grid` only
+   overrides what's actually different (no pinned-zone margin). Toolbar/
+   search/result-count/empty-state reuse `.notes-toolbar`/`.notes-search`/
+   `.notes-result-count`/`.notes-empty` directly (see `contacts/mod.rs`). */
+.contacts-view {
+    padding: 16px 32px 28px;
+}
+
+/* Contact collections sidebar (backlog #81) — reuses .notes-layout/
+   .notes-sidebar/.notes-sidebar-header/.notes-sidebar-title/.notes-sidebar-hint
+   directly rather than duplicating them; only the flex-basis rule for the
+   content column needs its own selector since the class name differs. */
+.contacts-layout {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.contacts-main {
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+}
+
+@media (max-width: 767px) {
+    .contacts-layout {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+.contact-card {
+    cursor: pointer;
+}
+
+/* Deep-link pulse from a @mention popover's "Go to contact" button
+   (backlog #80) — same technique as `.note-card--highlight`, but a fixed
+   color (`--primary-color`) rather than a per-instance CSS var, since
+   contacts have no collection (or other per-item color) to borrow from.
+   `animation-iteration-count: 3` is self-terminating — no JS needed to
+   remove the class afterward. */
+.contact-card--highlight {
+    animation: contact-highlight-pulse 0.8s ease-out 3;
+}
+
+/* Deep-link pulse from Focus' "Show in calendar" (backlog #157) — same
+   technique as the note/contact highlights above, applied to whichever
+   calendar-grid element carries `data-event-uid` (timed block, all-day pill,
+   or month line/bar). `animation-iteration-count: 3` is self-terminating, and
+   the JS effect also strips the class on `animationend`. */
+.cal-event--highlight {
+    animation: cal-highlight-pulse 0.8s ease-out 3;
+}
+
+@keyframes cal-highlight-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary-color) 60%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary-color) 0%, transparent);
+    }
+}
+
+@keyframes contact-highlight-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary-color) 60%, transparent);
+    }
+    50% {
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary-color) 0%, transparent);
+    }
+}
+
+/* Merge-select mode (backlog #88) — mirrors .contact-card--highlight's
+   placement right next to the card-tile rules it's a sibling state of.
+   Pinned to the bottom-right corner (backlog #100) so it never collides
+   with the delete trigger, which sits inline in the top-right of
+   `.contact-card-top`. */
+.contact-card-merge-checkbox {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.contact-card--merge-selected {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -1px;
+}
+
+.contact-card-body {
+    flex: 1;
+    min-width: 0;
+    padding: 16px 18px;
+}
+
+.contact-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.contact-card-top-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.contact-card-avatar,
+.contact-card-avatar-placeholder {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.contact-card-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.contact-card-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.contact-card-nickname {
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.contact-card-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.contact-card-url {
+    display: block;
+    font-size: 13px;
+    color: var(--primary-color);
+    margin-top: 4px;
+    word-break: break-word;
+}
+
+.contact-card-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.contact-card-method {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.contact-card-method-kind {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    flex: none;
+    width: 3.5em;
+}
+
+.contact-card-method-value {
+    color: var(--text);
+    word-break: break-word;
+}
+
+.contact-card-notes {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ── Contact editor modal ────────────────────────────────────────────────── */
+.contact-field-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.contact-field-row .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-address-field {
+    margin-bottom: 8px;
+}
+
+.contact-address-row {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.contact-method-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-method-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-method-row .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-method-kind {
+    flex: none;
+    width: 6.5em;
+}
+
+.contact-method-primary {
+    flex: none;
+    white-space: nowrap;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.contact-method-remove {
+    flex: none;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.contact-photo-picker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.contact-photo-preview,
+.contact-photo-preview--empty {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--border-color);
+}
+
+.contact-photo-picker-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+}
+
+.contact-method-remove:hover {
+    color: var(--danger-color);
+}
+
+/* Contact-merge modal (backlog #88) */
+.contact-merge-primary-picker,
+.contact-merge-radio-row-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-merge-radio-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+/* Possible-duplicates banner (backlog #88) */
+.contact-duplicates-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--primary-color) 8%, var(--surface));
+    font-size: 0.875rem;
+}
+
+.contact-duplicates-banner-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-duplicates-banner-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-duplicates-banner-row > span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Note inline images (backlog #110) -------------------------------------- */
+/* A fixed-height box, deliberately: the notes grid reserves each card's
+   height from a post-render measurement (`grid_row_span`, backlog #48), and
+   an auto-height <img> reports 0px until the bytes arrive, so a note with
+   image(s) would reserve too little and overlap its neighbor. A fixed box
+   makes the reserved height correct on first paint; `object-fit: contain`
+   keeps whatever aspect ratio the image actually has. */
+.note-inline-image {
+    display: block;
+    height: 160px;
+    width: auto;
+    max-width: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+    /* When a narrow column clamps the width, `contain` scales the image down
+       to fit the width and would centre it in the 160px-tall box, leaving
+       blank bands above/below. Anchor it to the top-right instead, so the
+       visually-top-right corner of the visible image coincides with the box's
+       corner — where the hover expand badge sits, with its margin. */
+    object-position: top right;
+    background: var(--surface-alt);
+}
+
+/* Inline-image zoom affordance (backlog #140): the wrapper carries the src
+   (`data-note-image`) the card's click delegation opens the lightbox with,
+   and an expand badge that fades in while the image dims on hover. */
+.note-inline-image-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    line-height: 0;
+    cursor: pointer;
+    /* The image's own `margin` lives here, not on the `<img>`: the badge's
+       `top: 6px` is measured from this wrapper, so the wrapper's top must
+       coincide with the image's top for the badge to sit 6px inside it. */
+    margin: 6px 0;
+}
+
+.note-inline-image-wrap .note-inline-image {
+    transition: opacity 0.12s ease;
+}
+
+.note-inline-image-open {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+    pointer-events: none;
+}
+
+.note-inline-image-wrap:hover .note-inline-image {
+    opacity: 0.5;
+}
+
+.note-inline-image-wrap:hover .note-inline-image-open {
+    opacity: 1;
+}
+
+/* Fullscreen inline-image lightbox (backlog #140). Reuses `.dialog-backdrop`
+   (dark overlay, centred flex) so Escape-close registration and backdrop
+   click-away come for free; the image is bounded to the viewport. */
+.image-lightbox {
+    padding: 2rem;
+}
+
+.image-lightbox-img {
+    max-width: 96vw;
+    max-height: 96vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.image-lightbox-close {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.55);
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.35rem;
+    line-height: 1;
+}
+
+.image-lightbox-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+
+.note-image-input {
+    font-size: 0.85rem;
+}
+
+.note-image-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.note-image-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    padding: 3px 6px 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-alt);
+    font-size: 0.8rem;
+    color: var(--text);
+}
+
+.note-image-chip--staged {
+    border-style: dashed;
+}
+
+.note-image-chip-name {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.note-image-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border: none;
+    background: none;
+    color: var(--text-muted, var(--text));
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.note-image-chip-remove:hover {
+    color: var(--danger-color);
+}
+
+/* ── Done view (backlog #124, #125) ───────────────────────────────────────── */
+
+/* Archived items mirror Focus's `--done` treatment: greyed, with the
+   title struck through, and a disabled checkbox (set in the component). */
+.done-card--archived {
+    opacity: 0.55;
+}
+
+.done-card--archived .fsc-title {
+    text-decoration: line-through;
+}
+
+/* The completion date sits where Focus shows its urgency cluster. */
+.done-completed-date {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.done-bulk-bar {
+    margin: 0.5rem 0;
+}
+
+/* Clean up… modal rows. */
+.done-list {
+    list-style: none;
+    margin: 0.25rem 0 0.75rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.done-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.done-title {
+    flex: 1 1 10rem;
+    min-width: 8rem;
+    font-weight: 500;
+}
+
+.done-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.done-rule .form-input {
+    width: 5rem;
+}
+
+.done-archive-settings {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    padding-top: 0.75rem;
+}
+
+/* Await chips show their date inline (they carry no checkbox). */
+.note-token-date {
+    margin-left: 0.35rem;
+    font-size: 0.75em;
+    color: var(--text-muted, #6b7280);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Mobile top alignment for the list/calendar views ────────────────────────
+   Every tab's first row (filter bar / toolbar) should start at the same y as
+   Calendar's. Done and Contacts were missing the negative margin that cancels
+   the container's mobile-bar padding, and Notes/Contacts kept their desktop
+   32px side padding because their base rules are declared after the shared
+   mobile block above. This block deliberately lives at the end of the file so
+   it wins the cascade over those later base rules. */
+@media (max-width: 767px) {
+    .tasks-view,
+    .focus-view,
+    .tickler-view,
+    .notes-view,
+    .contacts-view,
+    .done-view {
+        margin-top: -3.85rem;
+        padding-top: 0.5rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}

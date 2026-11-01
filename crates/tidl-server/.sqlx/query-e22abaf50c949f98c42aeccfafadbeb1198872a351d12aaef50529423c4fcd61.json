@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT token, username, resource_path, scope, depth, owner_info, timeout_secs\n             FROM locks WHERE expires_at > datetime('now')\n               AND (resource_path = ?\n                 OR (depth = 'infinity' AND ? LIKE resource_path || '/%'))",
+  "describe": {
+    "columns": [
+      {
+        "name": "token",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "username",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "resource_path",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "scope",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "depth",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "owner_info",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "timeout_secs",
+        "ordinal": 6,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ]
+  },
+  "hash": "e22abaf50c949f98c42aeccfafadbeb1198872a351d12aaef50529423c4fcd61"
+}

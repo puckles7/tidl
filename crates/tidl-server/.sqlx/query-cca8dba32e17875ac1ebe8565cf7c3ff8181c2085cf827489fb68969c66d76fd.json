@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE locks SET expires_at = datetime('now', ?||' seconds'), timeout_secs = ?\n             WHERE token = ? AND expires_at > datetime('now')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "cca8dba32e17875ac1ebe8565cf7c3ff8181c2085cf827489fb68969c66d76fd"
+}

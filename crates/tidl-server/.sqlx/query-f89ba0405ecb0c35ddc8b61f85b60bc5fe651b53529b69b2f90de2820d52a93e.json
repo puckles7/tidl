@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT ical_data, etag FROM events WHERE username = ? AND calendar = ? AND uid = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "ical_data",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "etag",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "f89ba0405ecb0c35ddc8b61f85b60bc5fe651b53529b69b2f90de2820d52a93e"
+}

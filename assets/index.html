@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <script>(function(){try{if(localStorage.getItem('tidl-dark')==='1'){document.documentElement.classList.add('dark');}}catch(e){}})()</script>
+    <script>
+      // Keep wheel scrolling inside an open modal. When nothing between the
+      // pointer and the backdrop can scroll in the wheel's direction (a short
+      // file whose editor content fits, or a scroll area already at its end),
+      // the browser chains the scroll out to the document — which reads as
+      // "the list in the background scrolls instead of the dialog". Swallow
+      // the event in that case; otherwise let the modal's own scroll happen.
+      document.addEventListener('wheel', function (e) {
+        if (!(e.target instanceof Element)) return;
+        var backdrop = e.target.closest('.dialog-backdrop');
+        if (!backdrop) return;
+        var dy = e.deltaY, dx = e.deltaX;
+        for (var node = e.target; node && node !== backdrop.parentElement; node = node.parentElement) {
+          var style = getComputedStyle(node);
+          if (dy !== 0 && (style.overflowY === 'auto' || style.overflowY === 'scroll')
+              && node.scrollHeight > node.clientHeight) {
+            var atTop = node.scrollTop <= 0;
+            var atBottom = node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
+            if ((dy < 0 && !atTop) || (dy > 0 && !atBottom)) return;
+          }
+          if (dx !== 0 && (style.overflowX === 'auto' || style.overflowX === 'scroll')
+              && node.scrollWidth > node.clientWidth) {
+            var atLeft = node.scrollLeft <= 0;
+            var atRight = node.scrollLeft + node.clientWidth >= node.scrollWidth - 1;
+            if ((dx < 0 && !atLeft) || (dx > 0 && !atRight)) return;
+          }
+        }
+        e.preventDefault();
+      }, { passive: false });
+    </script>
+    <link id="leptos" rel="stylesheet" href="/pkg/tidl.css"/>
+    <link rel="stylesheet" href="/assets/style.css"/>
+    <script type="module">
+      // editor-loader.js has no imports of its own — it only registers a
+      // function that dynamically imports the (CodeMirror-heavy) editor.js
+      // on first use, so app boot never waits on it. See
+      // assets/vendor/codemirror/README.md for why editor.js itself no
+      // longer imports CodeMirror from a CDN.
+      import '/assets/editor-loader.js';
+      import init from '/pkg/tidl.js';
+      init({module_or_path: '/pkg/tidl.wasm'}).catch((err) => {
+        console.error('[tidl] failed to load app:', err);
+        document.body.innerHTML =
+          '<p style="padding:2rem;font-family:sans-serif">' +
+          'Failed to load the app. <a href="javascript:location.reload()">Reload</a>' +
+          '</p>';
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

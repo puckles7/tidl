@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT shared FROM contact_collections WHERE id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "shared",
+        "ordinal": 0,
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "26b9633c85f2478ae1584dc22ee4dcdca92594bb68a95f572bbff2a82c0303b5"
+}

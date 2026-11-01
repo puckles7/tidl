@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO contact_collections (owner_username, name, color)\n             VALUES (?, 'My Contacts', '#3b82f6')\n             ON CONFLICT(owner_username, name) DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "738133ed06b8bb8b72f7706c2d9b1beeee63774bdf556bd9bb32fb3ff1ecb905"
+}

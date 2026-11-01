@@ -1,0 +1,74 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT owner_username, resource_type, calendar_name, collection_id, contact_collection_id, permission,\n                    invitee_email, token, expires_at, status\n             FROM share_invitations WHERE token = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "owner_username",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "resource_type",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "calendar_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "collection_id",
+        "ordinal": 3,
+        "type_info": "Integer"
+      },
+      {
+        "name": "contact_collection_id",
+        "ordinal": 4,
+        "type_info": "Integer"
+      },
+      {
+        "name": "permission",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "invitee_email",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "token",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "expires_at",
+        "ordinal": 8,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "status",
+        "ordinal": 9,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "0fa226059b0bb45b5aa289fe9de5c57d24ef6f32fe81e9e45f1b739c66cbed9d"
+}

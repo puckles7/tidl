@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id FROM calendar_shares WHERE owner_username = ? AND calendar_name = ? AND grantee_username = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "3b81b3b2bffb11253025fcaea2946a2fdbb1bac7321f19374b8d0c78d21e5488"
+}

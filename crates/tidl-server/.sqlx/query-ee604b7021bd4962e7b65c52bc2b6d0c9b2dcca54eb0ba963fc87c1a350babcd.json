@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO smtp_config\n                 (id, host, port, tls_mode, username, password_encrypted, from_address, from_name, updated_at)\n             VALUES (1, ?, ?, ?, ?, ?, ?, ?, datetime('now'))\n             ON CONFLICT(id) DO UPDATE SET\n                 host               = excluded.host,\n                 port               = excluded.port,\n                 tls_mode           = excluded.tls_mode,\n                 username           = excluded.username,\n                 password_encrypted = excluded.password_encrypted,\n                 from_address       = excluded.from_address,\n                 from_name          = excluded.from_name,\n                 updated_at         = excluded.updated_at",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "ee604b7021bd4962e7b65c52bc2b6d0c9b2dcca54eb0ba963fc87c1a350babcd"
+}

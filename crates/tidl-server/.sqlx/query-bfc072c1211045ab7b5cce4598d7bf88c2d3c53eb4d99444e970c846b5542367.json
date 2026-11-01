@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT OR IGNORE INTO contact_collection_members (collection_id, member_username) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "bfc072c1211045ab7b5cce4598d7bf88c2d3c53eb4d99444e970c846b5542367"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO calendars (username, name, display_name) VALUES (?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "904814a42d3ed5db3dee5ffe8a5753f226de3e712518131cea8f6a75c5ed9793"
+}

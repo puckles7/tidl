@@ -1,0 +1,67 @@
+[server]
+host = "127.0.0.1"
+port = 3060
+domain = "tidl.dev"
+log_level = "info"
+# Required. Protects the SMTP password and any remote CalDAV personal access
+# tokens stored (encrypted) in the database — there is no default, and the
+# server refuses to start without one. Generate with: tidl-server generate-key
+# (or `generate-secret` to write it straight to a TIDL_SECRET_FILE).
+# Can also be set via TIDL_SECRET or TIDL_SECRET_FILE instead of here.
+secret = "changeme-generate-with-tidl-server-generate-key"
+# Whether the session cookie gets the `Secure` attribute (sent only over
+# HTTPS). Defaults to true — only set false for a deployment deliberately
+# served over plain HTTP (e.g. direct LAN access with no TLS in front).
+# Can also be set via TIDL_SECURE_COOKIE.
+secure_cookie = true
+
+[paths]
+data_dir = "./data"
+
+[auth]
+# Users list - password hashes generated with bcrypt
+# Generate a hash with: tidl-server hash-password <password>
+users = [
+    # Fake placeholder — replace with a real hash from: tidl-server hash-password <password>
+    { username = "admin", password_hash = "$2b$12$KIXxkCPZpYyQN5U5pJ5zQO5g5Y5zQO5g5Y5zQO5g5Y5zQO5g5Y5zQO" }
+]
+
+[smtp]
+# Declarative SMTP config. Optional — if omitted, configure email via
+# Settings -> Email in the UI instead. TIDL_SMTP_* env vars (see NixOS
+# module) take precedence over this table when set.
+host = "smtp.example.com"
+port = 587
+# "none" | "starttls" | "tls"
+tls_mode = "starttls"
+username = "tidl@example.com"
+password = "changeme"
+from_address = "tidl@example.com"
+from_name = "Tidl"
+
+[caldav]
+# Default calendar name
+default_calendar = "personal"
+
+[sync]
+# Enable markdown synchronization
+enabled = true
+# How often to scan for changes (seconds)
+watch_interval_secs = 5
+
+# Markdown source configurations
+[[sync.sources]]
+type = "filesystem"
+name = "My Notes"
+path = "/home/user/notes"
+enabled = true
+recursive = true
+
+# Example: Future source types (commented out)
+# [[sync.sources]]
+# type = "dropbox"
+# name = "Dropbox Notes"
+# app_key = "your-app-key"
+# app_secret = "your-app-secret"
+# path = "/Notes"
+# enabled = false

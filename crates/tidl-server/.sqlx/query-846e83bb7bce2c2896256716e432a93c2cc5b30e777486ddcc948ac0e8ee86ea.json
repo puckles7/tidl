@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT s.id, s.owner_username, s.calendar_name, s.permission,\n                    c.display_name, c.color\n             FROM calendar_shares s\n             JOIN calendars c ON c.username = s.owner_username AND c.name = s.calendar_name\n             WHERE s.grantee_username = ?\n             ORDER BY s.owner_username, s.calendar_name",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "owner_username",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "calendar_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "permission",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "display_name",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "color",
+        "ordinal": 5,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      true,
+      true
+    ]
+  },
+  "hash": "846e83bb7bce2c2896256716e432a93c2cc5b30e777486ddcc948ac0e8ee86ea"
+}

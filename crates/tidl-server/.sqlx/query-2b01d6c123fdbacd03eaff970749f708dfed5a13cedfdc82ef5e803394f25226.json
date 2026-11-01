@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM events WHERE username = ? AND (calendar = ? OR calendar LIKE ? ESCAPE '\\')",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "2b01d6c123fdbacd03eaff970749f708dfed5a13cedfdc82ef5e803394f25226"
+}

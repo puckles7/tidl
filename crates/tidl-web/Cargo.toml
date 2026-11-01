@@ -1,0 +1,115 @@
+[package]
+name = "tidl-web"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos = { workspace = true }
+leptos_meta = { workspace = true }
+leptos_router = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+chrono-tz = { workspace = true }
+# Inline note-token grammar (`note_tokens.rs`, backlog #113) — pure and
+# wasm32-safe, unlike `tidl-markdown` as a whole (see `note_tokens.rs`).
+regex = { workspace = true }
+
+# WASM-only
+console_error_panic_hook = { version = "0.1", optional = true }
+wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen-futures = { version = "0.4", optional = true }
+js-sys = { version = "0.3", optional = true }
+web-sys = { version = "0.3", features = [
+    "Document", "HtmlDocument",
+    "Element", "HtmlElement", "CssStyleDeclaration", "DomRect", "DomRectReadOnly", "NodeList",
+    "ScrollIntoViewOptions", "ScrollLogicalPosition", "ScrollBehavior",
+    "MouseEvent", "PointerEvent", "KeyboardEvent", "EventTarget", "Text",
+    "HtmlInputElement", "HtmlTextAreaElement", "HtmlSelectElement",
+    "SubmitEvent", "Window",
+    "File", "FileList", "Blob", "BlobPropertyBag",
+    "AudioContext", "AudioContextState", "BaseAudioContext",
+    "AudioDestinationNode", "AudioNode",
+    "OscillatorNode", "OscillatorType", "AudioParam",
+    "GainNode",
+    "Notification", "NotificationOptions", "NotificationPermission",
+    "EventSource", "MessageEvent",
+    "TouchEvent", "TouchList", "Touch",
+    "Navigator", "Clipboard",
+    "Storage",
+    "Performance",
+] }
+
+# SSR-only: access the SQLite pool provided via Axum Extension
+axum = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+sqlx = { workspace = true, optional = true }
+leptos_axum = { workspace = true, optional = true }
+uuid = { workspace = true, optional = true }
+argon2 = { workspace = true, optional = true }
+bcrypt = { workspace = true, optional = true }
+tidl-caldav = { path = "../tidl-caldav", optional = true }
+tidl-carddav = { path = "../tidl-carddav", optional = true }
+tidl-markdown = { path = "../tidl-markdown", optional = true }
+rrule = { workspace = true, optional = true }
+tracing = "0.1.44"
+
+# SSR-only: SMTP password encryption and sending
+aes-gcm  = { workspace = true, optional = true }
+hex      = { workspace = true, optional = true }
+rand     = { workspace = true, optional = true }
+sha2     = { workspace = true, optional = true }
+base64   = { workspace = true, optional = true }
+anyhow   = { workspace = true, optional = true }
+lettre   = { workspace = true, optional = true }
+reqwest  = { workspace = true, optional = true }
+zip      = { workspace = true, optional = true }
+log = "0.4.33"
+
+[features]
+# In Leptos 0.8, leptos_meta/leptos_router no longer have their own
+# hydrate/ssr features — only leptos itself does.
+hydrate = [
+    "leptos/csr",
+    "dep:console_error_panic_hook",
+    "dep:wasm-bindgen",
+    "dep:wasm-bindgen-futures",
+    "dep:js-sys",
+    # Pure-Rust, wasm-safe — used client-side to base64-encode a picked
+    # contact photo before sending it to upload_contact_photo (#86), the
+    # same way it's already used server-side to decode it.
+    "dep:base64",
+]
+# Enable client-side remote debug logging (POSTs errors to /debug-log).
+# Implies hydrate — always used alongside it.
+client-debug = ["hydrate"]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+    "dep:axum",
+    "dep:tokio",
+    "dep:sqlx",
+    "dep:leptos_axum",
+    "dep:uuid",
+    "dep:argon2",
+    "dep:bcrypt",
+    "dep:tidl-caldav",
+    "dep:tidl-carddav",
+    "dep:tidl-markdown",
+    "dep:rrule",
+    "dep:aes-gcm",
+    "dep:hex",
+    "dep:rand",
+    "dep:sha2",
+    "dep:base64",
+    "dep:anyhow",
+    "dep:lettre",
+    "dep:reqwest",
+    "dep:zip",
+]

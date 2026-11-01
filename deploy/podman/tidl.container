@@ -1,0 +1,37 @@
+# tidl — Podman Quadlet unit (backlog #152).
+#
+# Quadlet turns this file into a real systemd service, so Podman containers get
+# the same supervision model as a native unit (restart-on-failure, journald
+# logs). Install as a rootless user service:
+#
+#   podman secret create tidl-secret ./tidl-secret
+#   mkdir -p ~/.config/containers/systemd
+#   cp tidl.container ~/.config/containers/systemd/
+#   systemctl --user daemon-reload
+#   systemctl --user start tidl
+#
+# The image is published under the `puckles7` GitHub org.
+
+[Unit]
+Description=tidl CalDAV server
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=ghcr.io/puckles7/tidl:latest
+ContainerName=tidl
+PublishPort=3060:3060
+Volume=tidl-data:/data
+Environment=TIDL_HOST=0.0.0.0
+Environment=TIDL_PORT=3060
+Environment=TIDL_DATA_DIR=/data
+Environment=TIDL_DOMAIN=localhost
+Environment=TIDL_SECRET_FILE=/run/secrets/tidl-secret
+Secret=tidl-secret,type=mount
+LogDriver=journald
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

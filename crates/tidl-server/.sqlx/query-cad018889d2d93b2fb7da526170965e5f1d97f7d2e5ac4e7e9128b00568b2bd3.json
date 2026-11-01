@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT name FROM calendars WHERE username = ? AND name LIKE ? ESCAPE '\\' AND name NOT LIKE ? ESCAPE '\\'",
+  "describe": {
+    "columns": [
+      {
+        "name": "name",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "cad018889d2d93b2fb7da526170965e5f1d97f7d2e5ac4e7e9128b00568b2bd3"
+}

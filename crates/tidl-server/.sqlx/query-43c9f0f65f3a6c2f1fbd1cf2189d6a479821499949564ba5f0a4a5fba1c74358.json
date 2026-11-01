@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT type as kind, is_primary as \"is_primary: bool\", street, city, region,\n                      postal_code, country\n               FROM contact_addresses WHERE contact_id = ? ORDER BY is_primary DESC, id ASC",
+  "describe": {
+    "columns": [
+      {
+        "name": "kind",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "is_primary: bool",
+        "ordinal": 1,
+        "type_info": "Bool"
+      },
+      {
+        "name": "street",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "city",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "region",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "postal_code",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "country",
+        "ordinal": 6,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "43c9f0f65f3a6c2f1fbd1cf2189d6a479821499949564ba5f0a4a5fba1c74358"
+}

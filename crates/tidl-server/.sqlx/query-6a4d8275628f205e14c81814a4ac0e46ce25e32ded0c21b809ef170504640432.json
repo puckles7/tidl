@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id as \"id!: i64\", name, owner_username FROM contact_collections\n             WHERE owner_username = ?\n                OR id IN (SELECT collection_id FROM contact_collection_members WHERE member_username = ?)\n             ORDER BY name ASC",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!: i64",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "owner_username",
+        "ordinal": 2,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "6a4d8275628f205e14c81814a4ac0e46ce25e32ded0c21b809ef170504640432"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE share_invitations SET status = 'accepted' WHERE token = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "360e3068143e6911179010c11bab71cc6e2cb67015ce2530ad98d5877e841261"
+}

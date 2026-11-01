@@ -1,0 +1,5 @@
+[toolchain]
+# Leptos 0.8 requires stable Rust 1.88+ — no nightly needed.
+channel = "stable"
+targets = ["wasm32-unknown-unknown", "x86_64-pc-windows-gnu"]
+components = ["rust-src", "rust-analyzer", "rustfmt", "clippy", "llvm-tools"]

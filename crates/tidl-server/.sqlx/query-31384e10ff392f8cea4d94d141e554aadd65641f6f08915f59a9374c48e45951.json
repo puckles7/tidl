@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT display_name FROM calendars WHERE username = ? AND name = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "display_name",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "31384e10ff392f8cea4d94d141e554aadd65641f6f08915f59a9374c48e45951"
+}

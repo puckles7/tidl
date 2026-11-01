@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO contact_sync_log (collection_id, uid, operation, token) VALUES (?, ?, ?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "a6230dd1bfab5093f5a04d45a95703c65ce2fd3bc8865c139e9967f96194355b"
+}

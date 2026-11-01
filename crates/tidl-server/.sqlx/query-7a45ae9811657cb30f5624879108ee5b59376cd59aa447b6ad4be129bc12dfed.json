@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE share_invitations SET status = 'declined' WHERE token = ? AND status = 'pending'",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "7a45ae9811657cb30f5624879108ee5b59376cd59aa447b6ad4be129bc12dfed"
+}

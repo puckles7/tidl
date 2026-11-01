@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM properties WHERE username = ? AND resource_path = ? AND namespace = ? AND name = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "48c4989ef2b0cbf11359f45591604a4e30a9c2e38157c1dc428d854994e78d2b"
+}

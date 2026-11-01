@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO locks (token, username, resource_path, scope, depth, owner_info, timeout_secs, expires_at)\n             VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now', ?||' seconds'))",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "0d203b00968b5e441182161686a513a06841208106e976a932873802ef530a4c"
+}

@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT host, port, tls_mode, username, password_encrypted, from_address, from_name\n             FROM smtp_config WHERE id = 1",
+  "describe": {
+    "columns": [
+      {
+        "name": "host",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "port",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "tls_mode",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "username",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "password_encrypted",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "from_address",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "from_name",
+        "ordinal": 6,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "c240a3d6e5fb055da490a7d9ce98bffe6770831b4fefd73bdaef6909461264f3"
+}

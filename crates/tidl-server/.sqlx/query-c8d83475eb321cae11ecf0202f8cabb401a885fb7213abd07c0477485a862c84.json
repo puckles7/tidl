@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO properties (username, resource_path, namespace, name, value, updated_at)\n             VALUES (?, ?, ?, ?, ?, datetime('now'))\n             ON CONFLICT(username, resource_path, namespace, name)\n             DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "c8d83475eb321cae11ecf0202f8cabb401a885fb7213abd07c0477485a862c84"
+}

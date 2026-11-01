@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT value FROM contact_categories WHERE contact_id = ? ORDER BY id ASC",
+  "describe": {
+    "columns": [
+      {
+        "name": "value",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "cec99ddf48cdaee665f2de1b961dc8e1a4ebd8b3acddf993d9ab9d9664f2d378"
+}

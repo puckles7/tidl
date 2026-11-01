@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT uid, operation FROM contact_sync_log\n             WHERE collection_id = ? AND token > ? AND token <= ?\n             ORDER BY token DESC",
+  "describe": {
+    "columns": [
+      {
+        "name": "uid",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "operation",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "f261522b8700d7eb28097912e73dc90be95b1d544bf71323dfc4daea526c9953"
+}

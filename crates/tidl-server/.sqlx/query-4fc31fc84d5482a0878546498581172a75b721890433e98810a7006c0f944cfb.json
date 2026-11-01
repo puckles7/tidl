@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM contacts WHERE collection_id = ? AND uid = ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "4fc31fc84d5482a0878546498581172a75b721890433e98810a7006c0f944cfb"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM properties WHERE username = ? AND resource_path LIKE ?",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "e16ae0fc28491bb830609601f906cc4fad1d8f10b5a8451a2cbc0b0c6b53f130"
+}

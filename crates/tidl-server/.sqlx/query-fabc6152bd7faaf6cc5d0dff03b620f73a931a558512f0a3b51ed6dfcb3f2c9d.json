@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT id FROM calendar_shares WHERE grantee_username = 'bob'",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "fabc6152bd7faaf6cc5d0dff03b620f73a931a558512f0a3b51ed6dfcb3f2c9d"
+}

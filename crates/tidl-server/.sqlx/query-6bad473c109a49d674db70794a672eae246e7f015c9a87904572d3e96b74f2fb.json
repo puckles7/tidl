@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO address_books (collection_id, sync_token) VALUES (?, 0)\n             ON CONFLICT(collection_id) DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "6bad473c109a49d674db70794a672eae246e7f015c9a87904572d3e96b74f2fb"
+}

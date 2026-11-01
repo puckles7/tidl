@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT owner_username FROM contact_collections WHERE id = ?",
+  "describe": {
+    "columns": [
+      {
+        "name": "owner_username",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "fe0c0323e6d9a2eff3a92bfb58f0a0b02d9b4d3c154d5396b49493f4fc9585e3"
+}

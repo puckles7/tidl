@@ -1,0 +1,21 @@
+[package]
+name = "tidl-caldav"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Workspace dependencies
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+icalendar = { workspace = true }
+sha2 = { workspace = true }
+
+# Additional dependencies
+quick-xml = { version = "0.42", features = ["serialize"] }
+hex = "0.4"
