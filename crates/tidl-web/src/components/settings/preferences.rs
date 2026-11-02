@@ -21,6 +21,7 @@ pub(super) const TIMEZONES: &[(&str, &str)] = &[
     ("Europe/Paris", "Paris (CET/CEST)"),
     ("Europe/Berlin", "Berlin (CET/CEST)"),
     ("Europe/Rome", "Rome (CET/CEST)"),
+    ("Europe/Amsterdam", "Amsterdam (CET/CEST)"),
     ("Europe/Moscow", "Moscow (MSK)"),
     ("Africa/Cairo", "Cairo (EET)"),
     ("Africa/Johannesburg", "Johannesburg (SAST)"),
