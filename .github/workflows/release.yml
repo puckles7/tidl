@@ -1,0 +1,94 @@
+name: release
+
+# Build the prebuilt release artifacts (backlog #148) and attach them to a
+# GitHub Release. Triggered by version tags (`v*`); also runnable manually.
+#
+# The Linux tarballs come from the `tidlLinuxDist` Nix derivation — the same one
+# the `dist-linux` dev command uses — so the artifact layout is defined once.
+# The Windows zip reuses the existing `dist-windows` packaging logic via a
+# minimal Nix dev shell (no Wine/Playwright closure).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    name: linux (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - name: Build Linux tarball
+        run: nix build .#linuxDist
+
+      - name: Collect artifact
+        run: |
+          mkdir -p artifacts
+          cp result/*.tar.gz artifacts/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tidl-linux-${{ matrix.arch }}
+          path: artifacts/*.tar.gz
+
+  windows:
+    name: windows (x86_64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - name: Build Windows zip
+        run: nix develop .#dist -c dist-windows
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tidl-windows-x86_64
+          path: dist/*.zip
+
+  publish:
+    name: publish GitHub Release
+    needs: [linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Extract the CHANGELOG.md section for this tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          # Body of "## [<version>]" up to the next "## [" heading (#147).
+          awk -v ver="$version" '
+            $0 ~ "^## \\[" ver "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found { print }
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "See CHANGELOG.md for details." > release-notes.md
+          fi
+          cat release-notes.md
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          body_path: release-notes.md

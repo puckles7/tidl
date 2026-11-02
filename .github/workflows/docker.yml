@@ -1,0 +1,75 @@
+name: docker
+
+# Build the OCI image (backlog #149) for both architectures and publish it to
+# GitHub Container Registry. Triggered by version tags (`v*`); also runnable
+# manually. The image is built from the same Nix package the NixOS module uses
+# (`nix build .#docker`), so it cannot drift from the release tarballs (#148).
+#
+# After the first publish, set the ghcr.io package visibility to Public in the
+# repository's package settings so anonymous `docker pull` works.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  # ghcr.io requires a lowercase path; normalised again in each step.
+  IMAGE: ghcr.io/${{ github.repository_owner }}/tidl
+
+jobs:
+  build:
+    name: build (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v30
+
+      - name: Build image
+        run: |
+          nix build .#docker
+          # buildLayeredImage emits a single gzipped image tarball; `docker load`
+          # reads it directly.
+          ls -lL result
+
+      - name: Load and push per-arch image
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          image="$(echo "${IMAGE}" | tr '[:upper:]' '[:lower:]')"
+          docker load -i result
+          docker tag tidl:latest "${image}:${GITHUB_REF_NAME}-${ARCH}"
+          docker push "${image}:${GITHUB_REF_NAME}-${ARCH}"
+
+  manifest:
+    name: publish multi-arch manifest
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create manifest list
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          image="$(echo "${IMAGE}" | tr '[:upper:]' '[:lower:]')"
+          docker buildx imagetools create \
+            -t "${image}:${TAG}" \
+            -t "${image}:latest" \
+            "${image}:${TAG}-amd64" \
+            "${image}:${TAG}-arm64"

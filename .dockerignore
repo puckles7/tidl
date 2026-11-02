@@ -1,0 +1,40 @@
+# Keep the Docker build context small and free of host state.
+#
+# NOTE: crates/tidl-server/.sqlx/ is intentionally NOT ignored — the build
+# compiles against that committed offline query cache.
+
+# VCS / tooling
+.git
+.gitignore
+.github
+.worktrees
+.direnv
+.superpowers
+.opencode
+
+# Build output
+target
+dist
+result
+result-*
+/site
+/pkg
+
+# Local state & secrets — never bake these into an image
+data
+data-*
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-*
+config.toml
+tidl-enc-key
+
+# Test / editor scratch
+node_modules
+.playwright-mcp
+__pycache__
+.pytest_cache
+.vscode
+.idea
