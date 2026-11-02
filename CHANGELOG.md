@@ -12,6 +12,8 @@ documented in [`docs/releasing.md`](docs/releasing.md).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-02
+
 ### Added
 
 - The markdown editor's task/await edit dialog has a "Mark as done" checkbox:
