@@ -1,0 +1,81 @@
+# ── Generated build artifacts ─────────────────────────────────────────────────
+# Rust
+/target
+**/target/
+**/*.rs.bk
+*.pdb
+
+# Leptos / wasm bundle output
+/site
+/pkg
+
+# Bundled release output
+/dist
+/rust_out
+
+# JS dependencies (opencode tooling, etc.)
+node_modules/
+.opencode/node_modules/
+
+# SQLx offline query cache is intentionally committed — do NOT ignore `**/.sqlx/`.
+
+# Playwright / browser-tool output (screenshots, snapshots, console logs)
+.playwright-mcp/
+
+# Python test caches
+__pycache__/
+.pytest_cache/
+
+# Agent scratch / tooling
+.superpowers/
+.claude/worktrees/
+# Anchored on purpose: cargo-leptos's file watcher tests every ancestor
+# directory of a watched path against .gitignore — even ancestors *above* the
+# worktree root. An unanchored `.worktrees/` therefore matches the
+# `<repo>/.worktrees` parent of a linked worktree, so every candidate path is
+# filtered out and the watcher registers zero inotify watches — `cargo leptos
+# watch` never rebuilds. Anchoring means only the repo-root `.worktrees/` is
+# ignored.
+/.worktrees/
+
+# ── Local data & secrets (not generated, but never committed) ────────────────
+# Databases and per-instance data dirs
+/data
+/data-*
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
+
+# Config & keys
+config.toml
+tidl-enc-key
+tidl-secret
+
+# Backups from setup script
+*.bak
+setup-tidl.sh
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+
+# ── Nix ──────────────────────────────────────────────────────────────────────
+result
+result-*
+.direnv/
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Test scratch
+/test-notes
+/markdown_test/
