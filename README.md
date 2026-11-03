@@ -18,7 +18,7 @@ A CalDAV server that bridges your calendar and tasks with your markdown knowledg
 - **Focus** — Urgency-ranked list of events, tasks, and awaits, with content/horizon filters, inline creation, per-item suppression, and an explainable score breakdown.
 - **Done** — Completed items from markdown, notes, and CalDAV in one place, with reopen, archive, and per-source retention rules.
 - **Priority curves** — Drag-editable graphs that reshape how urgency is scored.
-- **Inline items** — Tasks and awaits live inside notes and markdown, not in a separate system.
+- **Flexible sources** — Create tasks and awaits ad-hoc on a calendar, or write them inline in notes and markdown.
 
 ### Notes & Contacts
 
