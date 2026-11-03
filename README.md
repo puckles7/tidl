@@ -35,7 +35,7 @@ A CalDAV server that bridges your calendar and tasks with your markdown knowledg
 
 ### Clients & Infrastructure
 
-- **Clients** — Works with iOS, DAVx⁵, and Thunderbird over CalDAV/CardDAV; a Windows build and an Outlook COM bridge are included.
+- **Clients** — Works with iOS, DAVx⁵, Thunderbird, and Sailfish OS (Jolla Phone 2026) over CalDAV/CardDAV; a Windows build and an Outlook COM bridge are included.
 - **Lightweight** — Single Rust binary, SQLite storage, ETag-based optimistic concurrency.
 - **Packaged** — Multi-arch Docker image on `ghcr.io`, prebuilt Linux/Windows releases, and NAS/Podman templates.
 - **FOSS** — Free and Open Source Software.
@@ -214,14 +214,14 @@ Connect any CalDAV-compatible app:
 - URL: `https://your-domain.com/caldav/username/calendar`
 - Username / Password: your tidl credentials
 
-Tested with iOS Calendar & Reminders, Android DAVx⁵, and Thunderbird.
+Tested with iOS Calendar & Reminders, Android DAVx⁵ (including in Android AppSupport on the Jolla Phone 2026), Thunderbird, and natively on the Jolla Phone 2026 (Sailfish OS Calendar).
 
 Connect any CardDAV-compatible address book app the same way:
 
 - Server: `https://your-domain.com/carddav/username/` (address-book-home-set discovery lists every collection you own or are a member of — most clients auto-discover from this base URL)
 - Username / Password: your tidl credentials, or an app token from Settings → App Tokens
 
-Tested with iOS Contacts and Thunderbird; DAVx⁵ contact sync is expected to work (same protocol, same server) but hasn't been verified yet.
+Tested with iOS Contacts, Thunderbird, and natively on the Jolla Phone 2026 (Sailfish OS Contacts); DAVx⁵ contact sync is expected to work (same protocol, same server) but hasn't been verified yet.
 
 ## Web Interface
 
