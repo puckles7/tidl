@@ -1,8 +1,23 @@
+# tidl configuration. Copy to config.toml and edit.
+#
+# User accounts live in the database. Bootstrap the first admin with:
+#
+#   tidl-server create-admin \
+#     --email you@example.com --username you --display-name You \
+#     --password 'choose-a-strong-password'
+#
+# ...or declare users in the optional [[users]] list below. Login uses the
+# email address. `username` is only the short slug used in CalDAV/CardDAV URLs
+# (/caldav/<username>/…). Additional users can register through the web UI
+# while allow_registration is true (the default), or be created by an admin in
+# Settings → Users.
+
 [server]
 host = "127.0.0.1"
 port = 3060
 domain = "tidl.dev"
-log_level = "info"
+# Runtime verbosity is controlled by RUST_LOG, e.g.
+# RUST_LOG=info,tidl_server=debug
 # Required. Protects the SMTP password and any remote CalDAV personal access
 # tokens stored (encrypted) in the database — there is no default, and the
 # server refuses to start without one. Generate with: tidl-server generate-key
@@ -14,30 +29,30 @@ secret = "changeme-generate-with-tidl-server-generate-key"
 # served over plain HTTP (e.g. direct LAN access with no TLS in front).
 # Can also be set via TIDL_SECURE_COOKIE.
 secure_cookie = true
+# Allow new users to self-register via the web UI. Defaults to true.
+# Set false to require an admin to create accounts (invitation links still work).
+# Can also be set via TIDL_ALLOW_REGISTRATION.
+# allow_registration = true
+# Email address notified when a new account is created. Optional.
+# Can also be set via TIDL_ADMIN_EMAIL.
+# admin_email = "admin@example.com"
+# File containing a 32-byte key used for encrypting ad-hoc git source PATs.
+# Optional; falls back to TIDL_ENCRYPTION_KEY_FILE.
+# encryption_key_file = "/path/to/tidl-enc-key"
 
 [paths]
 data_dir = "./data"
 
-[auth]
-# Users list - password hashes generated with bcrypt
-# Generate a hash with: tidl-server hash-password <password>
-users = [
-    # Fake placeholder — replace with a real hash from: tidl-server hash-password <password>
-    { username = "admin", password_hash = "$2b$12$KIXxkCPZpYyQN5U5pJ5zQO5g5Y5zQO5g5Y5zQO5g5Y5zQO5g5Y5zQO" }
-]
-
-[smtp]
-# Declarative SMTP config. Optional — if omitted, configure email via
-# Settings -> Email in the UI instead. TIDL_SMTP_* env vars (see NixOS
-# module) take precedence over this table when set.
-host = "smtp.example.com"
-port = 587
-# "none" | "starttls" | "tls"
-tls_mode = "starttls"
-username = "tidl@example.com"
-password = "changeme"
-from_address = "tidl@example.com"
-from_name = "Tidl"
+# Optional: users created automatically at startup. An entry is only created
+# when no account with the same email or username exists — existing accounts
+# are never modified, so password/admin changes made in the UI survive
+# restarts. Generate password_hash with: tidl-server hash-password 'password'
+# [[users]]
+# email = "you@example.com"
+# username = "you"
+# display_name = "You"
+# password_hash = "$argon2id$v=19$m=19456,t=2,p=1$..."
+# is_admin = true
 
 [caldav]
 # Default calendar name
@@ -65,3 +80,32 @@ recursive = true
 # app_secret = "your-app-secret"
 # path = "/Notes"
 # enabled = false
+
+# Optional: inbound SMTP listener for iMIP email invitations.
+# [inbound_smtp]
+# port = 2525
+# cert_path = "/path/to/cert.pem"
+# key_path = "/path/to/key.pem"
+# domain = "calendar.example.com"
+# max_message_bytes = 1048576
+# rate_limit_per_hour = 20
+
+# Optional: OIDC single sign-on. Can also be set via TIDL_OIDC_* env vars.
+# [oidc]
+# issuer_url = "https://auth.example.com/oauth2/openid/tidl"
+# client_id = "tidl"
+# client_secret = "changeme"
+# provider_name = "Example"
+
+# Declarative SMTP config. Optional — if omitted, configure email via
+# Settings → Email in the UI instead. TIDL_SMTP_* env vars (see NixOS
+# module) take precedence over this table when set.
+[smtp]
+host = "smtp.example.com"
+port = 587
+# "none" | "starttls" | "tls"
+tls_mode = "starttls"
+username = "tidl@example.com"
+password = "changeme"
+from_address = "tidl@example.com"
+from_name = "Tidl"

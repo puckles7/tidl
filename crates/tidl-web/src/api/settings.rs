@@ -539,7 +539,7 @@ pub async fn open_in_editor(uid: String) -> Result<(), ServerFnError> {
         // A remote browser can reach this function too. If the fallback is
         // the only path and the server has no GUI session, fail clearly
         // instead of spawning an opener that cannot display anything.
-        let no_configured_command = cmd_opt.as_deref().map_or(true, |cmd| cmd.trim().is_empty());
+        let no_configured_command = cmd_opt.as_deref().is_none_or(|cmd| cmd.trim().is_empty());
         if no_configured_command
             && cfg!(target_os = "linux")
             && std::env::var_os("DISPLAY").is_none()

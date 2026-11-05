@@ -12,6 +12,22 @@ documented in [`docs/releasing.md`](docs/releasing.md).
 
 ## [Unreleased]
 
+### Added
+
+- Users can again be provisioned declaratively via an optional `[[users]]` list
+  in `config.toml` (`email`, `username`, `display_name`, `password_hash`,
+  `is_admin`). Entries are created at startup only when no account with the
+  same email or username exists, so UI changes survive restarts. (#02)
+
+### Fixed
+
+- `config.toml.example` no longer documents the obsolete `[auth]` users table
+  (accounts live in the database) and now explains creating the first admin
+  with `create-admin` and that login is by email, not username. Also documents
+  the supported `allow_registration`, `admin_email`, `encryption_key_file`,
+  `[inbound_smtp]`, and `[oidc]` options. The unused `server.log_level` key
+  was dropped; set `RUST_LOG` instead. (#02)
+
 ## [0.1.0] - 2026-11-02
 
 ### Added

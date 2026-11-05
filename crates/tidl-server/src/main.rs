@@ -460,6 +460,36 @@ async fn main() -> Result<()> {
         }
     }
 
+    // Create declaratively configured users from config.toml's [[users]] list.
+    // Existing accounts (matched by email or username) are left untouched, so
+    // password/admin changes made in the UI survive restarts.
+    for u in &config.users {
+        let email = u.email.trim();
+        let username = u.username.trim();
+        if email.is_empty() || username.is_empty() || u.password_hash.trim().is_empty() {
+            tracing::error!(
+                "Skipping declarative user {username:?}: email, username and password_hash are required"
+            );
+            continue;
+        }
+        match users
+            .ensure_user(
+                username,
+                email,
+                &u.display_name,
+                u.password_hash.trim(),
+                u.is_admin,
+            )
+            .await
+        {
+            Ok(true) => tracing::info!("Created declarative user '{username}' <{email}>"),
+            Ok(false) => {
+                tracing::info!("Declarative user '{username}' already exists; leaving unchanged")
+            }
+            Err(e) => tracing::error!("Failed to create declarative user '{username}': {e}"),
+        }
+    }
+
     let app_state = AppState {
         config,
         storage,
