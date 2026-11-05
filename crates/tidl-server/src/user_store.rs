@@ -151,6 +151,38 @@ impl UserStore {
         })
     }
 
+    /// Create a user unless one with the same email or username already
+    /// exists. Returns `Ok(true)` when the account was created and
+    /// `Ok(false)` when an existing account was left untouched.
+    ///
+    /// Used for `[[users]]` entries in `config.toml`: never overwrites an
+    /// existing password or admin flag, so UI-made changes survive restarts.
+    pub async fn ensure_user(
+        &self,
+        username: &str,
+        email: &str,
+        display_name: &str,
+        password_hash: &str,
+        is_admin: bool,
+    ) -> Result<bool> {
+        let email_lc = email.to_lowercase();
+        let existing: Option<i64> = sqlx::query_scalar(
+            "SELECT id FROM users WHERE email = ? OR username = ? LIMIT 1",
+        )
+        .bind(&email_lc)
+        .bind(username)
+        .fetch_optional(&self.pool)
+        .await?;
+
+        if existing.is_some() {
+            return Ok(false);
+        }
+
+        self.create_user(username, email, display_name, password_hash, is_admin)
+            .await?;
+        Ok(true)
+    }
+
     /// Enable or disable a user account.
     pub async fn set_active(&self, username: &str, is_active: bool) -> Result<()> {
         let affected = sqlx::query(
@@ -777,5 +809,71 @@ mod tests {
         let (token_username, read_only) = store.validate_app_token(&token).await.unwrap().unwrap();
         assert_eq!(token_username, user.username);
         assert!(!read_only);
+    }
+
+    #[sqlx::test(migrations = "../../migrations")]
+    async fn ensure_user_creates_missing_account(pool: SqlitePool) {
+        let store = UserStore::new(pool);
+        let hash = UserStore::hash_password("pw12345678").unwrap();
+        let created = store
+            .ensure_user("alice", "Alice@Example.com", "Alice", &hash, true)
+            .await
+            .unwrap();
+        assert!(created);
+
+        let user = store
+            .find_active_by_email("alice@example.com")
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(user.username, "alice");
+        assert!(user.is_admin);
+    }
+
+    #[sqlx::test(migrations = "../../migrations")]
+    async fn ensure_user_leaves_existing_account_untouched(pool: SqlitePool) {
+        let store = UserStore::new(pool);
+        let hash = UserStore::hash_password("pw12345678").unwrap();
+        store
+            .create_user("alice", "alice@example.com", "Alice", &hash, false)
+            .await
+            .unwrap();
+
+        let created = store
+            .ensure_user(
+                "alice",
+                "alice@example.com",
+                "Different Name",
+                &UserStore::hash_password("new-password").unwrap(),
+                true,
+            )
+            .await
+            .unwrap();
+        assert!(!created);
+
+        let user = store
+            .find_active_by_username("alice")
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(user.display_name, "Alice");
+        assert!(!user.is_admin);
+        assert!(UserStore::verify_password("pw12345678", &user.password_hash));
+    }
+
+    #[sqlx::test(migrations = "../../migrations")]
+    async fn ensure_user_matches_existing_by_username_too(pool: SqlitePool) {
+        let store = UserStore::new(pool);
+        let hash = UserStore::hash_password("pw12345678").unwrap();
+        store
+            .create_user("alice", "alice@example.com", "Alice", &hash, false)
+            .await
+            .unwrap();
+
+        let created = store
+            .ensure_user("alice", "other@example.com", "", &hash, false)
+            .await
+            .unwrap();
+        assert!(!created);
     }
 }

@@ -145,15 +145,41 @@ secret = "..."
 [paths]
 data_dir = "./data"
 
-[auth]
-users = [
-    { username = "admin", password_hash = "$2b$12$..." }
-]
-
 [sync]
 enabled = true
 watch_interval_secs = 5
 ```
+
+### Users and login
+
+Users are stored in the database, not in `config.toml` (there is no `[auth]`
+table — older configs that still contain one are ignored). Create the first
+admin with:
+
+```bash
+tidl-server create-admin \
+  --email you@example.com --username you --display-name You \
+  --password 'choose-a-strong-password'
+```
+
+Login uses the **email address**; `username` is only the short slug in
+CalDAV/CardDAV URLs (`/caldav/<username>/…`). New users can self-register while
+`server.allow_registration` is `true` (the default), or an admin can create
+them in Settings → Users.
+
+Users can also be provisioned declaratively at startup. Existing accounts
+(matched by email or username) are left untouched:
+
+```toml
+[[users]]
+email = "you@example.com"
+username = "you"
+display_name = "You"
+password_hash = "$argon2id$v=19$m=19456,t=2,p=1$..."
+is_admin = true
+```
+
+Generate the hash with `tidl-server hash-password 'your-password'`.
 
 ### Server secret
 

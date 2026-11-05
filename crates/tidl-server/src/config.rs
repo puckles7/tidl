@@ -49,6 +49,30 @@ pub struct Config {
     pub oidc: Option<OidcConfig>,
     #[serde(default)]
     pub smtp: Option<SmtpEnvConfig>,
+    /// Users created at startup (config.toml `[[users]]`). Accounts are
+    /// matched by email or username; existing ones are left untouched.
+    #[serde(default)]
+    pub users: Vec<DeclarativeUser>,
+}
+
+/// A user provisioned declaratively from `[[users]]` in `config.toml`.
+///
+/// The account is created only when no user with the same email or username
+/// exists; an existing account is never modified, so password and admin-flag
+/// changes made in the web UI survive restarts.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DeclarativeUser {
+    /// Login identifier (case-insensitive).
+    pub email: String,
+    /// Short slug used in CalDAV/CardDAV URLs.
+    pub username: String,
+    #[serde(default)]
+    pub display_name: String,
+    /// Argon2id PHC string from `tidl-server hash-password <password>`
+    /// (legacy bcrypt `$2b$`/`$2y$` hashes are also accepted).
+    pub password_hash: String,
+    #[serde(default)]
+    pub is_admin: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -56,7 +80,6 @@ pub struct ServerConfig {
     pub host: String,
     pub port: u16,
     pub domain: String,
-    pub log_level: String,
     /// Secret used to derive the AES key for encrypting stored credentials
     /// (SMTP password, remote CalDAV personal access tokens). No default —
     /// `Config::require_secret` refuses to start the server when this is
@@ -159,7 +182,6 @@ impl Default for Config {
                 host: "127.0.0.1".to_string(),
                 port: 3060,
                 domain: "tidl.dev".to_string(),
-                log_level: "info".to_string(),
                 secret: None,
                 allow_registration: default_allow_registration(),
                 admin_email: None,
@@ -180,6 +202,7 @@ impl Default for Config {
             inbound_smtp: None,
             oidc: None,
             smtp: None,
+            users: vec![],
         }
     }
 }
@@ -414,7 +437,6 @@ mod tests {
         assert_eq!(c.server.host, "127.0.0.1");
         assert_eq!(c.server.port, 3060);
         assert_eq!(c.server.domain, "tidl.dev");
-        assert_eq!(c.server.log_level, "info");
         assert!(c.server.allow_registration);
         assert!(c.server.secret.is_none());
         assert!(c.server.secure_cookie);
@@ -694,5 +716,55 @@ provider_name = "Kanidm"
             std::env::remove_var("TIDL_SMTP_HOST");
         }
         assert!(c.smtp.is_none());
+    }
+
+    #[test]
+    fn declarative_users_default_empty() {
+        let c = Config::default();
+        assert!(c.users.is_empty());
+    }
+
+    #[test]
+    fn declarative_users_parsed_with_defaults() {
+        let toml = r#"
+[server]
+host = "127.0.0.1"
+port = 3060
+domain = "tidl.dev"
+
+[paths]
+data_dir = "./data"
+
+[caldav]
+default_calendar = "personal"
+
+[sync]
+enabled = false
+watch_interval_secs = 5
+
+[[users]]
+email = "admin@example.com"
+username = "admin"
+password_hash = "$argon2id$v=19$m=19456,t=2,p=1$abc$def"
+
+[[users]]
+email = "alice@example.com"
+username = "alice"
+display_name = "Alice"
+password_hash = "$argon2id$v=19$m=19456,t=2,p=1$abc$def"
+is_admin = true
+"#;
+        let config: Config = toml::from_str(toml).unwrap();
+        assert_eq!(config.users.len(), 2);
+
+        let admin = &config.users[0];
+        assert_eq!(admin.email, "admin@example.com");
+        assert_eq!(admin.username, "admin");
+        assert_eq!(admin.display_name, "");
+        assert!(!admin.is_admin);
+
+        let alice = &config.users[1];
+        assert_eq!(alice.display_name, "Alice");
+        assert!(alice.is_admin);
     }
 }
