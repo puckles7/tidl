@@ -34,5 +34,6 @@ All three were invisible without a real client attempting a real sync — self-c
 Verified bidirectionally against iOS Contacts and Thunderbird (2026-09-17), and
 against DAVx⁵ on the Jolla Phone 2026 (Android AppSupport, 2026-11-06) — all
 connected, and a full create/edit/delete round-trip in each direction was
-confirmed working. The DAVx⁵ pass also covered CalDAV; see #31. macOS
-Contacts.app was not checked separately.
+confirmed working. The DAVx⁵ pass also covered CalDAV (see #31), and native
+Sailfish OS Contacts on the Jolla Phone 2026 was verified bidirectionally too.
+macOS Contacts.app was not checked separately.

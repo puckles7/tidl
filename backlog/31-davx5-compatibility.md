@@ -32,6 +32,7 @@ iOS has native CalDAV support built in, so Apple devices sync with tidl without 
 Verified working bidirectionally against DAVx⁵ on the Jolla Phone 2026
 (Android AppSupport) on 2026-11-06. Initial connection, calendar discovery,
 and event create/edit/delete round-trips worked with no tidl-side changes.
-CardDAV was verified in the same DAVx⁵ pass (see #85). Recurring events,
-alarms, and scheduling extensions were not checked item-by-item; #30 (WebDAV
-Push) remains dropped, so DAVx⁵ uses its normal polling interval.
+CardDAV was verified in the same DAVx⁵ pass (see #85), and native Sailfish OS
+Calendar on the Jolla Phone 2026 was verified bidirectionally too. Recurring
+events, alarms, and scheduling extensions were not checked item-by-item; #30
+(WebDAV Push) remains dropped, so DAVx⁵ uses its normal polling interval.
