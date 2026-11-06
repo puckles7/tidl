@@ -167,3 +167,4 @@ Feature wishes and ideas for future development. Each item links to a detailed d
 | 161 | [Markdown viewer swallows task tags after a single-line backtick span](161-markdown-fence-single-line-swallows-tags.md)                    | done        | —                                 |
 | 162 | [Mark a task done from the markdown editor's edit dialog](162-markdown-editor-task-done-checkbox.md)                                       | done        | #129                              |
 | 163 | [Reference manager — books, articles, etc. (Zotero light)](163-reference-manager.md)                                                        | idea        | —                                 |
+| 164 | [Streamline local/remote handling for opening a file in an external editor](164-open-in-editor-local-remote-consolidation.md)              | done        | #23                               |

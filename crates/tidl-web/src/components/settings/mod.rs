@@ -3,8 +3,8 @@
 mod preferences;
 use preferences::PreferencesPanel;
 
-mod this_device;
-use this_device::ThisDevicePanel;
+mod editors;
+use editors::EditorsPanel;
 
 mod import;
 use import::ImportPanel;
@@ -164,9 +164,9 @@ pub fn SettingsModal(
                                 >"General"</button>
                                 <button
                                     class="settings-tab"
-                                    class=("active", move || active_tab.get() == "this_device")
-                                    on:click=move |_| active_tab.set("this_device")
-                                >"This Device"</button>
+                                    class=("active", move || active_tab.get() == "editors")
+                                    on:click=move |_| active_tab.set("editors")
+                                >"Editors"</button>
                                 <button
                                     class="settings-tab"
                                     class=("active", move || active_tab.get() == "priority_curves")
@@ -239,9 +239,9 @@ pub fn SettingsModal(
                         <PreferencesPanel on_close=move || on_close.with_value(|f| f()) />
                     </Show>
 
-                    // ── This Device tab ───────────────────────────────────────
-                    <Show when=move || active_tab.get() == "this_device">
-                        <ThisDevicePanel on_close=move || on_close.with_value(|f| f()) />
+                    // ── Editors tab ───────────────────────────────────────────
+                    <Show when=move || active_tab.get() == "editors">
+                        <EditorsPanel on_close=move || on_close.with_value(|f| f()) />
                     </Show>
 
                     // ── Priority Curves tab ──────────────────────────────────

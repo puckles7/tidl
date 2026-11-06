@@ -193,22 +193,6 @@ pub(super) fn PreferencesPanel(on_close: impl Fn() + Send + Sync + 'static) -> i
             </label>
         </div>
 
-        <div class="form-group">
-            <label class="form-label">"Server editor command"</label>
-            <input
-                type="text"
-                class="form-input"
-                placeholder="code --goto {file}:{line}"
-                prop:value=move || open_in_editor_cmd.get()
-                on:input=move |ev| open_in_editor_cmd.set(event_target_value(&ev))
-            />
-            <p class="form-hint">
-                "Only used when this browser is on the tidl host. Use {file} and {line}; \
-                 leave empty to use the host's default file opener. For remote editing, \
-                 configure This Device → Local editor."
-            </p>
-        </div>
-
         <div class="dialog-actions">
             <button class="btn-cancel" on:click=move |_| on_close.with_value(|f| f())>"Cancel"</button>
             <button
