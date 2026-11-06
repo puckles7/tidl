@@ -12,6 +12,8 @@ documented in [`docs/releasing.md`](docs/releasing.md).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-06
+
 ### Added
 
 - Users can again be provisioned declaratively via an optional `[[users]]` list
