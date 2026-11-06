@@ -38,6 +38,8 @@ documented in [`docs/releasing.md`](docs/releasing.md).
   with no URL-scheme template show a disabled open action with a
   `Configure editor…` shortcut and keep `Copy path`/`Edit in browser` as
   fallbacks. (#164)
+- DAVx⁵ sync is now verified bidirectionally for both CalDAV and CardDAV,
+  including in Android AppSupport on the Jolla Phone 2026. (#31, #85)
 
 ### Fixed
 
