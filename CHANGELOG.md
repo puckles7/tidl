@@ -19,6 +19,26 @@ documented in [`docs/releasing.md`](docs/releasing.md).
   `is_admin`). Entries are created at startup only when no account with the
   same email or username exists, so UI changes survive restarts. (#02)
 
+### Changed
+
+- "Open in editor" is now configured in one place, Settings → **Editors**
+  (formerly "This Device"). Git-backed sources always open from your own clone
+  on this device and never from tidl's managed copy; filesystem sources can be
+  opened externally only when the browser runs on the tidl host, with a
+  disabled action and hover explanation otherwise. The separate "Server editor
+  command" setting is gone — each editor supplies a default server-side command,
+  with an optional override under Advanced for launchers whose binary name or
+  path differs by platform or packaging (e.g. `code.cmd` on Windows, Flatpak or
+  Snap wrappers). Existing per-user commands keep working as a fallback, and a
+  missing launcher now falls back to the host's default file opener instead of
+  failing with "No such file or directory". The preview offers an inline,
+  source-scoped "Set up clone…" prompt, clone
+  paths must be absolute, SSH/HTTPS spellings of the same remote are
+  reconciled, and a `Test` link opens the clone root in your editor. Editors
+  with no URL-scheme template show a disabled open action with a
+  `Configure editor…` shortcut and keep `Copy path`/`Edit in browser` as
+  fallbacks. (#164)
+
 ### Fixed
 
 - `config.toml.example` no longer documents the obsolete `[auth]` users table

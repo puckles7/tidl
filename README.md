@@ -28,7 +28,7 @@ A CalDAV server that bridges your calendar and tasks with your markdown knowledg
 
 ### Markdown
 
-- **Editing** — In-app editor, or open the server's clone in your own editor; filesystem and git-backed sources.
+- **Editing** — In-app editor, or open git sources from your own clone (and filesystem sources on the tidl host) in your local editor. Configure it once under Settings → Editors.
 - **Task extraction** — `#task` / `#await` tags become real tasks; completing one rewrites it to a recoverable `#done` record.
 - **Navigation** — `[[wikilinks]]` with a back stack and a `Ctrl/⌘+K` fuzzy file finder.
 - **Consolidate** — Move content between notes and markdown files in either direction.

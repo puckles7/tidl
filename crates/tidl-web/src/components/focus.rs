@@ -5,16 +5,15 @@ use std::collections::{HashMap, HashSet};
 use chrono::{NaiveDate, Utc};
 use leptos::prelude::*;
 
-use crate::api::{
-    commit_and_push_markdown_source, complete_todo_item, create_todo_item, delete_todo_item,
-    get_awaits, get_events, get_markdown_file_content, get_markdown_rendered,
-    get_markdown_source_git_status, get_tasks, list_markdown_sources, list_note_collections,
-    list_notes, open_in_editor, remove_markdown_task, suppress_focus_item, trigger_markdown_sync,
-    unsuppress_focus_item, update_todo_chip, update_todo_item, AwaitItem, ContactDto, CurvePoint,
-    Event, NoteLabelInfo, PriorityCurves, Task, TodoChip, TodoOrigin,
-};
 #[cfg(all(target_arch = "wasm32", feature = "hydrate"))]
 use crate::api::{complete_markdown_task, load_todo_chip, reopen_markdown_task};
+use crate::api::{
+    complete_todo_item, create_todo_item, delete_todo_item, get_awaits, get_events,
+    get_markdown_file_content, get_markdown_rendered, get_tasks, list_markdown_sources,
+    list_note_collections, list_notes, open_in_editor, remove_markdown_task, suppress_focus_item,
+    trigger_markdown_sync, unsuppress_focus_item, update_todo_chip, update_todo_item, AwaitItem,
+    ContactDto, CurvePoint, Event, NoteLabelInfo, PriorityCurves, Task, TodoChip, TodoOrigin,
+};
 #[cfg(all(target_arch = "wasm32", feature = "hydrate"))]
 use crate::api::{resolve_contact_mention, resolve_wikilink};
 use crate::app::{use_events_refresh, use_sidebar_refresh, AllCalendarsCtx, PriorityCurvesCtx};
@@ -31,7 +30,8 @@ use crate::components::priority_slider::PrioritySlider;
 use crate::components::settings::OpenSettingsCtx;
 use crate::components::view_header::SectionHeader;
 use crate::local_editor::{
-    build_editor_uri, editor_label, resolve_target, LocalEditorCtx, OpenTarget,
+    build_editor_uri, editor_label, normalize_repo_key, resolve_target, save_prefs, LocalEditorCtx,
+    OpenTarget,
 };
 use crate::types::MarkdownUid;
 use crate::util::{format_server_fn_error, mouse_event_targets_self};
@@ -473,6 +473,10 @@ fn md_source_id_i64(uid: &str) -> Option<i64> {
 /// Wait for a markdown source sync to finish (observed through `last_scan`
 /// changing). Returns the source's `last_error` when the sync ran but failed,
 /// `Ok(None)` on success, and `Err` when it did not complete in time.
+#[cfg_attr(
+    not(all(target_arch = "wasm32", feature = "hydrate")),
+    allow(dead_code)
+)]
 async fn wait_for_source_sync(
     source_id: i64,
     old_last_scan: Option<String>,
@@ -492,6 +496,10 @@ async fn wait_for_source_sync(
 }
 
 /// Trigger a markdown source sync and wait for its result.
+#[cfg_attr(
+    not(all(target_arch = "wasm32", feature = "hydrate")),
+    allow(dead_code)
+)]
 async fn sync_source_now(
     source_id: i64,
     old_last_scan: Option<String>,
@@ -2654,15 +2662,17 @@ fn MarkdownPreviewInner(
     let open_settings = use_context::<OpenSettingsCtx>();
     let open_error = RwSignal::new(Option::<String>::None);
     let pull_error = RwSignal::new(Option::<String>::None);
-    let pull_busy = RwSignal::new(false);
     let auto_sync_busy = RwSignal::new(false);
     #[cfg(not(all(target_arch = "wasm32", feature = "hydrate")))]
     let _ = auto_sync_busy;
-    let commit_busy = RwSignal::new(false);
-    let commit_error = RwSignal::new(Option::<String>::None);
-    let commit_hint = RwSignal::new(Option::<String>::None);
-    let status_refresh = RwSignal::new(0u32);
     let copy_hint = RwSignal::new(Option::<String>::None);
+
+    // Inline "where is your clone?" prompt for a git source with no mapping
+    // (backlog #164). Scoped to the source that opened this preview instead of
+    // dead-ending into the Settings tab.
+    let show_clone_setup = RwSignal::new(false);
+    let clone_path = RwSignal::new(String::new());
+    let clone_error = RwSignal::new(Option::<String>::None);
 
     // Signal to show/hide the in-app editor.
     let show_editor: RwSignal<bool> = RwSignal::new(false);
@@ -2746,22 +2756,6 @@ fn MarkdownPreviewInner(
         _ => None,
     };
 
-    // Tidl can only commit/push its own clone, but that clone can be dirty
-    // even when the preview's target is a local clone (e.g. after opening the
-    // server copy with an external editor), so check it for every git source.
-    let git_status_res: LocalResource<Vec<String>> = LocalResource::new(move || {
-        let _ = status_refresh.get();
-        let source_id = current_source()
-            .filter(|s| s.source_type == "git")
-            .map(|s| s.id);
-        async move {
-            match source_id {
-                Some(id) => get_markdown_source_git_status(id).await.unwrap_or_default(),
-                None => Vec::new(),
-            }
-        }
-    });
-
     let file_res = LocalResource::new(move || {
         // A task completed from another surface (the shared edit modal, a note
         // chip, an SSE update) bumps `events_refresh`; keep the raw source in
@@ -2793,75 +2787,6 @@ fn MarkdownPreviewInner(
         async move { get_markdown_rendered(u).await }
     });
 
-    let do_pull = move |_: leptos::ev::MouseEvent| {
-        if pull_busy.get_untracked() {
-            return;
-        }
-        let Some(source_id) = md_source_id_i64(&current_uid()) else {
-            return;
-        };
-        let old_last_scan = current_source().and_then(|s| s.last_scan);
-        pull_busy.set(true);
-        pull_error.set(None);
-        leptos::task::spawn_local(async move {
-            match sync_source_now(source_id, old_last_scan, 120).await {
-                Ok(err) => pull_error.set(err),
-                Err(e) => pull_error.set(Some(e)),
-            }
-            md_sources_res.refetch();
-            status_refresh.update(|n| *n += 1);
-            file_res.refetch();
-            render_res.refetch();
-            events_refresh.update(|n| *n += 1);
-            pull_busy.set(false);
-        });
-    };
-
-    let do_commit = move |_: leptos::ev::MouseEvent| {
-        if commit_busy.get_untracked() {
-            return;
-        }
-        let Some(source_id) = md_source_id_i64(&current_uid()) else {
-            return;
-        };
-        let old_last_scan = current_source().and_then(|s| s.last_scan);
-        commit_busy.set(true);
-        commit_error.set(None);
-        commit_hint.set(None);
-        leptos::task::spawn_local(async move {
-            match commit_and_push_markdown_source(source_id).await {
-                Ok(0) => {
-                    commit_hint.set(Some(
-                        "No uncommitted changes in the server copy.".to_string(),
-                    ));
-                }
-                Ok(n) => {
-                    commit_hint.set(Some(format!(
-                        "Committed & pushed {n} file{}. Waiting for Tidl to re-sync…",
-                        if n == 1 { "" } else { "s" }
-                    )));
-                    match wait_for_source_sync(source_id, old_last_scan, 60).await {
-                        Ok(Some(e)) => commit_error.set(Some(e)),
-                        Ok(None) => {
-                            commit_hint.set(Some(format!(
-                                "Committed & pushed {n} file{}.",
-                                if n == 1 { "" } else { "s" }
-                            )));
-                        }
-                        Err(e) => commit_error.set(Some(e)),
-                    }
-                }
-                Err(e) => commit_error.set(Some(format_server_fn_error(&e.to_string()))),
-            }
-            md_sources_res.refetch();
-            status_refresh.update(|n| *n += 1);
-            file_res.refetch();
-            render_res.refetch();
-            events_refresh.update(|n| *n += 1);
-            commit_busy.set(false);
-        });
-    };
-
     // An external editor (e.g. VSCodium opening the server copy) writes the
     // file behind our back. When the user comes back to the browser, re-read
     // both views so the Rendered tab doesn't keep showing pre-edit HTML while
@@ -2875,10 +2800,7 @@ fn MarkdownPreviewInner(
             // Returning from an external editor may also have changed the
             // parsed task/await index. Trigger a sync so Focus catches up, not
             // just the Source/Rendered preview.
-            if show_editor.get_untracked()
-                || pull_busy.get_untracked()
-                || auto_sync_busy.get_untracked()
-            {
+            if show_editor.get_untracked() || auto_sync_busy.get_untracked() {
                 return;
             }
             let Some(source_id) = md_source_id_i64(&current_uid()) else {
@@ -2892,7 +2814,6 @@ fn MarkdownPreviewInner(
                     events_refresh.update(|n| *n += 1);
                 }
                 md_sources_res.refetch();
-                status_refresh.update(|n| *n += 1);
                 auto_sync_busy.set(false);
             });
         });
@@ -2968,9 +2889,11 @@ fn MarkdownPreviewInner(
                 <span class="fp-val fp-path">
                     {move || match current_target() {
                         OpenTarget::LocalClone { abs_path } => format!("This device · {abs_path}"),
-                        OpenTarget::ServerCopy => "Server copy · tidl's clone".to_string(),
-                        OpenTarget::NotConfigured => "Not configured on this device".to_string(),
-                        OpenTarget::ServerOnly => "Server-only source".to_string(),
+                        OpenTarget::HostCopy => "On the tidl host".to_string(),
+                        OpenTarget::ConfigureClone => "No local clone on this device".to_string(),
+                        OpenTarget::Unavailable => {
+                            "On the tidl host (not reachable from this browser)".to_string()
+                        }
                     }}
                 </span>
                 {move || local_abs_path().map(|path| view! {
@@ -2995,54 +2918,85 @@ fn MarkdownPreviewInner(
                     >"Copy path"</button>
                 })}
             </div>
-            {move || current_source()
-                .is_some_and(|s| s.source_type == "git")
-                .then(|| view! {
-                    <div class="fp-row fp-row--target">
-                        <span class="fp-key">"Server clone"</span>
-                        <span class="fp-val fp-path">"Tidl's clone (on the server)"</span>
-                        <button
-                            class="btn-secondary-small"
-                            title="Fetch and pull in Tidl's clone; your local clone is not changed"
-                            disabled=move || pull_busy.get() || commit_busy.get()
-                            on:click=do_pull
-                        >
-                            {move || if pull_busy.get() { "Pulling…" } else { "↻ Pull server clone" }}
-                        </button>
-                        {move || {
-                            let paths = git_status_res.get().unwrap_or_default();
-                            let count = paths.len();
-                            (count > 0).then(|| {
-                                let title = format!(
-                                    "Commit and push {count} uncommitted path{} in Tidl's clone \
-                                     (not your local clone): {}",
-                                    if count == 1 { "" } else { "s" },
-                                    paths.join(", ")
-                                );
-                                view! {
+            {move || {
+                (show_clone_setup.get()
+                    && matches!(current_target(), OpenTarget::ConfigureClone))
+                    .then(|| {
+                        let source = current_source();
+                        let url = source.as_ref().and_then(|s| s.url.clone()).unwrap_or_default();
+                        let key = normalize_repo_key(&url);
+                        let name = source.map(|s| s.name).unwrap_or_default();
+                        let key_for_save = key.clone();
+                        let ctx = local_editor_ctx;
+                        view! {
+                            <div class="fp-clone-setup">
+                                <label class="form-label">
+                                    {format!("Where is your clone of “{name}”?")}
+                                </label>
+                                <div class="fp-clone-setup-row">
+                                    <input
+                                        type="text"
+                                        class="form-input"
+                                        placeholder="/absolute/path/to/your/clone"
+                                        prop:value=move || clone_path.get()
+                                        on:input=move |ev| clone_path.set(event_target_value(&ev))
+                                    />
                                     <button
-                                        class="btn-secondary-small"
-                                        title=title
-                                        disabled=move || commit_busy.get() || pull_busy.get()
-                                        on:click=do_commit
-                                    >
-                                        {move || if commit_busy.get() {
-                                            "Pushing…".to_string()
-                                        } else {
-                                            format!("Commit & push server clone ({count})")
-                                        }}
-                                    </button>
-                                }
-                            })
-                        }}
-                    </div>
-                })}
+                                        class="btn-primary"
+                                        on:click=move |_| {
+                                            clone_error.set(None);
+                                            let path = clone_path.get_untracked().trim().to_string();
+                                            if path.is_empty() {
+                                                clone_error.set(Some(
+                                                    "Enter the clone folder path.".to_string(),
+                                                ));
+                                                return;
+                                            }
+                                            if !crate::local_editor::is_absolute_path(&path) {
+                                                clone_error.set(Some(
+                                                    "Use an absolute path (starting with / or a drive letter)."
+                                                        .to_string(),
+                                                ));
+                                                return;
+                                            }
+                                            let Some(ctx) = ctx else {
+                                                clone_error.set(Some(
+                                                    "Local editor settings are not available."
+                                                        .to_string(),
+                                                ));
+                                                return;
+                                            };
+                                            let mut prefs = ctx.prefs.get_untracked();
+                                            prefs.git_roots.insert(key_for_save.clone(), path);
+                                            match save_prefs(&prefs) {
+                                                Ok(()) => {
+                                                    ctx.prefs.set(prefs);
+                                                    show_clone_setup.set(false);
+                                                }
+                                                Err(e) => clone_error.set(Some(e)),
+                                            }
+                                        }
+                                    >"Use this folder"</button>
+                                    <button
+                                        class="btn-cancel"
+                                        on:click=move |_| show_clone_setup.set(false)
+                                    >"Cancel"</button>
+                                </div>
+                                <p class="form-hint">
+                                    "Use your own clone, not tidl's managed copy. Commit and push \
+                                     from there to bring changes into tidl."
+                                </p>
+                                {move || clone_error.get().map(|e| view! {
+                                    <p class="form-error">{e}</p>
+                                })}
+                            </div>
+                        }
+                    })
+            }}
             {move || pull_error
                 .get()
                 .or_else(|| current_source().and_then(|s| s.last_error))
                 .map(|e| view! { <p class="form-error">{e}</p> })}
-            {move || commit_error.get().map(|e| view! { <p class="form-error">{e}</p> })}
-            {move || commit_hint.get().map(|h| view! { <p class="form-hint">{h}</p> })}
             {move || copy_hint.get().map(|h| view! { <p class="form-hint">{h}</p> })}
         </div>
 
@@ -3418,6 +3372,10 @@ fn MarkdownPreviewInner(
         }}
 
         <div class="fp-footer">
+            {move || open_error.get().map(|e| view! {
+                <p class="form-error fp-footer-error">{e}</p>
+            })}
+            <div class="fp-footer-actions">
             <button class="btn-secondary" on:click=move |_| on_close.with_value(|f| f())>"Close"</button>
             <button
                 class="btn-secondary"
@@ -3426,11 +3384,11 @@ fn MarkdownPreviewInner(
                 "Pull out into Note"
             </button>
             <button
-                class="btn-secondary-small"
-                title="Edit tidl's own clone in the browser"
+                class="btn-secondary"
+                title="Edit tidl's copy directly in the browser"
                 on:click=move |_| show_editor.set(true)
             >
-                "Edit on server (in app)"
+                "Edit in browser"
             </button>
             {move || {
                 let uid_e = current_uid();
@@ -3439,6 +3397,30 @@ fn MarkdownPreviewInner(
                         let prefs = local_editor_ctx
                             .map(|c| c.prefs.get())
                             .unwrap_or_default();
+                        let has_template = prefs.editor_id != "custom"
+                            || !prefs.template.trim().is_empty();
+                        if !has_template {
+                            return view! {
+                                <button
+                                    class="btn-secondary"
+                                    disabled=true
+                                    title="This editor has no link template. Set one under Settings → Editors → Advanced, or use Edit in browser (the path can also be copied above)."
+                                >
+                                    "Open in editor"
+                                </button>
+                                <button
+                                    class="btn-secondary-small"
+                                    on:click=move |_| {
+                                        on_close.with_value(|f| f());
+                                        if let Some(settings) = open_settings {
+                                            settings.0.set(Some("editors"));
+                                        }
+                                    }
+                                >
+                                    "Configure editor…"
+                                </button>
+                            }.into_any();
+                        }
                         let uri = build_editor_uri(
                             &prefs.editor_id,
                             &prefs.template,
@@ -3457,44 +3439,70 @@ fn MarkdownPreviewInner(
                             </a>
                         }.into_any()
                     }
-                    OpenTarget::ServerCopy => view! {
-                        <button
-                            class="btn-secondary"
-                            title="Open tidl's own clone on the server host"
-                            on:click=move |_| {
-                                open_error.set(None);
-                                let uid_e = uid_e.clone();
-                                leptos::task::spawn_local(async move {
-                                    if let Err(e) = open_in_editor(uid_e).await {
-                                        open_error.set(Some(format_server_fn_error(&e.to_string())));
-                                    }
-                                });
-                            }
-                        >
-                            "Open server copy →"
-                        </button>
-                    }.into_any(),
-                    OpenTarget::NotConfigured => view! {
-                        <button
-                            class="btn-secondary"
-                            on:click=move |_| {
-                                on_close.with_value(|f| f());
-                                if let Some(settings) = open_settings {
-                                    settings.0.set(Some("this_device"));
+                    OpenTarget::HostCopy => {
+                        let prefs = local_editor_ctx
+                            .map(|c| c.prefs.get_untracked())
+                            .unwrap_or_default();
+                        view! {
+                            <button
+                                class="btn-secondary"
+                                title="Open this folder in your editor on the tidl host"
+                                on:click=move |_| {
+                                    open_error.set(None);
+                                    let uid_e = uid_e.clone();
+                                    let editor_id = prefs.editor_id.clone();
+                                    let server_cmd = prefs.server_cmd.clone();
+                                    leptos::task::spawn_local(async move {
+                                        if let Err(e) =
+                                            open_in_editor(uid_e, editor_id, server_cmd).await
+                                        {
+                                            open_error.set(Some(format_server_fn_error(&e.to_string())));
+                                        }
+                                    });
                                 }
+                            >
+                                "Open on tidl host →"
+                            </button>
+                        }.into_any()
+                    }
+                    OpenTarget::ConfigureClone => view! {
+                        <button
+                            class="btn-secondary"
+                            on:click=move |_| {
+                                let existing = current_source()
+                                    .and_then(|s| s.url)
+                                    .map(|u| normalize_repo_key(&u))
+                                    .and_then(|k| {
+                                        local_editor_ctx.map(|c| {
+                                            c.prefs
+                                                .get_untracked()
+                                                .git_roots
+                                                .get(&k)
+                                                .cloned()
+                                                .unwrap_or_default()
+                                        })
+                                    })
+                                    .unwrap_or_default();
+                                clone_path.set(existing);
+                                clone_error.set(None);
+                                show_clone_setup.set(true);
                             }
                         >
-                            "Set up local editor…"
+                            "Set up clone…"
                         </button>
                     }.into_any(),
-                    OpenTarget::ServerOnly => view! {
-                        <span class="form-hint">
-                            "This source lives on the server — use Edit on server (in app)."
-                        </span>
+                    OpenTarget::Unavailable => view! {
+                        <button
+                            class="btn-secondary"
+                            disabled=true
+                            title="This folder lives on the tidl host. Browse tidl from that machine to open it in an editor, or use Edit in browser."
+                        >
+                            "Open on tidl host"
+                        </button>
                     }.into_any(),
                 }
             }}
-            {move || open_error.get().map(|e| view! { <p class="form-error">{e}</p> })}
+            </div>
         </div>
 
         </div>  // end preview shell (display:contents / display:none toggle)

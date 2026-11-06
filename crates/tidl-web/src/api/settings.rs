@@ -462,18 +462,24 @@ pub async fn create_app_token(name: String, read_only: bool) -> Result<String, S
 /// path is resolved against the markdown source's base directory so the editor
 /// always receives an absolute path.
 ///
-/// The command template is read from `user_preferences.open_in_editor_cmd`.
-/// Tokens `{file}` and `{line}` are substituted with the resolved values.
-/// Falls back to the OS default file-opener when no command is configured:
-/// `xdg-open` on Linux, `open` on macOS, `cmd /c start` on Windows.
+/// The command template is derived from the browser's chosen `editor_id` (see
+/// `crate::local_editor::server_cmd_for`). Tokens `{file}` and `{line}` are
+/// substituted with the resolved values. Custom editors have no server
+/// command, so this falls back to the OS default file-opener: `xdg-open` on
+/// Linux, `open` on macOS, `cmd /c start` on Windows.
 ///
 /// The child process is spawned fire-and-forget; this function returns as soon
 /// as the process is launched, without waiting for it to finish.
 ///
-/// This is the **server-local** path. When the browser is remote, the UI uses
-/// the per-device editor link from `crate::local_editor` instead.
+/// This is the **server-local** path, used only for filesystem sources when
+/// the browser is on the tidl host. Git sources are always opened from the
+/// user's own clone via a browser URI, never from tidl's managed clone.
 #[server(input = server_fn::codec::Json)]
-pub async fn open_in_editor(uid: String) -> Result<(), ServerFnError> {
+pub async fn open_in_editor(
+    uid: String,
+    editor_id: String,
+    server_cmd: Option<String>,
+) -> Result<(), ServerFnError> {
     #[cfg(feature = "ssr")]
     {
         use crate::ssr_types::DataDir;
@@ -525,22 +531,34 @@ pub async fn open_in_editor(uid: String) -> Result<(), ServerFnError> {
 
         let abs_path = base_dir.join(rel_path).to_string_lossy().into_owned();
 
-        // Fetch the user's configured editor command.
-        let pref_row =
+        // The editor choice lives in the browser; its explicit command
+        // override wins. For older installs the per-user stored command is
+        // still honoured before falling back to the preset's launcher, so
+        // upgrading does not silently switch to a binary that may not exist on
+        // this host (backlog #164).
+        let stored_cmd: Option<String> =
             sqlx::query("SELECT open_in_editor_cmd FROM user_preferences WHERE username = ?")
                 .bind(&username)
                 .fetch_optional(&pool)
                 .await
-                .map_err(|e: sqlx::Error| ServerFnError::new(e.to_string()))?;
+                .map_err(|e: sqlx::Error| ServerFnError::new(e.to_string()))?
+                .and_then(|r| {
+                    r.try_get::<Option<String>, _>("open_in_editor_cmd")
+                        .ok()
+                        .flatten()
+                })
+                .filter(|cmd| !cmd.trim().is_empty());
 
-        let cmd_opt: Option<String> =
-            pref_row.and_then(|r| r.try_get("open_in_editor_cmd").ok().flatten());
+        let cmd_opt = crate::local_editor::resolve_server_cmd(
+            &editor_id,
+            server_cmd.as_deref(),
+            stored_cmd.as_deref(),
+        );
 
         // A remote browser can reach this function too. If the fallback is
         // the only path and the server has no GUI session, fail clearly
         // instead of spawning an opener that cannot display anything.
-        let no_configured_command = cmd_opt.as_deref().is_none_or(|cmd| cmd.trim().is_empty());
-        if no_configured_command
+        if cmd_opt.is_none()
             && cfg!(target_os = "linux")
             && std::env::var_os("DISPLAY").is_none()
             && std::env::var_os("WAYLAND_DISPLAY").is_none()
@@ -550,10 +568,11 @@ pub async fn open_in_editor(uid: String) -> Result<(), ServerFnError> {
             ));
         }
 
-        let argv: Vec<String> = match cmd_opt.as_deref() {
-            Some(cmd) if !cmd.trim().is_empty() => {
+        let used_fallback = cmd_opt.is_none();
+        let mut argv: Vec<String> = match cmd_opt {
+            Some(cmd) => {
                 let line_str = line.to_string();
-                split_command_template(cmd)
+                split_command_template(&cmd)
                     .into_iter()
                     .map(|tok| {
                         tok.replace("{file}", &abs_path)
@@ -562,32 +581,60 @@ pub async fn open_in_editor(uid: String) -> Result<(), ServerFnError> {
                     .collect()
             }
             // Platform-aware fallback: open the file without a specific line.
-            _ => {
-                if cfg!(target_os = "windows") {
-                    vec![
-                        "cmd".to_string(),
-                        "/c".to_string(),
-                        "start".to_string(),
-                        String::new(),
-                        abs_path,
-                    ]
-                } else if cfg!(target_os = "macos") {
-                    vec!["open".to_string(), abs_path]
-                } else {
-                    vec!["xdg-open".to_string(), abs_path]
-                }
-            }
+            _ => default_opener_argv(&abs_path),
         };
 
-        Command::new(&argv[0])
-            .args(&argv[1..])
-            .spawn()
-            .map_err(|e| ServerFnError::new(e.to_string()))?;
+        let spawn_err = match Command::new(&argv[0]).args(&argv[1..]).spawn() {
+            Ok(_) => return Ok(()),
+            Err(e) => e,
+        };
 
-        return Ok(());
+        // Launcher names are not portable (e.g. `code` vs `code.cmd`, Flatpak
+        // wrappers, GUI-only installs). If the configured/default command is
+        // simply absent, fall back to the host's default file opener once
+        // rather than surfacing a bare ENOENT (backlog #164).
+        if !used_fallback && spawn_err.kind() == std::io::ErrorKind::NotFound {
+            argv = default_opener_argv(&abs_path);
+            return Command::new(&argv[0])
+                .args(&argv[1..])
+                .spawn()
+                .map(|_| ())
+                .map_err(|e| {
+                    ServerFnError::new(format!(
+                        "Could not open the file on the tidl host with '{}': {e}. Set the exact \
+                         command under Settings → Editors → Advanced.",
+                        argv[0]
+                    ))
+                });
+        }
+
+        return Err(ServerFnError::new(format!(
+            "Could not open the file on the tidl host with '{}': {spawn_err}. Set the exact \
+             command under Settings → Editors → Advanced.",
+            argv[0]
+        )));
     }
     #[allow(unreachable_code)]
     Ok(())
+}
+
+/// Platform default file-opener argv for a path, used when no editor command
+/// is configured or the configured launcher is not installed.
+#[cfg(feature = "ssr")]
+fn default_opener_argv(abs_path: &str) -> Vec<String> {
+    if cfg!(target_os = "windows") {
+        vec![
+            "cmd".to_string(),
+            "/c".to_string(),
+            "start".to_string(),
+            String::new(),
+            abs_path.to_string(),
+        ]
+    } else if cfg!(target_os = "macos") {
+        vec!["open".to_string(), abs_path.to_string()]
+    } else {
+        vec!["xdg-open".to_string(), abs_path.to_string()]
+    }
 }
 
 /// Split a command template into argv, honoring double-quoted segments.
