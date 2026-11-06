@@ -34,7 +34,7 @@ Feature wishes and ideas for future development. Each item links to a detailed d
 | 28  | [Explore rustical OIDC + Argon2 auth](28-explore-rustical-auth.md)                                                                         | done        | —                                 |
 | 29  | [CardDAV protocol — read-write contact sync](29-carddav-protocol.md)                                                                       | done        | #79                               |
 | 30  | [Investigate WebDAV Push](30-investigate-webdav-push.md)                                                                                   | dropped     | —                                 |
-| 31  | [DAVx5 compatibility verification and fixes](31-davx5-compatibility.md)                                                                    | dropped     | —                                 |
+| 31  | [DAVx5 compatibility verification and fixes](31-davx5-compatibility.md)                                                                    | done        | —                                 |
 | 32  | [Color palette refinement — muted, dark-mode-friendly source colors](32-color-palette-refinement.md)                                       | done        | —                                 |
 | 33  | [Wikilink navigation — Roam/markdown-memo style](33-wikilink-navigation.md)                                                                | done        | —                                 |
 | 34  | [Git-backed markdown sources with in-app editor](34-git-backed-markdown-sources.md)                                                        | done        | —                                 |

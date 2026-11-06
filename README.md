@@ -247,7 +247,7 @@ Connect any CardDAV-compatible address book app the same way:
 - Server: `https://your-domain.com/carddav/username/` (address-book-home-set discovery lists every collection you own or are a member of — most clients auto-discover from this base URL)
 - Username / Password: your tidl credentials, or an app token from Settings → App Tokens
 
-Tested with iOS Contacts, Thunderbird, and natively on the Jolla Phone 2026 (Sailfish OS Contacts); DAVx⁵ contact sync is expected to work (same protocol, same server) but hasn't been verified yet.
+Tested with iOS Contacts, Thunderbird, Android DAVx⁵ (including in Android AppSupport on the Jolla Phone 2026), and natively on the Jolla Phone 2026 (Sailfish OS Contacts).
 
 ## Web Interface
 

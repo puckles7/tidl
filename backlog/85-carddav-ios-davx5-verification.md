@@ -27,8 +27,12 @@ All three were invisible without a real client attempting a real sync — self-c
 ## Open Questions
 
 - Whether macOS Contacts.app (same underlying CardDAV stack as iOS, but worth a separate quick check) belongs in this pass too — include if convenient, not blocking.
-- Whether to also re-verify CalDAV against these same clients while set up, given #31 (DAVx5 CalDAV verification) was dropped without ever actually happening — decide when starting this item, not now.
+- Whether to also re-verify CalDAV against these same clients while set up — subsequently done for DAVx⁵; see #31.
 
 ## Resolution
 
-Verified bidirectionally against iOS Contacts and Thunderbird (2026-09-17) — both connected, and a full create/edit/delete round-trip in each direction was confirmed working. DAVx5 (Android) was not verified in this pass; called good enough for now given the other two clients cover the primary use cases. macOS Contacts.app was not checked separately. If DAVx5-specific issues surface later, treat as a fresh backlog item rather than reopening this one.
+Verified bidirectionally against iOS Contacts and Thunderbird (2026-09-17), and
+against DAVx⁵ on the Jolla Phone 2026 (Android AppSupport, 2026-11-06) — all
+connected, and a full create/edit/delete round-trip in each direction was
+confirmed working. The DAVx⁵ pass also covered CalDAV; see #31. macOS
+Contacts.app was not checked separately.

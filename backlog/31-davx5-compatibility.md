@@ -1,6 +1,8 @@
 # DAVx5 compatibility verification and fixes
 
-DAVx5 is the de facto standard CalDAV/CardDAV sync client for Android. While tidl's CalDAV implementation should work with DAVx5 in principle, it has never been systematically verified. This item covers testing tidl against a real DAVx5 installation and fixing any incompatibilities found.
+**Status:** done (2026-11-06).
+
+DAVx5 is the de facto standard CalDAV/CardDAV sync client for Android. While tidl's CalDAV implementation should work with DAVx5 in principle, it had not been systematically verified until the pass documented under Resolution. This item covers testing tidl against a real DAVx5 installation and fixing any incompatibilities found.
 
 ## Background
 
@@ -24,3 +26,12 @@ iOS has native CalDAV support built in, so Apple devices sync with tidl without 
 - Does DAVx5 require any specific well-known URL discovery (`/.well-known/caldav`) that tidl may not expose?
 - Are there known DAVx5 quirks around `VTIMEZONE` handling that tidl's parser needs to accommodate?
 - Does DAVx5 exercise any CalDAV scheduling extensions (iTIP/iMIP) beyond what tidl already handles?
+
+## Resolution
+
+Verified working bidirectionally against DAVx⁵ on the Jolla Phone 2026
+(Android AppSupport) on 2026-11-06. Initial connection, calendar discovery,
+and event create/edit/delete round-trips worked with no tidl-side changes.
+CardDAV was verified in the same DAVx⁵ pass (see #85). Recurring events,
+alarms, and scheduling extensions were not checked item-by-item; #30 (WebDAV
+Push) remains dropped, so DAVx⁵ uses its normal polling interval.
