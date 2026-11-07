@@ -9,6 +9,7 @@ use clap::{Parser, Subcommand};
 use std::convert::Infallible;
 use std::net::SocketAddr;
 use tower_http::{
+    compression::CompressionLayer,
     cors::CorsLayer,
     services::{ServeDir, ServeFile},
     trace::TraceLayer,
@@ -683,12 +684,24 @@ async fn main() -> Result<()> {
             "/pkg",
             tower::ServiceBuilder::new()
                 .layer(axum::middleware::from_fn(cache_pkg_assets))
-                .service(ServeDir::new("target/site/pkg")),
+                .service(
+                    ServeDir::new("target/site/pkg")
+                        .precompressed_gzip()
+                        .precompressed_br(),
+                ),
         )
         .nest_service("/assets", ServeDir::new("assets"))
         .fallback_service(ServeFile::new("assets/index.html"))
         .with_state(app_state)
-        .layer(CorsLayer::new());
+        .layer(CorsLayer::new())
+        // Compress responses that don't already have a precompressed sibling.
+        // Release builds ship `.br`/`.gz` files for `/pkg` (cargo-leptos
+        // `--precompress`) and ServeDir serves those directly; this layer
+        // covers `/assets`, dev builds, and every server-fn response, and never
+        // double-compresses (it skips responses that already carry
+        // `Content-Encoding`). tower-http's default predicate also skips SSE,
+        // so `/api/stream` keeps streaming uncompressed.
+        .layer(CompressionLayer::new());
 
     // pool is moved into the Extension layer below — clone it first.
     let sync_pool = pool.clone();
@@ -1017,16 +1030,28 @@ async fn health_check() -> &'static str {
 /// mid-rebuild while `cargo-leptos` swaps the WASM bundle) for the full
 /// max-age, breaking WASM loading until the cache entry expires or a hard
 /// refresh clears it.
+///
+/// `Vary: accept-encoding` is added here because `ServeDir`'s precompressed
+/// variants set `Content-Encoding` but not `Vary`, and `CompressionLayer` only
+/// adds it when *it* compresses (skipped for a precompressed response). Without
+/// it, a shared cache could hand a brotli response to a gzip-only client.
 async fn cache_pkg_assets(
     req: axum::extract::Request,
     next: axum::middleware::Next,
 ) -> axum::response::Response {
     let mut res = next.run(req).await;
     if res.status().is_success() {
-        res.headers_mut().insert(
+        let headers = res.headers_mut();
+        headers.insert(
             axum::http::header::CACHE_CONTROL,
             axum::http::HeaderValue::from_static("public, max-age=3600, must-revalidate"),
         );
+        if !headers.contains_key(axum::http::header::VARY) {
+            headers.insert(
+                axum::http::header::VARY,
+                axum::http::HeaderValue::from_static("accept-encoding"),
+            );
+        }
     }
     res
 }

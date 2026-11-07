@@ -38,7 +38,7 @@ COPY . .
 # Compile against the committed SQLx offline cache (crates/tidl-server/.sqlx),
 # so no live database is needed at build time.
 ENV SQLX_OFFLINE=true
-RUN cargo leptos build --release
+RUN cargo leptos build --release --precompress
 
 # ── Stage 2: minimal runtime ─────────────────────────────────────────────────
 FROM debian:bookworm-slim AS runtime

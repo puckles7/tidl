@@ -61,8 +61,12 @@ nix build
 ```bash
 cargo install cargo-leptos
 cargo leptos watch        # dev server
-cargo leptos build --release
+cargo leptos build --release --precompress
 ```
+
+`--precompress` writes brotli/gzip siblings next to the WASM/JS bundle; the
+server serves those directly and compresses other assets on the fly (dev builds
+have no siblings and are compressed on the fly too).
 
 ### Deploy with Docker
 

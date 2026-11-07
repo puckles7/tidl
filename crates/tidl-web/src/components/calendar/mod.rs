@@ -50,9 +50,11 @@ pub fn CalendarView() -> impl IntoView {
         .unwrap_or_default();
 
     // Deep-link target from Focus' "Show in calendar" (backlog #157):
-    // `?highlight=<event uid>&date=<YYYY-MM-DD>` on a fresh full-page
-    // navigation. `date` seeds the visible week/day/month so the event is
-    // actually in the fetched range; `highlight` is pulsed once it renders.
+    // `?highlight=<event uid>&date=<YYYY-MM-DD>` on a client-side navigation.
+    // CalendarView mounts fresh when arriving from Focus (it wasn't in the
+    // tree), so reading the query once on mount is enough; `date` seeds the
+    // visible week/day/month so the event is actually in the fetched range;
+    // `highlight` is pulsed once it renders.
     let (highlight_uid, deep_link_date) = {
         let q = use_query_map();
         let q = q.get_untracked();

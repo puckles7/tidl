@@ -117,7 +117,7 @@
         tidlPackage = craneLib.buildPackage (tidlCommonArgs // {
           src = tidlFullSrc;
           cargoArtifacts = tidlCargoArtifacts;
-          buildPhaseCargoCommand = "cargo leptos build --release";
+          buildPhaseCargoCommand = "cargo leptos build --release --precompress";
 
           # Reproducible builds have no `.git`, so build.rs cannot discover the
           # revision — hand it the flake's own rev (backlog #147). Null when the
@@ -397,15 +397,20 @@ SH
           (pkgs.writeShellScriptBin "build-windows" ''
             set -euo pipefail
             PROFILE_FLAG=""
+            PRECOMPRESS_FLAG=""
             PROFILE_DIR="debug"
 
             if [ "''${1:-}" = "--release" ]; then
               PROFILE_FLAG="--release"
+              # Brotli/gzip siblings for the WASM/JS bundle, served directly by
+              # ServeDir in release deployments. Only meaningful in release
+              # builds (cargo-leptos ignores it in debug), so skip it there.
+              PRECOMPRESS_FLAG="--precompress"
               PROFILE_DIR="release"
             fi
 
             echo "=== Building WASM frontend (cargo leptos build) ==="
-            cargo leptos build $PROFILE_FLAG
+            cargo leptos build $PROFILE_FLAG $PRECOMPRESS_FLAG
 
             echo "=== Cross-compiling server for Windows ==="
             # Pure CSR: the server no longer renders HTML, so there is no need

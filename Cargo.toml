@@ -31,7 +31,7 @@ tokio-stream = { version = "0.1", features = ["sync"] }
 # Web framework — axum 0.8 is required by leptos_axum 0.8
 axum = { version = "0.8", features = ["macros"] }
 tower = "0.5"
-tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+tower-http = { version = "0.6", features = ["fs", "cors", "trace", "compression-gzip", "compression-br"] }
 
 # Leptos 0.8 — stable Rust only, no nightly required
 # No default features; each crate enables "ssr" or "hydrate" itself.

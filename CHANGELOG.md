@@ -16,6 +16,12 @@ documented in [`docs/releasing.md`](docs/releasing.md).
 
 - Focus' "Show in calendar" now centers the highlighted event vertically in the
   week grid instead of pinning it to the top edge. (#157)
+- Focus' "Show in calendar" navigates client-side instead of reloading the whole
+  app, so the calendar opens as fast as the Calendar tab link and cached events
+  remain on screen. (#157)
+- Web assets are now served gzip/brotli-compressed, with precompressed
+  `.br`/`.gz` siblings in release builds, so the WASM bundle downloads much
+  faster on slow connections. (#165)
 
 ## [0.2.0] - 2026-11-06
 

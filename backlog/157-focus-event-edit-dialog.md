@@ -56,15 +56,16 @@ the event — mirroring how "Show in collection" flashes a note.
   refreshes the Focus list. Non-event previews are unchanged.
 - `EventFormDialog` gained an optional `on_show_in_calendar` prop, rendered as
   a "Show in calendar" button only in Focus (the Calendar tab leaves it off).
-- The button does a full-page navigation to
-  `/?highlight=<percent-encoded uid>&date=<YYYY-MM-DD>`, mirroring the
-  Notes/Contacts deep-link pattern. `date` seeds the calendar's week/day/month
-  so the event is in the fetched range even when it isn't this week; the uid is
-  percent-encoded because CalDAV uids are arbitrary strings.
+- The button client-side navigates to
+  `/?highlight=<percent-encoded uid>&date=<YYYY-MM-DD>`. `date` seeds the
+  calendar's week/day/month so the event is in the fetched range even when it
+  isn't this week; the uid is percent-encoded because CalDAV uids are arbitrary
+  strings. (Originally a full-page navigation; switched to client-side routing
+  in #165 so the already-loaded WASM/session/cached events survive.)
 - CalendarView adds `data-event-uid` to timed blocks, all-day pills, and month
   lines/bars, then pulses the matching element once (`cal-event--highlight`,
   stripped on `animationend`). If the event stays hidden (deselected calendar,
   search filter, or out of range) the navigation still works without a flash.
 - No unsaved-changes guard: "Show in calendar" is an explicit navigation away
-  from the dialog, and it simply navigates (the page teardown discards edits,
-  same as any full-page navigation).
+  from the dialog, and it simply navigates (unmounting the dialog discards
+  edits, same as any navigation).

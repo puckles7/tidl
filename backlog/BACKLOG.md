@@ -168,3 +168,4 @@ Feature wishes and ideas for future development. Each item links to a detailed d
 | 162 | [Mark a task done from the markdown editor's edit dialog](162-markdown-editor-task-done-checkbox.md)                                       | done        | #129                              |
 | 163 | [Reference manager — books, articles, etc. (Zotero light)](163-reference-manager.md)                                                        | idea        | —                                 |
 | 164 | [Streamline local/remote handling for opening a file in an external editor](164-open-in-editor-local-remote-consolidation.md)              | done        | #23                               |
+| 165 | [Compress web assets (gzip/brotli) to speed up app startup](165-asset-compression.md)                                                      | done        | —                                 |
