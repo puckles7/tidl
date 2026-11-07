@@ -270,7 +270,12 @@ pub fn CalendarView() -> impl IntoView {
                     continue;
                 }
                 let el: leptos::web_sys::HtmlElement = node_el.unchecked_into();
-                el.scroll_into_view_with_bool(true);
+                // Center the deep-linked event in the grid's scroll container
+                // rather than pinning it to the top edge, so it lands in the
+                // middle of the visible window when possible.
+                let opts = leptos::web_sys::ScrollIntoViewOptions::new();
+                opts.set_block(leptos::web_sys::ScrollLogicalPosition::Center);
+                el.scroll_into_view_with_scroll_into_view_options(&opts);
                 let _ = el.class_list().add_1("cal-event--highlight");
                 // Self-terminating animation: strip the class on `animationend`
                 // so a later grid re-render can't replay the pulse.
