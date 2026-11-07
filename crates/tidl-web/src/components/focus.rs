@@ -4,6 +4,7 @@ use std::collections::{HashMap, HashSet};
 
 use chrono::{NaiveDate, Utc};
 use leptos::prelude::*;
+use leptos_router::hooks::use_navigate;
 
 #[cfg(all(target_arch = "wasm32", feature = "hydrate"))]
 use crate::api::{complete_markdown_task, load_todo_chip, reopen_markdown_task};
@@ -45,7 +46,6 @@ fn parse_date_str(s: &str) -> Option<NaiveDate> {
 /// Percent-encode a value for use inside a URL query string. Event uids are
 /// arbitrary CalDAV strings (often containing `@`, `:`, or spaces), so they
 /// can't be dropped into `?highlight=` verbatim.
-#[cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 fn encode_query_value(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
     for b in s.bytes() {
@@ -2560,25 +2560,24 @@ pub(crate) fn PreviewOverlay(
             };
             let events_refresh = use_events_refresh();
             let ev_for_nav = ev.clone();
-            // Full-page navigation (not client-side routing) so CalendarView
-            // can pick up `?highlight=`/`?date=` on mount, jump to the event's
-            // week, and pulse it — same technique as Notes' "Show in
-            // collection" (backlog #63).
-            let show_in_calendar = Callback::new(move |_: ()| {
-                #[cfg(target_arch = "wasm32")]
-                {
-                    if let Some(win) = web_sys::window() {
-                        let date = ev_for_nav.start.get(..10).unwrap_or(&ev_for_nav.start);
-                        let url = format!(
-                            "/?highlight={}&date={}",
-                            encode_query_value(&ev_for_nav.id),
-                            date
-                        );
-                        let _ = win.location().set_href(&url);
-                    }
-                }
-                #[cfg(not(target_arch = "wasm32"))]
-                let _ = &ev_for_nav;
+            // Client-side navigation, not a full-page reload: CalendarView
+            // still mounts fresh (it isn't in the tree while Focus is shown)
+            // and reads `?highlight=`/`?date=` from the query on mount, but the
+            // already-loaded WASM, session, calendar list and cached events
+            // survive. A `location.set_href` here re-bootstrapped the whole
+            // SPA (WASM download/instantiate + hydrate + session round trip
+            // before CalendarView could even start its event fetch), which
+            // made the button feel far slower than the Calendar tab link
+            // (backlog #157).
+            let navigate = use_navigate();
+            let show_in_calendar = UnsyncCallback::new(move |_: ()| {
+                let date = ev_for_nav.start.get(..10).unwrap_or(&ev_for_nav.start);
+                let url = format!(
+                    "/?highlight={}&date={}",
+                    encode_query_value(&ev_for_nav.id),
+                    date
+                );
+                navigate(&url, Default::default());
             });
             view! {
                 <EventFormDialog

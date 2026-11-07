@@ -413,11 +413,12 @@ pub fn EventFormDialog(
     on_close: impl Fn() + Send + Sync + 'static,
     on_saved: impl Fn() + Send + Sync + 'static,
     /// When set, renders a "Show in calendar" button that navigates to the
-    /// Calendar tab and flashes this event there. Only passed by Focus'
-    /// event preview (backlog #157) — the Calendar tab's own usage leaves it
-    /// `None` since the event is already on screen.
+    /// Calendar tab and flashes this event there. Client-side (not a full-page
+    /// reload), so the SPA and its cached calendar data stay warm — Focus
+    /// passes this, the Calendar tab's own usage leaves it `None` since the
+    /// event is already on screen (backlog #157).
     #[prop(optional)]
-    on_show_in_calendar: Option<Callback<()>>,
+    on_show_in_calendar: Option<UnsyncCallback<()>>,
 ) -> impl IntoView {
     let is_new = event.is_none();
     let uid = event.as_ref().map(|e| e.id.clone());
